@@ -133,7 +133,7 @@ export const NAV = Object.freeze([
 
 /** RISE sub-navigation (used in rise.html) */
 export const NAV_RISE = Object.freeze([
-  { id: 'rise-intro',     href: '#rise-intro',     label_ms: 'Tentang RISE', label_en: 'About RISE'    },
+  { id: 'rise-intro',     href: '#rise-intro',     label_ms: 'Pengenalan',   label_en: 'Overview'      },
   { id: 'rise-categories',href: '#rise-categories',label_ms: 'Kategori',     label_en: 'Categories'    },
   { id: 'rise-gallery',   href: '#rise-gallery',   label_ms: 'Galeri',       label_en: 'Gallery'       },
   { id: 'rise-downloads', href: '#rise-downloads', label_ms: 'Muat Turun',   label_en: 'Downloads'     },
