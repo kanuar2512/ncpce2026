@@ -1685,6 +1685,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .rise-cat-card::after {
@@ -1718,6 +1720,14 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   line-height: 1;
 }
 
+/* Badge wrapper — fixed min-height so all badges occupy equal vertical space */
+.rise-cat-card__badge-wrap {
+  min-height: 3rem;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--sp-4);
+}
+
 .rise-cat-card__badge {
   display: inline-block;
   background: rgba(250, 206, 92, 0.15);
@@ -1729,7 +1739,6 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   letter-spacing: 1px;
   padding: var(--sp-1) var(--sp-3);
   border-radius: var(--radius-full);
-  margin-bottom: var(--sp-4);
 }
 
 .rise-cat-card__title {
@@ -1737,8 +1746,15 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-size: var(--fs-lg);
   font-weight: 700;
   color: var(--clr-cream);
-  margin-bottom: var(--sp-3);
   line-height: 1.35;
+  flex: 1;
+  margin-bottom: var(--sp-6);
+}
+
+/* Button always at bottom */
+.rise-cat-card__cta {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .rise-cat-card__desc {

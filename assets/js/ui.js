@@ -912,11 +912,13 @@ export function renderRiseCategories(containerId) {
 
         return `
           <div class="rise-cat-card reveal" data-delay="${idx + 1}">
-            <div class="rise-cat-card__badge">${label} · ${type}</div>
+            <div class="rise-cat-card__badge-wrap">
+              <div class="rise-cat-card__badge">${label} · ${type}</div>
+            </div>
             <div class="rise-cat-card__title">${title}</div>
-            <a href="#rise-gallery" class="btn btn--outline btn--sm" style="margin-top:1rem;"
+            <a href="#rise-gallery" class="btn btn--outline btn--sm rise-cat-card__cta"
                onclick="document.querySelector('[data-filter=\\'${cat.num}\\']')?.click()">
-              ${lang === 'en' ? 'View Presentations' : 'Lihat Pembentangan'} →
+              ${lang === 'en' ? 'Senarai Penyertaan' : 'Senarai Penyertaan'} →
             </a>
           </div>`;
       }).join('')}
