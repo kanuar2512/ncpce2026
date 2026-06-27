@@ -904,24 +904,26 @@ export function renderRiseCategories(containerId) {
 
   container.innerHTML = `
     <div class="rise-cat-grid">
-      ${RISE_CONFIG.categories.map(cat => {
-        const title  = lang === 'en' ? cat.title_en  : cat.title_ms;
-        const type   = lang === 'en' ? cat.type_en   : cat.type_ms;
+      ${RISE_CONFIG.categories.map((cat, idx) => {
+        const title  = lang === 'en' ? cat.title_en : cat.title_ms;
+        const type   = lang === 'en' ? cat.type_en  : cat.type_ms;
         const method = lang === 'en' ? cat.method_en : cat.method_ms;
-        const desc   = lang === 'en' ? cat.desc_en   : cat.desc_ms;
-        const detail = lang === 'en' ? cat.detail_en : cat.detail_ms;
-        const label  = lang === 'en' ? cat.label_en  : cat.label_ms;
+        const desc   = lang === 'en' ? cat.desc_en  : cat.desc_ms;
+        const label  = lang === 'en' ? cat.label_en : cat.label_ms;
 
         return `
-          <div class="rise-cat-card reveal" data-delay="${RISE_CONFIG.categories.indexOf(cat) + 1}">
-            <div class="rise-cat-card__num">${cat.num}</div>
-            <div class="rise-cat-card__badge">${label} — ${type}</div>
+          <div class="rise-cat-card reveal" data-delay="${idx + 1}">
+            <div class="rise-cat-card__num">${cat.icon || cat.num}</div>
+            <div class="rise-cat-card__badge">${label} · ${type}</div>
             <div class="rise-cat-card__title">${title}</div>
             <div class="rise-cat-card__desc">${desc}</div>
             <div class="rise-cat-card__meta">
               <span>📋 ${method}</span>
-              <span>📐 ${detail}</span>
             </div>
+            <a href="#rise-gallery" class="btn btn--outline btn--sm" style="margin-top:1rem;"
+               onclick="document.querySelector('[data-filter=\\'${cat.id}\\']')?.click()">
+              ${lang === 'en' ? 'View Presentations' : 'Lihat Pembentangan'} →
+            </a>
           </div>`;
       }).join('')}
     </div>`;
@@ -939,92 +941,242 @@ export function renderRiseCategories(containerId) {
  * @param {string} containerId
  * @param {'poster'|'kolokium'|'qip'|undefined} [category]
  */
-export async function renderRiseGallery(containerId, category) {
+export async function renderRiseGallery(containerId) {
   const container = $(containerId);
   if (!container) return;
 
   setLoading(container);
 
   try {
-    const items = await fetchRise(category);
+    const items = await fetchRise();
 
     if (!items?.length) {
-      setEmpty(container);
+      container.innerHTML = `
+        <div class="empty-state" style="text-align:center; padding:4rem 1rem; color:rgba(var(--clr-cream-rgb),0.5);">
+          <div style="font-size:3rem; margin-bottom:1rem;">🕐</div>
+          <p style="font-size:1.1rem;">Senarai pembentangan akan dikemaskini tidak lama lagi.</p>
+          <p style="font-size:0.85rem; margin-top:0.5rem; opacity:0.6;">Presentation list will be updated soon.</p>
+        </div>`;
       return;
     }
 
     const lang = getLang();
 
-    // Build filter tabs if no specific category was requested
-    const cats = [...new Set(items.map(i => i.category))];
-    const filterHtml = !category && cats.length > 1 ? `
-      <div class="agenda-tabs" style="margin-bottom:2rem;">
-        <button class="agenda-tab-btn active" data-filter="all">
+    /* ── Category tabs ── */
+    const tabsHtml = `
+      <div class="rise-filter-tabs" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; overflow-x:auto; padding-bottom:0.5rem;">
+        <button class="agenda-tab-btn active" data-filter="all" style="white-space:nowrap;">
           ${lang === 'en' ? 'All' : 'Semua'} (${items.length})
         </button>
-        ${cats.map(c => {
-          const catConf = RISE_CONFIG.categories.find(r => r.id === c);
-          const label   = catConf ? (lang === 'en' ? catConf.label_en : catConf.label_ms) : c;
-          const count   = items.filter(i => i.category === c).length;
-          return `<button class="agenda-tab-btn" data-filter="${c}">${label} (${count})</button>`;
-        }).join('')}
-      </div>` : '';
-
-    container.innerHTML = `
-      ${filterHtml}
-      <div class="rise-poster-grid" id="rise-poster-grid">
-        ${items.map(item => {
-          const title  = lang === 'en' ? item.title_en  : item.title_ms;
-          const author = lang === 'en' ? item.author_en : item.author_ms;
-          const branch = lang === 'en' ? item.cawangan_en : item.cawangan_ms;
-          const catConf  = RISE_CONFIG.categories.find(r => r.id === item.category);
-          const catLabel = catConf ? (lang === 'en' ? catConf.label_en : catConf.label_ms) : item.category;
-          const thumb    = driveThumb(item.drive_url, 300);
-
-          return `
-            <div class="rise-poster-card" data-category="${item.category}">
-              <div class="rise-poster-card__thumb">
-                ${thumb
-                  ? `<img src="${thumb}" alt="${title}" loading="lazy">`
-                  : '📄'}
-              </div>
-              <div class="rise-poster-card__body">
-                <div class="rise-poster-card__cat">${catLabel}</div>
-                <div class="rise-poster-card__title">${title}</div>
-                <div class="rise-poster-card__author">👤 ${author} · ${branch}</div>
-                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                  ${item.drive_url && item.drive_url !== '#'
-                    ? `<a class="btn btn--gold btn--sm" href="${item.drive_url}" target="_blank" rel="noopener">${t('view')} Poster</a>`
-                    : ''}
-                  ${item.abstract_url && item.abstract_url !== '#'
-                    ? `<a class="btn btn--outline btn--sm" href="${item.abstract_url}" target="_blank" rel="noopener">${t('view')} Abstrak</a>`
-                    : ''}
-                </div>
-              </div>
-            </div>`;
+        ${RISE_CONFIG.categories.map(cat => {
+          const count = items.filter(i => String(i.category) === String(cat.num)).length;
+          if (!count) return '';
+          const label = lang === 'en' ? cat.label_en : cat.label_ms;
+          return `<button class="agenda-tab-btn" data-filter="${cat.num}" style="white-space:nowrap;">${label} (${count})</button>`;
         }).join('')}
       </div>`;
 
-    // Filter tabs logic
-    if (!category) {
-      container.querySelectorAll('.agenda-tab-btn[data-filter]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          container.querySelectorAll('.agenda-tab-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
+    /* ── Presentation cards ── */
+    const cardsHtml = items.map((item, idx) => {
+      const title    = lang === 'en' ? (item.title_en   || item.title_ms)  : item.title_ms;
+      const author   = item.author  || '—';
+      const branch   = item.branch  || '';
+      const catConf  = RISE_CONFIG.categories.find(c => String(c.num) === String(item.category));
+      const catLabel = catConf ? (lang === 'en' ? catConf.label_en : catConf.label_ms) : `Kategori ${item.category}`;
+      const catIcon  = catConf?.icon || '📋';
 
-          const filter = btn.dataset.filter;
-          container.querySelectorAll('.rise-poster-card').forEach(card => {
-            const show = filter === 'all' || card.dataset.category === filter;
-            card.style.display = show ? '' : 'none';
-          });
+      /* Poster thumbnail — convert Drive share link to thumbnail */
+      const thumbUrl = item.poster_img_url ? driveThumb(item.poster_img_url, 400) : '';
+
+      /* Drive links */
+      const posterPdfUrl  = item.poster_pdf_url  || '';
+      const abstractUrl   = item.abstract_url    || '';
+
+      return `
+        <div class="rise-poster-card" data-category="${item.category}" data-idx="${idx}">
+
+          <!-- Thumbnail -->
+          <div class="rise-poster-card__thumb"
+               role="${thumbUrl ? 'button' : 'img'}"
+               tabindex="${thumbUrl ? '0' : '-1'}"
+               aria-label="${thumbUrl ? (lang === 'en' ? 'View poster' : 'Lihat poster') : 'No image'}"
+               ${thumbUrl ? `onclick="window.__riseThumb('${thumbUrl.replace(/'/g,"\\'")}', '${title.replace(/'/g,"\\'")}', '${posterPdfUrl.replace(/'/g,"\\'")}', '${abstractUrl.replace(/'/g,"\\'")}')"
+               onkeypress="if(event.key==='Enter')this.click()"` : ''}>
+            ${thumbUrl
+              ? `<img src="${thumbUrl}" alt="${title}" loading="lazy">`
+              : `<div class="rise-poster-card__no-img">${catIcon}</div>`}
+            ${thumbUrl ? `<div class="rise-poster-card__zoom-hint">🔍 ${lang === 'en' ? 'View' : 'Lihat'}</div>` : ''}
+          </div>
+
+          <!-- Body -->
+          <div class="rise-poster-card__body">
+            <div class="rise-poster-card__cat">${catIcon} ${catLabel}</div>
+            <div class="rise-poster-card__title">${title}</div>
+            <div class="rise-poster-card__author">
+              <span>👤 ${author}</span>
+              ${branch ? `<span style="margin-left:0.75rem; opacity:0.7;">🏢 ${branch}</span>` : ''}
+            </div>
+            <div class="rise-poster-card__actions">
+              ${posterPdfUrl
+                ? `<a class="btn btn--gold btn--sm" href="${posterPdfUrl}" target="_blank" rel="noopener noreferrer">
+                     🖼 ${lang === 'en' ? 'Poster' : 'Poster PDF'}
+                   </a>`
+                : ''}
+              ${abstractUrl
+                ? `<a class="btn btn--outline btn--sm" href="${abstractUrl}" target="_blank" rel="noopener noreferrer">
+                     📄 ${lang === 'en' ? 'Abstract' : 'Abstrak'}
+                   </a>`
+                : ''}
+            </div>
+          </div>
+
+        </div>`;
+    }).join('');
+
+    container.innerHTML = `${tabsHtml}<div class="rise-poster-grid">${cardsHtml}</div>`;
+
+    /* ── Tab filter logic ── */
+    container.querySelectorAll('.agenda-tab-btn[data-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        container.querySelectorAll('.agenda-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        container.querySelectorAll('.rise-poster-card').forEach(card => {
+          card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
         });
       });
-    }
+    });
+
+    /* ── Lightbox for poster image ── */
+    _initRiseLightbox();
 
   } catch (err) {
     console.error('[CMIP] renderRiseGallery error:', err);
     setError(container);
   }
+}
+
+/**
+ * Init RISE poster lightbox — mobile-friendly full-screen overlay.
+ * Uses window.__riseThumb() as the trigger (set from card onclick).
+ */
+function _initRiseLightbox() {
+  const LB_ID = 'rise-lightbox';
+
+  if (!document.getElementById(LB_ID)) {
+    const lb = document.createElement('div');
+    lb.id = LB_ID;
+    lb.setAttribute('role', 'dialog');
+    lb.setAttribute('aria-modal', 'true');
+    lb.setAttribute('aria-label', 'Poster viewer');
+    lb.innerHTML = `
+      <div class="rise-lb__backdrop"></div>
+      <div class="rise-lb__panel">
+        <div class="rise-lb__toolbar">
+          <span class="rise-lb__title"></span>
+          <button class="rise-lb__close" aria-label="Tutup">✕</button>
+        </div>
+        <div class="rise-lb__img-wrap">
+          <img class="rise-lb__img" src="" alt="" draggable="false">
+        </div>
+        <div class="rise-lb__btns"></div>
+      </div>`;
+    document.body.appendChild(lb);
+
+    /* Close handlers */
+    lb.querySelector('.rise-lb__backdrop').addEventListener('click', _closeRiseLb);
+    lb.querySelector('.rise-lb__close').addEventListener('click', _closeRiseLb);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') _closeRiseLb(); });
+
+    /* Inject lightbox CSS */
+    if (!document.getElementById('rise-lb-style')) {
+      const s = document.createElement('style');
+      s.id = 'rise-lb-style';
+      s.textContent = `
+        #rise-lightbox { display:none; position:fixed; inset:0; z-index:9999; }
+        #rise-lightbox.open { display:flex; align-items:center; justify-content:center; }
+        .rise-lb__backdrop { position:absolute; inset:0; background:rgba(0,0,0,0.92); }
+        .rise-lb__panel {
+          position:relative; z-index:1; display:flex; flex-direction:column;
+          width:min(95vw,860px); max-height:94vh;
+          background:var(--clr-primary-deep,#280000);
+          border:1px solid rgba(250,206,92,0.25); border-radius:12px; overflow:hidden;
+        }
+        .rise-lb__toolbar {
+          display:flex; align-items:center; justify-content:space-between;
+          padding:0.75rem 1rem; border-bottom:1px solid rgba(250,206,92,0.15);
+          background:rgba(0,0,0,0.3);
+        }
+        .rise-lb__title { color:var(--clr-gold,#FACE5C); font-size:0.85rem; font-weight:600; flex:1; margin-right:1rem; }
+        .rise-lb__close {
+          background:none; border:1px solid rgba(250,206,92,0.3); color:var(--clr-gold,#FACE5C);
+          width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; flex-shrink:0;
+        }
+        .rise-lb__img-wrap { flex:1; overflow:auto; display:flex; align-items:center; justify-content:center; padding:1rem; }
+        .rise-lb__img { max-width:100%; max-height:70vh; object-fit:contain; border-radius:4px; }
+        .rise-lb__btns { display:flex; gap:0.75rem; justify-content:center; padding:0.75rem 1rem; flex-wrap:wrap; border-top:1px solid rgba(250,206,92,0.1); }
+        /* Card thumbnail styles */
+        .rise-poster-card__thumb { position:relative; cursor:pointer; overflow:hidden; background:rgba(0,0,0,0.2); aspect-ratio:3/4; }
+        .rise-poster-card__thumb img { width:100%; height:100%; object-fit:cover; transition:transform 0.3s; }
+        .rise-poster-card__thumb:hover img { transform:scale(1.04); }
+        .rise-poster-card__zoom-hint {
+          position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+          background:rgba(0,0,0,0.45); color:#fff; font-size:0.85rem; font-weight:600;
+          opacity:0; transition:opacity 0.25s;
+        }
+        .rise-poster-card__thumb:hover .rise-poster-card__zoom-hint { opacity:1; }
+        .rise-poster-card__no-img {
+          width:100%; height:100%; min-height:180px; display:flex; align-items:center;
+          justify-content:center; font-size:3rem; opacity:0.3;
+        }
+        .rise-poster-card__actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.75rem; }
+        .rise-poster-card__actions .btn { flex:1; min-width:100px; text-align:center; }
+        .rise-poster-grid {
+          display:grid;
+          grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+          gap:1.5rem;
+        }
+        @media (max-width:480px) {
+          .rise-poster-grid { grid-template-columns: 1fr; }
+          .rise-poster-card__actions .btn { flex:1 1 100%; }
+        }
+      `;
+      document.head.appendChild(s);
+    }
+  }
+
+  window.__riseThumb = function(imgUrl, title, posterPdfUrl, abstractUrl) {
+    const lb = document.getElementById(LB_ID);
+    if (!lb) return;
+    lb.querySelector('.rise-lb__img').src  = imgUrl;
+    lb.querySelector('.rise-lb__img').alt  = title;
+    lb.querySelector('.rise-lb__title').textContent = title;
+
+    const btns = lb.querySelector('.rise-lb__btns');
+    btns.innerHTML = '';
+    if (posterPdfUrl) {
+      const a = document.createElement('a');
+      a.href = posterPdfUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.className = 'btn btn--gold btn--sm';
+      a.textContent = '🖼 Poster PDF';
+      btns.appendChild(a);
+    }
+    if (abstractUrl) {
+      const a = document.createElement('a');
+      a.href = abstractUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.className = 'btn btn--outline btn--sm';
+      a.textContent = '📄 Abstrak';
+      btns.appendChild(a);
+    }
+
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+}
+
+function _closeRiseLb() {
+  const lb = document.getElementById('rise-lightbox');
+  if (lb) { lb.classList.remove('open'); document.body.style.overflow = ''; }
 }
 
 

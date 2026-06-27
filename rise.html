@@ -243,10 +243,6 @@
       <span data-lang="ms">Galeri</span>
       <span data-lang="en">Gallery</span>
     </a>
-    <a href="#rise-downloads" role="menuitem">
-      <span data-lang="ms">Muat Turun</span>
-      <span data-lang="en">Downloads</span>
-    </a>
     <a href="#rise-faq" role="menuitem">FAQ</a>
     <a href="#rise-voting" role="menuitem">
       <span data-lang="ms">Undi</span>
@@ -300,9 +296,9 @@
         <span data-lang="ms">Lihat Kategori</span>
         <span data-lang="en">View Categories</span>
       </a>
-      <a href="#rise-downloads" class="btn btn--outline">
-        <span data-lang="ms">Muat Turun Panduan</span>
-        <span data-lang="en">Download Guidelines</span>
+      <a href="#rise-gallery" class="btn btn--outline">
+        <span data-lang="ms">Lihat Pembentangan</span>
+        <span data-lang="en">View Presentations</span>
       </a>
     </div>
   </div>
@@ -325,10 +321,6 @@
   <a href="#rise-gallery">
     <span data-lang="ms">Galeri</span>
     <span data-lang="en">Gallery</span>
-  </a>
-  <a href="#rise-downloads">
-    <span data-lang="ms">Muat Turun</span>
-    <span data-lang="en">Downloads</span>
   </a>
   <a href="#rise-faq">FAQ</a>
   <a href="#rise-voting">
@@ -546,29 +538,6 @@
 
 
 <!-- ============================================================
-     SECTION 4 — DOWNLOADS
-     ============================================================ -->
-<section id="rise-downloads" class="section" style="background:var(--clr-primary-dark); color:var(--clr-cream);" aria-labelledby="rise-dl-heading">
-  <div class="container">
-
-    <span class="section-subtitle" style="color:var(--clr-gold);">
-      <span data-lang="ms">Dokumen RISE</span>
-      <span data-lang="en">RISE Documents</span>
-    </span>
-    <h2 class="section-title" id="rise-dl-heading">
-      <span data-lang="ms">Muat Turun</span>
-      <span data-lang="en">Downloads</span>
-    </h2>
-    <div class="divider"></div>
-
-    <!-- Rendered by renderRiseDownloads() -->
-    <div id="rise-downloads-container" class="reveal"></div>
-
-  </div>
-</section>
-
-
-<!-- ============================================================
      SECTION 5 — FAQ
      ============================================================ -->
 <section id="rise-faq" class="section bg-rise" aria-labelledby="rise-faq-heading">
@@ -776,7 +745,6 @@
     initBackToTop,
     renderRiseCategories,
     renderRiseGallery,
-    renderRiseDownloads,
     renderFaq,
     renderVoting,
   } from './assets/js/ui.js';
@@ -809,8 +777,7 @@
 
   /* ── 4. Data renders ── */
   renderRiseCategories('rise-categories-container');
-  renderRiseGallery('rise-gallery-container');          // all categories + filter tabs
-  renderRiseDownloads('rise-downloads-container');
+  renderRiseGallery('rise-gallery-container');
   renderFaq('rise-faq-container', 'rise');
   renderVoting('rise-voting-container');
 </script>

@@ -43,7 +43,7 @@
  *
  * @type {string}
  */
-var SPREADSHEET_ID = 'REPLACE_WITH_YOUR_SPREADSHEET_ID';
+var SPREADSHEET_ID = '1WDOulgi-1JfgQs7z4PV7FcNmJ64A_uNJOjjXOEj2Y9c';
 
 /**
  * Cache duration in seconds.
@@ -539,10 +539,11 @@ function createSheetStructure() {
     ],
 
     Rise: [
-      ['category', 'title_ms', 'title_en', 'author', 'branch', 'abstract_ms', 'abstract_en', 'poster_url', 'file_url', 'order'],
-      ['1', 'Tajuk Poster Kategori 1', 'Category 1 Poster Title', 'Nama Pengkaji', 'BPF Negeri Sembilan', 'Abstrak dalam BM', 'Abstract in EN', '', '', '1'],
-      ['2', 'Tajuk Poster Kategori 2', 'Category 2 Poster Title', 'Nama Pengkaji', 'BPF Selangor', 'Abstrak dalam BM', 'Abstract in EN', '', '', '1'],
-      ['3', 'Tajuk Projek QIP', 'QIP Project Title', 'Nama Pengkaji', 'BPF Kuala Lumpur', 'Abstrak dalam BM', 'Abstract in EN', '', '', '1'],
+      ['category', 'title_ms', 'title_en', 'author', 'branch', 'poster_img_url', 'poster_pdf_url', 'abstract_url', 'order'],
+      // category: 1=Pertandingan Poster R&D, 2=Kolokium Poster R&D, 3=Pertandingan QIP
+      // poster_img_url : Google Drive share link for poster IMAGE (thumbnail)
+      // poster_pdf_url : Google Drive share link for poster PDF
+      // abstract_url   : Google Drive share link for abstract PDF
     ],
 
     Downloads: [
