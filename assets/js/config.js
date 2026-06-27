@@ -205,32 +205,19 @@ export const RISE = Object.freeze({
 
   /**
    * Voting module.
-   * The voting system lives at its own Google Apps Script Web App URL.
+   * Voting configuration — ONLY update these two values:
    *
-   * TO ACTIVATE:
-   *  1. Deploy your voting Apps Script as a Web App → copy the URL
-   *  2. Paste it into `url` below
-   *  3. Set `enabled: true`
-   *  4. Done — the button appears automatically on rise.html
+   *   status  'before'  → button disabled, shows "UNDIAN BELUM DIBUKA"
+   *           'open'    → button enabled, opens voting webapp in new tab
+   *           'closed'  → button disabled, shows "UNDIAN TELAH DITUTUP"
+   *
+   *   url     Paste the deployed voting webapp URL when status is 'open'.
+   *
+   * No HTML or CSS changes are needed — everything updates automatically.
    */
   voting: Object.freeze({
-    /** Set to true once the voting webapp URL is ready */
-    enabled:    false,
-
-    /** The deployed Google Apps Script Web App URL for voting */
-    url:        'REPLACE_WITH_VOTING_WEBAPP_URL',
-
-    /** Open in new tab or same tab */
-    open_new_tab: true,
-
-    award_ms:   'Anugerah Pilihan Inovasi',
-    award_en:   'Innovation Choice Award',
-    opens_ms:   'Sistem undi akan dibuka semasa persidangan berlangsung.',
-    opens_en:   'Voting will open during the conference.',
-    btn_ms:     'Undi Sekarang',
-    btn_en:     'Vote Now',
-    closed_ms:  'Tempoh mengundi telah tamat.',
-    closed_en:  'The voting period has ended.',
+    status: 'before',   // 'before' | 'open' | 'closed'
+    url:    'REPLACE_WITH_VOTING_WEBAPP_URL',
   }),
 });
 

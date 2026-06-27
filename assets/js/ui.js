@@ -1224,56 +1224,72 @@ export async function renderRiseDownloads(containerId) {
    ============================================================ */
 
 /**
- * Render the voting section.
- * If voting is disabled (RISE_CONFIG.voting.enabled = false),
- * shows a placeholder. When enabled, this function can be
- * replaced with real voting UI — no other files need to change.
+ * Render the voting card.
+ * Reads RISE_CONFIG.voting.status ('before' | 'open' | 'closed')
+ * and renders the appropriate button state automatically.
+ * To update: change only RISE_CONFIG.voting.status (and url when 'open').
  * @param {string} containerId
  */
 export function renderVoting(containerId) {
   const container = $(containerId);
   if (!container) return;
 
-  const lang = getLang();
-  const cfg  = RISE_CONFIG.voting;
+  const cfg    = RISE_CONFIG.voting;
+  const status = cfg.status || 'before';  // 'before' | 'open' | 'closed'
 
-  const award = lang === 'en' ? cfg.award_en : cfg.award_ms;
+  /* ── Static labels (no config needed) ── */
+  const CARD_TITLE = 'SISTEM UNDIAN';
+  const CARD_DESC  = 'Klik butang di bawah untuk mengakses Sistem Undian Anugerah Pilihan RISE.';
 
-  if (!cfg.enabled) {
-    // Voting not yet open — show teaser
-    const opens = lang === 'en' ? cfg.opens_en : cfg.opens_ms;
-    container.innerHTML = `
-      <div class="voting-stub">
-        <div class="voting-stub__icon">🗳️</div>
-        <div class="voting-stub__title">${award}</div>
-        <p class="voting-stub__text">${opens}</p>
-      </div>`;
-    return;
+  /* ── State-specific rendering ── */
+  let buttonHtml;
+  let messageHtml = '';
+
+  if (status === 'open') {
+    const isConfigured = cfg.url && !cfg.url.includes('REPLACE_WITH');
+    buttonHtml = isConfigured
+      ? `<a
+           class="btn btn--gold"
+           href="${cfg.url}"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="margin-top:var(--sp-6); display:inline-flex;"
+         >
+           🗳️ BUKA SISTEM UNDIAN
+         </a>`
+      : `<p class="voting-stub__text" style="color:rgba(250,206,92,0.5); font-size:0.8rem; margin-top:var(--sp-4);">
+           [URL belum dikonfigurasi — kemaskini voting.url dalam config.js]
+         </p>`;
+
+  } else if (status === 'closed') {
+    buttonHtml = `
+      <button class="btn btn--outline" disabled style="margin-top:var(--sp-6); opacity:0.45; cursor:not-allowed;">
+        🔒 UNDIAN TELAH DITUTUP
+      </button>`;
+    messageHtml = `
+      <p class="voting-stub__text" style="margin-top:var(--sp-4);">
+        Terima kasih atas penyertaan anda. Sistem undian telah ditutup.
+      </p>`;
+
+  } else {
+    /* 'before' — default */
+    buttonHtml = `
+      <button class="btn btn--outline" disabled style="margin-top:var(--sp-6); opacity:0.45; cursor:not-allowed;">
+        🕐 UNDIAN BELUM DIBUKA
+      </button>`;
+    messageHtml = `
+      <p class="voting-stub__text" style="margin-top:var(--sp-4);">
+        Sistem undian akan dibuka semasa tempoh persidangan.
+      </p>`;
   }
 
-  // Voting is enabled — link to external webapp
-  const isConfigured = cfg.url && !cfg.url.includes('REPLACE_WITH');
-  const btnLabel     = lang === 'en' ? cfg.btn_en : cfg.btn_ms;
-  const target       = cfg.open_new_tab ? '_blank' : '_self';
-
   container.innerHTML = `
-    <div class="voting-stub" style="border-color:rgba(250,206,92,0.6);">
+    <div class="voting-stub" style="${status === 'open' ? 'border-color:rgba(250,206,92,0.6);' : ''}">
       <div class="voting-stub__icon">🗳️</div>
-      <div class="voting-stub__title">${award}</div>
-      ${isConfigured
-        ? `<a
-             class="btn btn--gold"
-             href="${cfg.url}"
-             target="${target}"
-             rel="noopener noreferrer"
-             style="margin-top:var(--sp-6); display:inline-flex;"
-           >
-             🗳️ ${btnLabel}
-           </a>`
-        : `<p class="voting-stub__text" style="color:rgba(250,206,92,0.5); font-size:0.8rem; margin-top:var(--sp-4);">
-             [Voting URL not configured — update RISE.voting.url in config.js]
-           </p>`
-      }
+      <div class="voting-stub__title">${CARD_TITLE}</div>
+      <p class="voting-stub__text">${CARD_DESC}</p>
+      ${buttonHtml}
+      ${messageHtml}
     </div>`;
 }
 
