@@ -192,8 +192,17 @@ function getSpeakers() {
 /**
  * Read Rise sheet, optionally filtered by category number.
  * Expected columns:
- *   category | title_ms | title_en | author | branch |
- *   abstract_ms | abstract_en | poster_url | file_url | order
+ *   category | title | author | branch | abstract_url | poster_url | order
+ *
+ *   category     : 1 = Pertandingan Poster R&D
+ *                  2 = Kolokium Poster R&D
+ *                  3 = Pertandingan QIP
+ *   title        : Presentation title
+ *   author       : Presenter name
+ *   branch       : State / Branch
+ *   abstract_url : Google Drive PDF link for abstract
+ *   poster_url   : Google Drive image/PDF link for poster
+ *   order        : Display order (ascending)
  *
  * @param {string|null} category - "1", "2", "3" or null for all
  * @returns {Object[]}
@@ -539,11 +548,10 @@ function createSheetStructure() {
     ],
 
     Rise: [
-      ['category', 'title_ms', 'title_en', 'author', 'branch', 'poster_img_url', 'poster_pdf_url', 'abstract_url', 'order'],
-      // category: 1=Pertandingan Poster R&D, 2=Kolokium Poster R&D, 3=Pertandingan QIP
-      // poster_img_url : Google Drive share link for poster IMAGE (thumbnail)
-      // poster_pdf_url : Google Drive share link for poster PDF
-      // abstract_url   : Google Drive share link for abstract PDF
+      ['category', 'title', 'author', 'branch', 'abstract_url', 'poster_url', 'order'],
+      // category     : 1=Pertandingan Poster R&D, 2=Kolokium Poster R&D, 3=Pertandingan QIP
+      // abstract_url : Google Drive PDF link for abstract
+      // poster_url   : Google Drive image/PDF link for poster
     ],
 
     Downloads: [

@@ -1000,34 +1000,35 @@ export async function renderRiseGallery(containerId) {
 
     /* ── Presentation cards ── */
     const cardsHtml = items.map((item, idx) => {
-      const title    = lang === 'en' ? (item.title_en   || item.title_ms)  : item.title_ms;
-      const author   = item.author  || '—';
-      const branch   = item.branch  || '';
+      const title       = item.title   || '—';
+      const author      = item.author  || '—';
+      const branch      = item.branch  || '';
+      const posterUrl   = item.poster_url   || '';
+      const abstractUrl = item.abstract_url || '';
+
       const catConf  = RISE_CONFIG.categories.find(c => String(c.num) === String(item.category));
       const catLabel = catConf ? (lang === 'en' ? catConf.label_en : catConf.label_ms) : `Kategori ${item.category}`;
       const catIcon  = catConf?.icon || '📋';
 
-      /* Poster thumbnail — convert Drive share link to thumbnail */
-      const thumbUrl = item.poster_img_url ? driveThumb(item.poster_img_url, 400) : '';
-
-      /* Drive links */
-      const posterPdfUrl  = item.poster_pdf_url  || '';
-      const abstractUrl   = item.abstract_url    || '';
+      /* Poster thumbnail — convert Drive share link to thumbnail URL */
+      const thumbUrl = posterUrl ? driveThumb(posterUrl, 400) : '';
 
       return `
         <div class="rise-poster-card" data-category="${item.category}" data-idx="${idx}">
 
-          <!-- Thumbnail -->
+          <!-- Poster thumbnail — click opens poster in new tab -->
           <div class="rise-poster-card__thumb"
-               role="${thumbUrl ? 'button' : 'img'}"
-               tabindex="${thumbUrl ? '0' : '-1'}"
-               aria-label="${thumbUrl ? (lang === 'en' ? 'View poster' : 'Lihat poster') : 'No image'}"
-               ${thumbUrl ? `onclick="window.__riseThumb('${thumbUrl.replace(/'/g,"\\'")}', '${title.replace(/'/g,"\\'")}', '${posterPdfUrl.replace(/'/g,"\\'")}', '${abstractUrl.replace(/'/g,"\\'")}')"
-               onkeypress="if(event.key==='Enter')this.click()"` : ''}>
+               role="${posterUrl ? 'button' : 'img'}"
+               tabindex="${posterUrl ? '0' : '-1'}"
+               aria-label="${lang === 'en' ? 'View poster' : 'Lihat poster'}"
+               ${posterUrl
+                 ? `onclick="window.open('${posterUrl.replace(/'/g,"\\'")}','_blank','noopener,noreferrer')"
+                    onkeypress="if(event.key==='Enter')this.click()"`
+                 : ''}>
             ${thumbUrl
               ? `<img src="${thumbUrl}" alt="${title}" loading="lazy">`
               : `<div class="rise-poster-card__no-img">${catIcon}</div>`}
-            ${thumbUrl ? `<div class="rise-poster-card__zoom-hint">🔍 ${lang === 'en' ? 'View' : 'Lihat'}</div>` : ''}
+            ${posterUrl ? `<div class="rise-poster-card__zoom-hint">🔍 ${lang === 'en' ? 'View Poster' : 'Lihat Poster'}</div>` : ''}
           </div>
 
           <!-- Body -->
@@ -1039,14 +1040,9 @@ export async function renderRiseGallery(containerId) {
               ${branch ? `<span style="margin-left:0.75rem; opacity:0.7;">🏢 ${branch}</span>` : ''}
             </div>
             <div class="rise-poster-card__actions">
-              ${posterPdfUrl
-                ? `<a class="btn btn--gold btn--sm" href="${posterPdfUrl}" target="_blank" rel="noopener noreferrer">
-                     🖼 ${lang === 'en' ? 'Poster' : 'Poster PDF'}
-                   </a>`
-                : ''}
               ${abstractUrl
-                ? `<a class="btn btn--outline btn--sm" href="${abstractUrl}" target="_blank" rel="noopener noreferrer">
-                     📄 ${lang === 'en' ? 'Abstract' : 'Abstrak'}
+                ? `<a class="btn btn--gold btn--sm" href="${abstractUrl}" target="_blank" rel="noopener noreferrer">
+                     📄 LIHAT ABSTRAK
                    </a>`
                 : ''}
             </div>
@@ -1070,8 +1066,7 @@ export async function renderRiseGallery(containerId) {
       });
     });
 
-    /* ── Lightbox for poster image ── */
-    _initRiseLightbox();
+    /* Poster clicks open directly in new tab — no lightbox needed */
 
   } catch (err) {
     console.error('[CMIP] renderRiseGallery error:', err);

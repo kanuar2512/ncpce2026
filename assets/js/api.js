@@ -463,16 +463,13 @@ function getFallbackData(sheet, params = {}) {
 
 /**
  * @typedef {Object} RiseRow
- * @property {string} id
- * @property {string} title_ms
- * @property {string} title_en
- * @property {string} author_ms
- * @property {string} author_en
- * @property {string} cawangan_ms
- * @property {string} cawangan_en
- * @property {string} category  — poster|kolokium|qip
- * @property {string} drive_url
- * @property {string} abstract_url
+ * @property {string} category     — "1" | "2" | "3"
+ * @property {string} title        — Presentation title
+ * @property {string} author       — Presenter name
+ * @property {string} branch       — State / Branch
+ * @property {string} abstract_url — Google Drive PDF link for abstract
+ * @property {string} poster_url   — Google Drive image/PDF link for poster
+ * @property {number} order        — Display order (ascending)
  */
 
 /**
