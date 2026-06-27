@@ -35,56 +35,34 @@
      NAVIGATION
      ============================================================ -->
 <header>
+
+  <!-- ── Top navbar: Persidangan | RISE + lang toggle ── -->
   <nav class="navbar" id="navbar" role="navigation" aria-label="Navigasi utama">
     <div class="navbar__inner">
 
-      <!-- Logo -->
       <a href="#home" aria-label="Kembali ke atas">
         <img class="navbar__logo" src="assets/img/logo.png" alt="Logo PKPJF 2026">
       </a>
 
-      <!-- Desktop links -->
-      <ul class="navbar__links" role="list">
-        <li><a href="#about">
-          <span data-lang="ms">Tentang</span>
-          <span data-lang="en">About</span>
-        </a></li>
-        <li><a href="#venue">
-          <span data-lang="ms">Tempat</span>
-          <span data-lang="en">Venue</span>
-        </a></li>
-        <li><a href="#programme">
-          <span data-lang="ms">Aturcara</span>
-          <span data-lang="en">Programme</span>
-        </a></li>
-        <li><a href="#speakers">
-          <span data-lang="ms">Pembentang</span>
-          <span data-lang="en">Speakers</span>
-        </a></li>
-        <li><a href="#downloads">
-          <span data-lang="ms">Muat Turun</span>
-          <span data-lang="en">Downloads</span>
-        </a></li>
-        <li><a href="#gallery">
-          <span data-lang="ms">Galeri</span>
-          <span data-lang="en">Gallery</span>
-        </a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact">
-          <span data-lang="ms">Hubungi</span>
-          <span data-lang="en">Contact</span>
-        </a></li>
-        <li><a href="rise.html" class="nav-rise">RISE</a></li>
+      <!-- Two top-level tabs -->
+      <ul class="navbar__links navbar__tabs" role="list">
+        <li>
+          <a href="index.html" class="nav-tab nav-tab--active" id="tab-conference">
+            <span data-lang="ms">Persidangan</span>
+            <span data-lang="en">Conference</span>
+          </a>
+        </li>
+        <li>
+          <a href="rise.html" class="nav-tab nav-rise" id="tab-rise">RISE</a>
+        </li>
       </ul>
 
-      <!-- Right controls: lang toggle + hamburger -->
       <div class="navbar__controls">
         <button class="lang-toggle" aria-label="Tukar ke Bahasa Inggeris">
           <span class="lang-toggle__active-ms" style="color:var(--clr-gold)">BM</span>
           <span class="lang-toggle__separator">/</span>
           <span class="lang-toggle__active-en">EN</span>
         </button>
-
         <button
           class="navbar__hamburger"
           id="hamburger"
@@ -92,17 +70,54 @@
           aria-expanded="false"
           aria-controls="nav-drawer"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
 
     </div>
   </nav>
 
+  <!-- ── Sub-nav: conference section links ── -->
+  <nav class="conf-subnav" id="conf-subnav" aria-label="Navigasi persidangan">
+    <div class="conf-subnav__inner">
+      <a href="#about" class="conf-subnav__link">
+        <span data-lang="ms">Tentang</span>
+        <span data-lang="en">About</span>
+      </a>
+      <a href="#venue" class="conf-subnav__link">
+        <span data-lang="ms">Tempat</span>
+        <span data-lang="en">Venue</span>
+      </a>
+      <a href="#programme" class="conf-subnav__link">
+        <span data-lang="ms">Aturcara</span>
+        <span data-lang="en">Programme</span>
+      </a>
+      <a href="#speakers" class="conf-subnav__link">
+        <span data-lang="ms">Pembentang</span>
+        <span data-lang="en">Speakers</span>
+      </a>
+      <a href="#downloads" class="conf-subnav__link">
+        <span data-lang="ms">Muat Turun</span>
+        <span data-lang="en">Downloads</span>
+      </a>
+      <a href="#gallery" class="conf-subnav__link">
+        <span data-lang="ms">Galeri</span>
+        <span data-lang="en">Gallery</span>
+      </a>
+      <a href="#faq" class="conf-subnav__link">FAQ</a>
+      <a href="#contact" class="conf-subnav__link">
+        <span data-lang="ms">Hubungi</span>
+        <span data-lang="en">Contact</span>
+      </a>
+    </div>
+  </nav>
+
   <!-- Mobile Drawer -->
   <div class="navbar__drawer" id="nav-drawer" role="menu">
+    <div style="font-size:0.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--clr-gold); padding:0.25rem 0 0.5rem; opacity:0.8;">
+      <span data-lang="ms">Persidangan</span>
+      <span data-lang="en">Conference</span>
+    </div>
     <a href="#about" role="menuitem">
       <span data-lang="ms">Tentang Persidangan</span>
       <span data-lang="en">About the Conference</span>
@@ -119,10 +134,6 @@
       <span data-lang="ms">Pembentang Pakar</span>
       <span data-lang="en">Expert Speakers</span>
     </a>
-    <a href="#awards" role="menuitem">
-      <span data-lang="ms">Anugerah</span>
-      <span data-lang="en">Awards</span>
-    </a>
     <a href="#downloads" role="menuitem">
       <span data-lang="ms">Muat Turun</span>
       <span data-lang="en">Downloads</span>
@@ -136,15 +147,15 @@
       <span data-lang="ms">Hubungi Kami</span>
       <span data-lang="en">Contact Us</span>
     </a>
+    <div style="border-top:1px solid rgba(250,206,92,0.2); margin:0.75rem 0;"></div>
     <a href="rise.html" class="nav-rise" role="menuitem">RISE Symposium</a>
-
-    <!-- Lang toggle in drawer -->
     <button class="lang-toggle" style="align-self:flex-start; margin-top:0.5rem;">
       <span class="lang-toggle__active-ms" style="color:var(--clr-gold)">BM</span>
       <span class="lang-toggle__separator">/</span>
       <span class="lang-toggle__active-en">EN</span>
     </button>
   </div>
+
 </header>
 
 <main>

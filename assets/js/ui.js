@@ -245,16 +245,16 @@ export function initNav() {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   }, { passive: true });
 
-  // Active section highlighting via IntersectionObserver
-  const sections = $all('section[id]');
-  const navLinks = $all('.navbar__links a[href^="#"], .navbar__drawer a[href^="#"]');
+  // Active section highlighting — conf-subnav links + drawer links
+  const sections    = $all('section[id]');
+  const subNavLinks = $all('.conf-subnav__link, .navbar__drawer a[href^="#"]');
 
   const sectionObserver = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
-          navLinks.forEach(a => {
+          subNavLinks.forEach(a => {
             const href = a.getAttribute('href');
             a.classList.toggle('active', href === `#${id}`);
           });

@@ -180,28 +180,17 @@
         <img class="navbar__logo" src="assets/img/logo.png" alt="Logo PKPJF 2026">
       </a>
 
-      <ul class="navbar__links" role="list">
-        <li><a href="index.html#about">
-          <span data-lang="ms">Tentang</span>
-          <span data-lang="en">About</span>
-        </a></li>
-        <li><a href="index.html#programme">
-          <span data-lang="ms">Aturcara</span>
-          <span data-lang="en">Programme</span>
-        </a></li>
-        <li><a href="index.html#speakers">
-          <span data-lang="ms">Pembentang</span>
-          <span data-lang="en">Speakers</span>
-        </a></li>
-        <li><a href="index.html#downloads">
-          <span data-lang="ms">Muat Turun</span>
-          <span data-lang="en">Downloads</span>
-        </a></li>
-        <li><a href="index.html#contact">
-          <span data-lang="ms">Hubungi</span>
-          <span data-lang="en">Contact</span>
-        </a></li>
-        <li><a href="rise.html" class="nav-rise active">RISE</a></li>
+      <!-- Two top-level tabs — RISE active -->
+      <ul class="navbar__links navbar__tabs" role="list">
+        <li>
+          <a href="index.html" class="nav-tab" id="tab-conference">
+            <span data-lang="ms">Persidangan</span>
+            <span data-lang="en">Conference</span>
+          </a>
+        </li>
+        <li>
+          <a href="rise.html" class="nav-tab nav-tab--active nav-rise" id="tab-rise">RISE</a>
+        </li>
       </ul>
 
       <div class="navbar__controls">
@@ -210,7 +199,6 @@
           <span class="lang-toggle__separator">/</span>
           <span class="lang-toggle__active-en">EN</span>
         </button>
-
         <button
           class="navbar__hamburger"
           id="hamburger"

@@ -531,6 +531,74 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   border-color: var(--clr-gold);
 }
 
+/* ── Two-tab navbar ── */
+.navbar__tabs {
+  gap: var(--sp-2) !important;
+}
+
+.nav-tab {
+  font-size: var(--fs-sm) !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  padding: var(--sp-2) var(--sp-6) !important;
+  border-radius: var(--radius-full) !important;
+  border: 1.5px solid rgba(250, 206, 92, 0.25) !important;
+  color: rgba(var(--clr-cream-rgb), 0.6) !important;
+  transition: var(--transition-fast) !important;
+}
+
+.nav-tab:hover {
+  color: var(--clr-gold) !important;
+  border-color: rgba(250, 206, 92, 0.5) !important;
+}
+
+.nav-tab--active,
+.navbar__tabs a.nav-rise.active {
+  background: var(--clr-gold) !important;
+  color: var(--clr-primary-dark) !important;
+  border-color: var(--clr-gold) !important;
+}
+
+/* ── Conference sub-nav ── */
+.conf-subnav {
+  background: rgba(var(--clr-primary-rgb, 128,0,0), 0.97);
+  border-bottom: 1px solid rgba(250, 206, 92, 0.15);
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 890;
+  backdrop-filter: blur(8px);
+}
+
+.conf-subnav__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--sp-2) var(--container-pad);
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.conf-subnav__link {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(var(--clr-cream-rgb), 0.6);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  transition: var(--transition-fast);
+}
+
+.conf-subnav__link:hover,
+.conf-subnav__link.active {
+  color: var(--clr-gold);
+  background: rgba(250, 206, 92, 0.1);
+}
+
 /* Right side controls */
 .navbar__controls {
   display: flex;
