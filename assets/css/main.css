@@ -1888,11 +1888,12 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 /* Column widths — applies to all accordion tables uniformly */
-.rise-table__col-num     { width: 4%; }
-.rise-table__col-title   { width: 42%; }
-.rise-table__col-author  { width: 20%; }
-.rise-table__col-branch  { width: 22%; }
-.rise-table__col-actions { width: 12%; }
+.rise-table__col-num      { width: 4%; }
+.rise-table__col-title    { width: 40%; }
+.rise-table__col-author   { width: 20%; }
+.rise-table__col-branch   { width: 22%; }
+.rise-table__col-abstract { width: 7%; }
+.rise-table__col-poster   { width: 7%; }
 
 .rise-table thead {
   background: rgba(250, 206, 92, 0.08);
@@ -1951,8 +1952,9 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-size: var(--fs-xs);
 }
 
-.rise-table__actions {
-  white-space: nowrap;
+.rise-table__abstract,
+.rise-table__poster {
+  text-align: center;
 }
 
 .rise-table__action-btn {

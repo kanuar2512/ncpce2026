@@ -1001,7 +1001,7 @@ export async function renderRiseGallery(containerId) {
       const countText = `${entries.length} ${lang === 'en' ? 'entries' : 'entri'}`;
 
       const rowsHtml = entries.length === 0
-        ? `<tr><td colspan="5" class="rise-table__empty">
+        ? `<tr><td colspan="6" class="rise-table__empty">
              ${lang === 'en' ? 'No entries yet.' : 'Tiada penyertaan buat masa ini.'}
            </td></tr>`
         : entries.map((item, i) => {
@@ -1011,10 +1011,13 @@ export async function renderRiseGallery(containerId) {
             const rowAbstract   = item.abstract_url || '';
             const rowPoster     = item.poster_url   || '';
 
-            const actionHtml = [
-              rowAbstract ? `<a class="rise-table__action-btn" href="${rowAbstract}" target="_blank" rel="noopener">📄 Abstrak</a>` : '',
-              rowPoster   ? `<a class="rise-table__action-btn" href="${rowPoster}"   target="_blank" rel="noopener">🖼 Poster</a>`   : '',
-            ].filter(Boolean).join('') || '<span class="rise-table__no-action">—</span>';
+            const abstractHtml = rowAbstract
+              ? `<a class="rise-table__action-btn" href="${rowAbstract}" target="_blank" rel="noopener">📄</a>`
+              : `<span class="rise-table__no-action">—</span>`;
+
+            const posterHtml = rowPoster
+              ? `<a class="rise-table__action-btn" href="${rowPoster}" target="_blank" rel="noopener">🖼</a>`
+              : `<span class="rise-table__no-action">—</span>`;
 
             return `
               <tr class="rise-table__row">
@@ -1022,7 +1025,8 @@ export async function renderRiseGallery(containerId) {
                 <td class="rise-table__title">${rowTitle}</td>
                 <td class="rise-table__author">${rowAuthor}</td>
                 <td class="rise-table__branch">${rowBranch}</td>
-                <td class="rise-table__actions">${actionHtml}</td>
+                <td class="rise-table__abstract">${abstractHtml}</td>
+                <td class="rise-table__poster">${posterHtml}</td>
               </tr>`;
           }).join('');
 
@@ -1051,7 +1055,8 @@ export async function renderRiseGallery(containerId) {
                   <col class="rise-table__col-title">
                   <col class="rise-table__col-author">
                   <col class="rise-table__col-branch">
-                  <col class="rise-table__col-actions">
+                  <col class="rise-table__col-abstract">
+                  <col class="rise-table__col-poster">
                 </colgroup>
                 <thead>
                   <tr>
@@ -1059,7 +1064,8 @@ export async function renderRiseGallery(containerId) {
                     <th class="rise-table__title">${lang === 'en' ? 'Title' : 'Tajuk'}</th>
                     <th class="rise-table__author">${lang === 'en' ? 'Presenter' : 'Pembentang'}</th>
                     <th class="rise-table__branch">${lang === 'en' ? 'Branch / State' : 'Cawangan / Negeri'}</th>
-                    <th class="rise-table__actions">${lang === 'en' ? 'Files' : 'Fail'}</th>
+                    <th class="rise-table__abstract">${lang === 'en' ? 'Abstract' : 'Abstrak'}</th>
+                    <th class="rise-table__poster">${lang === 'en' ? 'Poster' : 'Poster'}</th>
                   </tr>
                 </thead>
                 <tbody>${rowsHtml}</tbody>
