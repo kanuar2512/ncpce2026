@@ -929,6 +929,38 @@ export function renderRiseCategories(containerId) {
 
 
 /* ============================================================
+   RISE — GALLERY HEADING UPDATER
+   ============================================================ */
+
+/**
+ * Update the dynamic heading of the gallery section based on the selected filter.
+ * @param {string} catNum — '01'|'02'|'03'|'all'
+ */
+function _updateGalleryHeading(catNum) {
+  const eyebrow  = document.getElementById('rise-gallery-eyebrow');
+  const subtitle = document.getElementById('rise-gallery-subtitle');
+  if (!eyebrow || !subtitle) return;
+
+  const lang = getLang();
+
+  if (!catNum || catNum === 'all') {
+    eyebrow.textContent  = 'RISE 2026';
+    subtitle.textContent = lang === 'en' ? 'All Categories' : 'Semua Kategori';
+    return;
+  }
+
+  const cat = RISE_CONFIG.categories.find(c => String(c.num) === String(catNum));
+  if (!cat) return;
+
+  const label = lang === 'en' ? cat.label_en : cat.label_ms;
+  const title = lang === 'en' ? cat.title_en : cat.title_ms;
+
+  eyebrow.textContent  = label.toUpperCase();   // e.g. "KATEGORI 1"
+  subtitle.textContent = title;                  // full category name
+}
+
+
+/* ============================================================
    RISE — POSTER / ABSTRACT GALLERY
    ============================================================ */
 
@@ -1040,6 +1072,7 @@ export async function renderRiseGallery(containerId) {
         container.querySelectorAll('.rise-poster-card').forEach(card => {
           card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
         });
+        _updateGalleryHeading(filter);
       });
     });
 

@@ -359,14 +359,14 @@
 <section id="rise-gallery" class="section bg-rise" aria-labelledby="rise-gallery-heading">
   <div class="container">
 
-    <span class="section-subtitle" style="color:var(--clr-gold);">
-      <span data-lang="ms">Hasil Kerja Peserta</span>
-      <span data-lang="en">Participant Works</span>
-    </span>
+    <!-- Dynamic eyebrow — updated by JS when category filter is selected -->
+    <span id="rise-gallery-eyebrow" class="section-subtitle" style="color:var(--clr-gold);">RISE 2026</span>
     <h2 class="section-title" id="rise-gallery-heading">
-      <span data-lang="ms">Galeri Poster & Abstrak</span>
-      <span data-lang="en">Poster & Abstract Gallery</span>
+      <span data-lang="ms">Senarai Penyertaan</span>
+      <span data-lang="en">Accepted Entries</span>
     </h2>
+    <!-- Dynamic subtitle — full category name, updated by JS -->
+    <p id="rise-gallery-subtitle" style="color:rgba(var(--clr-cream-rgb),0.7); font-size:var(--fs-md); text-align:center; margin-top:calc(var(--sp-2) * -1); margin-bottom:var(--sp-4); line-height:1.6; min-height:1.5em;"></p>
     <div class="divider"></div>
 
     <!-- Rendered by renderRiseGallery() — all categories, with filter tabs -->
