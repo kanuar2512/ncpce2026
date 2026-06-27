@@ -158,7 +158,7 @@ export const RISE = Object.freeze({
   categories: Object.freeze([
     {
       id:         'cat1',
-      num:        '01',
+      num:        '1',
       label_ms:   'Kategori 1',
       label_en:   'Category 1',
       title_ms:   'Pertandingan Poster Penyelidikan dan Pembangunan (R&D) Penguatkuasaan Farmasi',
@@ -173,7 +173,7 @@ export const RISE = Object.freeze({
     },
     {
       id:         'cat2',
-      num:        '02',
+      num:        '2',
       label_ms:   'Kategori 2',
       label_en:   'Category 2',
       title_ms:   'Kolokium Poster Penyelidikan dan Pembangunan (R&D) Penguatkuasaan Farmasi',
@@ -188,7 +188,7 @@ export const RISE = Object.freeze({
     },
     {
       id:         'cat3',
-      num:        '03',
+      num:        '3',
       label_ms:   'Kategori 3',
       label_en:   'Category 3',
       title_ms:   'Pertandingan Projek Inisiatif Penambahbaikan Kualiti Penguatkuasaan Farmasi',
