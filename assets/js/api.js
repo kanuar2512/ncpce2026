@@ -118,26 +118,29 @@ async function fetchSheet(sheet, params = {}) {
     return fallback;
   }
 
-  // Build URL
+  // Build URL — Google Apps Script exec endpoint
   const url = new URL(API.ENDPOINT);
   url.searchParams.set('sheet', sheet);
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
 
-  // Fetch with timeout
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10_000); // 10s timeout
+  // Timeout via Promise.race — AbortController can interfere with GAS redirects
+  const timeoutMs = 15_000;
 
   try {
     console.debug(`[CMIP API] Fetching: ${url.toString()}`);
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      signal: controller.signal,
-      // No custom headers — keeps request "simple" and avoids CORS preflight
-      // Google Apps Script does not handle OPTIONS preflight requests
+    // Simple GET — no custom headers, follow redirects (GAS redirects to googleusercontent.com)
+    const fetchPromise = fetch(url.toString(), {
+      method:      'GET',
+      redirect:    'follow',
+      credentials: 'omit',
     });
 
-    clearTimeout(timeoutId);
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new ApiError('Request timed out after 15 seconds', 408, sheet)), timeoutMs)
+    );
+
+    const response = await Promise.race([fetchPromise, timeoutPromise]);
 
     if (!response.ok) {
       throw new ApiError(
@@ -147,7 +150,13 @@ async function fetchSheet(sheet, params = {}) {
       );
     }
 
-    const json = await response.json();
+    const text = await response.text();
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch {
+      throw new ApiError(`Invalid JSON response from Apps Script`, 0, sheet);
+    }
 
     // Apps Script returns { status, data } envelope
     if (json.status === 'error') {
@@ -159,11 +168,6 @@ async function fetchSheet(sheet, params = {}) {
     return data;
 
   } catch (err) {
-    clearTimeout(timeoutId);
-
-    if (err.name === 'AbortError') {
-      throw new ApiError('Request timed out after 10 seconds', 408, sheet);
-    }
     if (err instanceof ApiError) throw err;
 
     // Network error (offline, CORS, DNS)
