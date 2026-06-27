@@ -83,15 +83,15 @@ function useFallback() {
 
 
 /* ============================================================
-   CORE FETCH — BASE FUNCTION
+   CORE FETCH — JSONP (bypasses CORS with Google Apps Script)
    All public fetch functions call this internally.
    ============================================================ */
 
 /**
- * Fetch a sheet from the Apps Script JSON API.
- * Handles caching, timeouts, and error normalisation.
+ * Fetch a sheet from the Apps Script JSON API using JSONP.
+ * JSONP injects a <script> tag — no CORS preflight, works with GAS redirects.
  *
- * @param {string} sheet   — Sheet name (from API.SHEETS)
+ * @param {string} sheet    — Sheet name (from API.SHEETS)
  * @param {Object} [params] — Additional query params (e.g. { day: 1 })
  * @returns {Promise<Array|Object>}
  * @throws {ApiError}
@@ -118,65 +118,53 @@ async function fetchSheet(sheet, params = {}) {
     return fallback;
   }
 
-  // Build URL — Google Apps Script exec endpoint
+  // Build URL
   const url = new URL(API.ENDPOINT);
   url.searchParams.set('sheet', sheet);
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
 
-  // Timeout via Promise.race — AbortController can interfere with GAS redirects
-  const timeoutMs = 15_000;
+  console.debug(`[CMIP API] JSONP fetch: ${url.toString()}`);
 
-  try {
-    console.debug(`[CMIP API] Fetching: ${url.toString()}`);
+  return new Promise((resolve, reject) => {
+    // Unique callback name — safe global identifier
+    const cbName = '_cmip_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
 
-    // Simple GET — no custom headers, follow redirects (GAS redirects to googleusercontent.com)
-    const fetchPromise = fetch(url.toString(), {
-      method:      'GET',
-      redirect:    'follow',
-      credentials: 'omit',
-    });
+    // Timeout
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new ApiError('Request timed out after 15 seconds', 408, sheet));
+    }, 15_000);
 
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new ApiError('Request timed out after 15 seconds', 408, sheet)), timeoutMs)
-    );
-
-    const response = await Promise.race([fetchPromise, timeoutPromise]);
-
-    if (!response.ok) {
-      throw new ApiError(
-        `HTTP ${response.status} — ${response.statusText}`,
-        response.status,
-        sheet
-      );
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cbName];
+      const el = document.getElementById(cbName);
+      if (el) el.remove();
     }
 
-    const text = await response.text();
-    let json;
-    try {
-      json = JSON.parse(text);
-    } catch {
-      throw new ApiError(`Invalid JSON response from Apps Script`, 0, sheet);
-    }
+    // Register global callback — Apps Script will call cbName({ status, data })
+    window[cbName] = function (json) {
+      cleanup();
+      if (!json || json.status === 'error') {
+        reject(new ApiError(json?.message || 'Apps Script returned an error', 0, sheet));
+        return;
+      }
+      const data = json.data ?? json;
+      cacheSet(cacheKey, data);
+      resolve(data);
+    };
 
-    // Apps Script returns { status, data } envelope
-    if (json.status === 'error') {
-      throw new ApiError(json.message || 'Apps Script returned an error', 0, sheet);
-    }
-
-    const data = json.data ?? json;
-    cacheSet(cacheKey, data);
-    return data;
-
-  } catch (err) {
-    if (err instanceof ApiError) throw err;
-
-    // Network error (offline, CORS, DNS)
-    throw new ApiError(
-      `Network error fetching "${sheet}": ${err.message}`,
-      0,
-      sheet
-    );
-  }
+    // Inject <script> tag — triggers JSONP call
+    url.searchParams.set('callback', cbName);
+    const script = document.createElement('script');
+    script.id  = cbName;
+    script.src = url.toString();
+    script.onerror = () => {
+      cleanup();
+      reject(new ApiError(`Network error fetching "${sheet}"`, 0, sheet));
+    };
+    document.head.appendChild(script);
+  });
 }
 
 

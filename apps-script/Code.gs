@@ -84,11 +84,12 @@ var SHEETS = {
  */
 function doGet(e) {
   try {
-    var params = e && e.parameter ? e.parameter : {};
-    var sheet  = (params.sheet || '').trim();
+    var params   = e && e.parameter ? e.parameter : {};
+    var sheet    = (params.sheet    || '').trim();
+    var callback = (params.callback || '').trim();   // JSONP support
 
     if (!sheet) {
-      return _error('Missing required parameter: sheet');
+      return _respond({ status: 'error', message: 'Missing required parameter: sheet' }, callback);
     }
 
     var data;
@@ -132,14 +133,34 @@ function doGet(e) {
         break;
 
       default:
-        return _error('Unknown sheet: ' + sheet);
+        return _respond({ status: 'error', message: 'Unknown sheet: ' + sheet }, callback);
     }
 
-    return _ok(data);
+    return _respond({ status: 'ok', data: data }, callback);
 
   } catch (err) {
-    return _error(err.message || String(err));
+    return _respond({ status: 'error', message: err.message || String(err) }, '');
   }
+}
+
+/**
+ * Return JSON or JSONP depending on whether a callback name is provided.
+ * JSONP bypasses CORS — safe for public read-only data.
+ * @param {Object} payload
+ * @param {string} callback — JSONP callback function name (empty = plain JSON)
+ */
+function _respond(payload, callback) {
+  var body = JSON.stringify(payload);
+  if (callback && /^[a-zA-Z_$][0-9a-zA-Z_$]*$/.test(callback)) {
+    // JSONP — wrap in callback()
+    return ContentService
+      .createTextOutput(callback + '(' + body + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  // Plain JSON
+  return ContentService
+    .createTextOutput(body)
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 
@@ -467,9 +488,18 @@ function _error(message) {
  * @returns {GoogleAppsScript.Content.TextOutput}
  */
 function _json(payload) {
-  return ContentService
-    .createTextOutput(JSON.stringify(payload))
-    .setMimeType(ContentService.MimeType.JSON);
+  var output = ContentService.createTextOutput(JSON.stringify(payload));
+  output.setMimeType(ContentService.MimeType.JSON);
+  return output;
+}
+
+/**
+ * Handle CORS preflight OPTIONS request.
+ * Some browsers send OPTIONS before GET — Apps Script ignores it,
+ * but including doPost as a passthrough avoids silent failures.
+ */
+function doPost(e) {
+  return _json({ status: 'ok', data: [] });
 }
 
 /**
