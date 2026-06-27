@@ -1878,13 +1878,21 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   -webkit-overflow-scrolling: touch;
 }
 
-/* Table */
+/* Table — fixed layout ensures identical column widths across all accordions */
 .rise-table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--fs-sm);
   color: var(--clr-cream);
+  table-layout: fixed;
 }
+
+/* Column widths — applies to all accordion tables uniformly */
+.rise-table__col-num     { width: 4%; }
+.rise-table__col-title   { width: 42%; }
+.rise-table__col-author  { width: 20%; }
+.rise-table__col-branch  { width: 22%; }
+.rise-table__col-actions { width: 12%; }
 
 .rise-table thead {
   background: rgba(250, 206, 92, 0.08);
@@ -1922,7 +1930,6 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .rise-table__num {
-  width: 3rem;
   text-align: center;
   color: rgba(var(--clr-cream-rgb), 0.35);
   font-size: var(--fs-xs);
@@ -1930,26 +1937,21 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .rise-table__title {
-  min-width: 200px;
   font-weight: 500;
   color: var(--clr-cream);
+  word-break: break-word;
 }
 
 .rise-table__author {
-  min-width: 140px;
   color: rgba(var(--clr-cream-rgb), 0.7);
-  white-space: nowrap;
 }
 
 .rise-table__branch {
-  min-width: 120px;
   color: rgba(var(--clr-cream-rgb), 0.55);
   font-size: var(--fs-xs);
-  white-space: nowrap;
 }
 
 .rise-table__actions {
-  min-width: 100px;
   white-space: nowrap;
 }
 

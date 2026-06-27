@@ -972,10 +972,6 @@ export async function renderRiseGallery(containerId) {
   try {
     const items = await fetchRise();
 
-    // DEBUG — remove after confirming data
-    console.log('[RISE DEBUG] items count:', items?.length);
-    console.log('[RISE DEBUG] first item:', JSON.stringify(items?.[0]));
-
     if (!items?.length) {
       container.innerHTML = `
         <div class="empty-state" style="text-align:center; padding:4rem 1rem; color:rgba(var(--clr-cream-rgb),0.5);">
@@ -1050,6 +1046,13 @@ export async function renderRiseGallery(containerId) {
           <div class="rise-accordion__body${isOpen ? ' is-open' : ''}">
             <div class="rise-table-wrap">
               <table class="rise-table">
+                <colgroup>
+                  <col class="rise-table__col-num">
+                  <col class="rise-table__col-title">
+                  <col class="rise-table__col-author">
+                  <col class="rise-table__col-branch">
+                  <col class="rise-table__col-actions">
+                </colgroup>
                 <thead>
                   <tr>
                     <th class="rise-table__num">#</th>
