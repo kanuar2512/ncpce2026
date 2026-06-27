@@ -133,7 +133,8 @@ async function fetchSheet(sheet, params = {}) {
     const response = await fetch(url.toString(), {
       method: 'GET',
       signal: controller.signal,
-      headers: { 'Accept': 'application/json' },
+      // No custom headers — keeps request "simple" and avoids CORS preflight
+      // Google Apps Script does not handle OPTIONS preflight requests
     });
 
     clearTimeout(timeoutId);
