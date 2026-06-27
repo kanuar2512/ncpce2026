@@ -22,7 +22,7 @@
    ============================================================ */
 export const API = Object.freeze({
   /** @type {string} Deployed Apps Script Web App URL */
-  ENDPOINT: 'https://script.google.com/macros/s/REPLACE_WITH_YOUR_SCRIPT_ID/exec',
+  ENDPOINT: 'https://script.google.com/macros/s/AKfycbz1uu81tKlZGalx3RF16qm1f0ee2OqQBj3EoGeuEiyOMv7ijVzr9tiQA5T7T5Mh3SoY/exec',
 
   /** Cache duration in milliseconds (5 minutes) */
   CACHE_TTL: 5 * 60 * 1000,
