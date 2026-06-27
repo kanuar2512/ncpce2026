@@ -917,8 +917,8 @@ export function renderRiseCategories(containerId) {
             </div>
             <div class="rise-cat-card__title">${title}</div>
             <a href="#rise-gallery" class="btn btn--outline btn--sm rise-cat-card__cta"
-               onclick="document.querySelector('[data-filter=\\'${cat.num}\\']')?.click()">
-              ${lang === 'en' ? 'Senarai Penyertaan' : 'Senarai Penyertaan'} →
+               onclick="window._riseOpenAccordion && window._riseOpenAccordion('${cat.num}')">
+              ${lang === 'en' ? 'Accepted Entries' : 'Senarai Penyertaan'} →
             </a>
           </div>`;
       }).join('')}
@@ -984,89 +984,113 @@ export async function renderRiseGallery(containerId) {
 
     const lang = getLang();
 
-    /* ── Category tabs ── */
-    const tabsHtml = `
-      <div class="rise-filter-tabs" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; overflow-x:auto; padding-bottom:0.5rem;">
-        <button class="agenda-tab-btn active" data-filter="all" style="white-space:nowrap;">
-          ${lang === 'en' ? 'All' : 'Semua'} (${items.length})
-        </button>
-        ${RISE_CONFIG.categories.map(cat => {
-          const count = items.filter(i => String(i.category) === String(cat.num)).length;
-          if (!count) return '';
-          const label = lang === 'en' ? cat.label_en : cat.label_ms;
-          return `<button class="agenda-tab-btn" data-filter="${cat.num}" style="white-space:nowrap;">${label} (${count})</button>`;
-        }).join('')}
-      </div>`;
+    /* ── Group items by category ── */
+    const grouped = {};
+    RISE_CONFIG.categories.forEach(cat => {
+      grouped[cat.num] = items
+        .filter(item => String(item.category) === String(cat.num))
+        .sort((a, b) => (Number(a.order) || 999) - (Number(b.order) || 999));
+    });
 
-    /* ── Presentation cards ── */
-    const cardsHtml = items.map((item, idx) => {
-      const title       = item.title   || '—';
-      const author      = item.author  || '—';
-      const branch      = item.branch  || '';
-      const posterUrl   = item.poster_url   || '';
-      const abstractUrl = item.abstract_url || '';
+    /* ── Build accordion sections ── */
+    const sectionsHtml = RISE_CONFIG.categories.map((cat, idx) => {
+      const entries   = grouped[cat.num] || [];
+      const label     = lang === 'en' ? cat.label_en : cat.label_ms;
+      const title     = lang === 'en' ? cat.title_en : cat.title_ms;
+      const isOpen    = idx === 0;
+      const countText = `${entries.length} ${lang === 'en' ? 'entries' : 'entri'}`;
 
-      const catConf  = RISE_CONFIG.categories.find(c => String(c.num) === String(item.category));
-      const catLabel = catConf ? (lang === 'en' ? catConf.label_en : catConf.label_ms) : `Kategori ${item.category}`;
-      const catIcon  = catConf?.icon || '📋';
+      const rowsHtml = entries.length === 0
+        ? `<tr><td colspan="5" class="rise-table__empty">
+             ${lang === 'en' ? 'No entries yet.' : 'Tiada penyertaan buat masa ini.'}
+           </td></tr>`
+        : entries.map((item, i) => {
+            const rowTitle      = item.title       || '—';
+            const rowAuthor     = item.author      || '—';
+            const rowBranch     = item.branch      || '—';
+            const rowAbstract   = item.abstract_url || '';
+            const rowPoster     = item.poster_url   || '';
 
-      /* Poster thumbnail — convert Drive share link to thumbnail URL */
-      const thumbUrl = posterUrl ? driveThumb(posterUrl, 400) : '';
+            const actionHtml = [
+              rowAbstract ? `<a class="rise-table__action-btn" href="${rowAbstract}" target="_blank" rel="noopener">📄 Abstrak</a>` : '',
+              rowPoster   ? `<a class="rise-table__action-btn" href="${rowPoster}"   target="_blank" rel="noopener">🖼 Poster</a>`   : '',
+            ].filter(Boolean).join('') || '<span class="rise-table__no-action">—</span>';
+
+            return `
+              <tr class="rise-table__row">
+                <td class="rise-table__num">${i + 1}</td>
+                <td class="rise-table__title">${rowTitle}</td>
+                <td class="rise-table__author">${rowAuthor}</td>
+                <td class="rise-table__branch">${rowBranch}</td>
+                <td class="rise-table__actions">${actionHtml}</td>
+              </tr>`;
+          }).join('');
 
       return `
-        <div class="rise-poster-card" data-category="${item.category}" data-idx="${idx}">
-
-          <!-- Poster thumbnail — click opens poster in new tab -->
-          <div class="rise-poster-card__thumb"
-               role="${posterUrl ? 'button' : 'img'}"
-               tabindex="${posterUrl ? '0' : '-1'}"
-               aria-label="${lang === 'en' ? 'View poster' : 'Lihat poster'}"
-               ${posterUrl
-                 ? `onclick="window.open('${posterUrl.replace(/'/g,"\\'")}','_blank','noopener,noreferrer')"
-                    onkeypress="if(event.key==='Enter')this.click()"`
-                 : ''}>
-            ${thumbUrl
-              ? `<img src="${thumbUrl}" alt="${title}" loading="lazy">`
-              : `<div class="rise-poster-card__no-img">${catIcon}</div>`}
-            ${posterUrl ? `<div class="rise-poster-card__zoom-hint">🔍 ${lang === 'en' ? 'View Poster' : 'Lihat Poster'}</div>` : ''}
-          </div>
-
-          <!-- Body -->
-          <div class="rise-poster-card__body">
-            <div class="rise-poster-card__cat">${catIcon} ${catLabel}</div>
-            <div class="rise-poster-card__title">${title}</div>
-            <div class="rise-poster-card__author">
-              <span>👤 ${author}</span>
-              ${branch ? `<span style="margin-left:0.75rem; opacity:0.7;">🏢 ${branch}</span>` : ''}
+        <div class="rise-accordion" data-cat="${cat.num}">
+          <button class="rise-accordion__hdr${isOpen ? ' is-open' : ''}"
+                  aria-expanded="${isOpen}"
+                  data-acc-toggle="${cat.num}">
+            <div class="rise-accordion__hdr-left">
+              <span class="rise-accordion__icon">${cat.icon || '📋'}</span>
+              <div>
+                <div class="rise-accordion__label">${label}</div>
+                <div class="rise-accordion__subtitle">${title}</div>
+              </div>
             </div>
-            <div class="rise-poster-card__actions">
-              ${abstractUrl
-                ? `<a class="btn btn--gold btn--sm" href="${abstractUrl}" target="_blank" rel="noopener noreferrer">
-                     📄 LIHAT ABSTRAK
-                   </a>`
-                : ''}
+            <div class="rise-accordion__hdr-right">
+              <span class="rise-accordion__count">${countText}</span>
+              <span class="rise-accordion__arrow" aria-hidden="true">▼</span>
+            </div>
+          </button>
+          <div class="rise-accordion__body${isOpen ? ' is-open' : ''}">
+            <div class="rise-table-wrap">
+              <table class="rise-table">
+                <thead>
+                  <tr>
+                    <th class="rise-table__num">#</th>
+                    <th class="rise-table__title">${lang === 'en' ? 'Title' : 'Tajuk'}</th>
+                    <th class="rise-table__author">${lang === 'en' ? 'Presenter' : 'Pembentang'}</th>
+                    <th class="rise-table__branch">${lang === 'en' ? 'Branch / State' : 'Cawangan / Negeri'}</th>
+                    <th class="rise-table__actions">${lang === 'en' ? 'Files' : 'Fail'}</th>
+                  </tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+              </table>
             </div>
           </div>
-
         </div>`;
     }).join('');
 
-    container.innerHTML = `${tabsHtml}<div class="rise-poster-grid">${cardsHtml}</div>`;
+    container.innerHTML = sectionsHtml;
 
-    /* ── Tab filter logic ── */
-    container.querySelectorAll('.agenda-tab-btn[data-filter]').forEach(btn => {
+    /* ── Accordion toggle logic ── */
+    container.querySelectorAll('[data-acc-toggle]').forEach(btn => {
       btn.addEventListener('click', () => {
-        container.querySelectorAll('.agenda-tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        container.querySelectorAll('.rise-poster-card').forEach(card => {
-          card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
-        });
-        _updateGalleryHeading(filter);
+        const body    = btn.nextElementSibling;
+        const isOpen  = body.classList.contains('is-open');
+        body.classList.toggle('is-open', !isOpen);
+        btn.classList.toggle('is-open', !isOpen);
+        btn.setAttribute('aria-expanded', String(!isOpen));
       });
     });
 
-    /* Poster clicks open directly in new tab — no lightbox needed */
+    /* ── Global helper: open specific accordion from category cards ── */
+    window._riseOpenAccordion = (catNum) => {
+      container.querySelectorAll('.rise-accordion__hdr').forEach(btn => {
+        const acc   = btn.closest('.rise-accordion');
+        const body  = btn.nextElementSibling;
+        const match = acc.dataset.cat === String(catNum);
+        body.classList.toggle('is-open', match);
+        btn.classList.toggle('is-open', match);
+        btn.setAttribute('aria-expanded', String(match));
+      });
+      // Scroll to the opened accordion after short delay
+      setTimeout(() => {
+        const target = container.querySelector(`.rise-accordion[data-cat="${catNum}"] .rise-accordion__hdr`);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+    };
 
   } catch (err) {
     console.error('[CMIP] renderRiseGallery error:', err);
