@@ -135,9 +135,9 @@ export const NAV = Object.freeze([
 export const NAV_RISE = Object.freeze([
   { id: 'rise-intro',     href: '#rise-intro',     label_ms: 'Pengenalan',   label_en: 'Overview'      },
   { id: 'rise-categories',href: '#rise-categories',label_ms: 'Kategori',     label_en: 'Categories'    },
-  { id: 'rise-gallery',   href: '#rise-gallery',   label_ms: 'Galeri',       label_en: 'Gallery'       },
+  { id: 'rise-gallery',   href: '#rise-gallery',   label_ms: 'Pembentangan', label_en: 'Presentations'  },
   { id: 'rise-downloads', href: '#rise-downloads', label_ms: 'Muat Turun',   label_en: 'Downloads'     },
-  { id: 'rise-voting',    href: '#rise-voting',    label_ms: 'Undi',         label_en: 'Vote',         isVoting: true },
+  { id: 'rise-voting',    href: '#rise-voting',    label_ms: 'Pengundian',   label_en: 'Voting',       isVoting: true },
 ]);
 
 
@@ -289,9 +289,9 @@ export const LANG = Object.freeze({
     footer_dev:        'Laman web ini dibangunkan untuk kegunaan rasmi persidangan.',
 
     /* RISE */
-    rise_intro_title:  'Mengenai RISE',
+    rise_intro_title:  'Pengenalan RISE',
     rise_cat_title:    'Kategori Penyertaan',
-    rise_gallery_title:'Galeri Poster & Abstrak',
+    rise_gallery_title:'Senarai Penyertaan',
     rise_dl_title:     'Muat Turun RISE',
     rise_vote_title:   'Undi Anugerah Pilihan Inovasi',
     rise_vote_stub:    'Sistem undi akan diaktifkan semasa persidangan. Sila kembali semula pada tarikh berkenaan.',
@@ -377,9 +377,9 @@ export const LANG = Object.freeze({
     footer_dev:        'This website was developed for official conference use.',
 
     /* RISE */
-    rise_intro_title:  'About RISE',
+    rise_intro_title:  'RISE Overview',
     rise_cat_title:    'Participation Categories',
-    rise_gallery_title:'Poster & Abstract Gallery',
+    rise_gallery_title:'Accepted Entries',
     rise_dl_title:     'RISE Downloads',
     rise_vote_title:   'Innovation Choice Award Voting',
     rise_vote_stub:    'The voting system will be activated during the conference. Please return on the relevant date.',
