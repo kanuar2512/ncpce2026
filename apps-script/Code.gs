@@ -58,6 +58,7 @@ var CACHE_TTL = 300;
  * Sheet names — must match tab names exactly in the Google Spreadsheet.
  * Change only if you rename the tabs.
  */
+/** Tab names — must match exact tab names in Google Sheets */
 var SHEETS = {
   SITE_CONFIG : 'SiteConfig',
   PROGRAMME   : 'Programme',
@@ -85,7 +86,8 @@ var SHEETS = {
 function doGet(e) {
   try {
     var params   = e && e.parameter ? e.parameter : {};
-    var sheet    = (params.sheet    || '').trim();
+    // Normalize to lowercase — frontend sends 'rise', 'faq', etc.
+    var sheet    = (params.sheet    || '').trim().toLowerCase();
     var callback = (params.callback || '').trim();   // JSONP support
 
     if (!sheet) {
@@ -96,39 +98,39 @@ function doGet(e) {
 
     switch (sheet) {
 
-      case SHEETS.SITE_CONFIG:
+      case 'config':
         data = getSiteConfig();
         break;
 
-      case SHEETS.PROGRAMME:
+      case 'programme':
         data = getProgramme(params.day || null);
         break;
 
-      case SHEETS.SPEAKERS:
+      case 'speakers':
         data = getSpeakers();
         break;
 
-      case SHEETS.RISE:
+      case 'rise':
         data = getRise(params.category || null);
         break;
 
-      case SHEETS.DOWNLOADS:
+      case 'downloads':
         data = getDownloads(params.section || null);
         break;
 
-      case SHEETS.GALLERY:
+      case 'gallery':
         data = getGallery();
         break;
 
-      case SHEETS.FAQ:
+      case 'faq':
         data = getFaq(params.section || null);
         break;
 
-      case SHEETS.SPONSORS:
+      case 'sponsors':
         data = getSponsors();
         break;
 
-      case SHEETS.CONTACT:
+      case 'contact':
         data = getContact();
         break;
 
