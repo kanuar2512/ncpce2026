@@ -149,8 +149,8 @@ export const RISE = Object.freeze({
   name_en: 'RISE Symposium',
 
   /** Full name */
-  fullname_ms: 'Research, Innovation, Science & Excellence Symposium',
-  fullname_en: 'Research, Innovation, Science & Excellence Symposium',
+  fullname_ms: 'Simposium Penyelidikan dan Pembangunan (R&D) dan Inisiatif Penambahbaikan Kualiti Penguatkuasaan Farmasi',
+  fullname_en: 'R&D and Quality Improvement Initiatives Symposium for Enforcement Pharmacy',
 
   abbr: 'RISE',
 
