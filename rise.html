@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ms" data-active-lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RISE Symposium — Research, Innovation, Science & Excellence. Portal rasmi penyertaan poster, kolokium dan QIP bagi PKPJF 2026.">
+  <meta name="theme-color" content="#280000">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="RISE Symposium 2026 — PKPJF">
+  <meta property="og:description" content="Research, Innovation, Science & Excellence Symposium — Persidangan Kebangsaan Penguatkuasaan Jenayah Farmaseutikal 2026">
+  <meta property="og:image"       content="assets/img/hero.png">
+
+  <!-- Bilingual page title -->
+  <title
+    data-title-ms="RISE Symposium 2026 | PKPJF — Penguatkuasaan Jenayah Farmaseutikal"
+    data-title-en="RISE Symposium 2026 | PKPJF — Pharmaceutical Crime Enforcement"
+  >RISE Symposium 2026 | PKPJF</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+
+  <!-- RISE-specific overrides -->
+  <style>
+    /* Deep dark hero for RISE */
+    .rise-hero {
+      position: relative;
+      width: 100%;
+      min-height: 60vh;
+      background: linear-gradient(
+        135deg,
+        var(--clr-primary-deep) 0%,
+        var(--clr-charcoal) 60%,
+        #0a0a0a 100%
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: calc(var(--nav-height) + 4rem) var(--container-pad) 4rem;
+      overflow: hidden;
+    }
+
+    /* Decorative gold ring */
+    .rise-hero::before {
+      content: '';
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      border: 1px solid rgba(250, 206, 92, 0.1);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .rise-hero::after {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      border: 1px solid rgba(250, 206, 92, 0.05);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .rise-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      background: rgba(250, 206, 92, 0.12);
+      border: 1px solid rgba(250, 206, 92, 0.35);
+      color: var(--clr-gold);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: var(--sp-2) var(--sp-6);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--sp-6);
+    }
+
+    .rise-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--clr-gold);
+      letter-spacing: 4px;
+      line-height: 1;
+      margin-bottom: var(--sp-3);
+    }
+
+    .rise-hero__fullname {
+      font-family: var(--font-body);
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      font-weight: 400;
+      color: rgba(var(--clr-cream-rgb), 0.65);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: var(--sp-8);
+      max-width: 680px;
+    }
+
+    .rise-hero__conf {
+      font-size: var(--fs-sm);
+      color: rgba(var(--clr-cream-rgb), 0.5);
+      margin-bottom: var(--sp-6);
+    }
+
+    /* RISE sub-nav (sticky within page) */
+    .rise-subnav {
+      background: rgba(var(--clr-primary-deep), 0.97);
+      border-bottom: 1px solid rgba(250, 206, 92, 0.2);
+      position: sticky;
+      top: var(--nav-height);
+      z-index: 900;
+      padding: var(--sp-3) var(--container-pad);
+      display: flex;
+      justify-content: center;
+      gap: var(--sp-2);
+      flex-wrap: wrap;
+      backdrop-filter: blur(8px);
+    }
+
+    .rise-subnav a {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(var(--clr-cream-rgb), 0.6);
+      padding: var(--sp-2) var(--sp-4);
+      border-radius: var(--radius-full);
+      transition: var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .rise-subnav a:hover,
+    .rise-subnav a.active {
+      color: var(--clr-gold);
+      background: rgba(250, 206, 92, 0.1);
+    }
+
+    /* Back to main link */
+    .back-to-main {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      color: rgba(var(--clr-cream-rgb), 0.55);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: var(--transition-fast);
+      margin-bottom: var(--sp-8);
+    }
+
+    .back-to-main:hover {
+      color: var(--clr-gold);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     NAVIGATION (same as index.html)
+     ============================================================ -->
+<header>
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Navigasi utama">
+    <div class="navbar__inner">
+
+      <a href="index.html" aria-label="Kembali ke laman utama">
+        <img class="navbar__logo" src="assets/img/logo.png" alt="Logo PKPJF 2026">
+      </a>
+
+      <ul class="navbar__links" role="list">
+        <li><a href="index.html#about">
+          <span data-lang="ms">Tentang</span>
+          <span data-lang="en">About</span>
+        </a></li>
+        <li><a href="index.html#programme">
+          <span data-lang="ms">Aturcara</span>
+          <span data-lang="en">Programme</span>
+        </a></li>
+        <li><a href="index.html#speakers">
+          <span data-lang="ms">Pembentang</span>
+          <span data-lang="en">Speakers</span>
+        </a></li>
+        <li><a href="index.html#downloads">
+          <span data-lang="ms">Muat Turun</span>
+          <span data-lang="en">Downloads</span>
+        </a></li>
+        <li><a href="index.html#contact">
+          <span data-lang="ms">Hubungi</span>
+          <span data-lang="en">Contact</span>
+        </a></li>
+        <li><a href="rise.html" class="nav-rise active">RISE</a></li>
+      </ul>
+
+      <div class="navbar__controls">
+        <button class="lang-toggle" aria-label="Tukar ke Bahasa Inggeris">
+          <span class="lang-toggle__active-ms" style="color:var(--clr-gold)">BM</span>
+          <span class="lang-toggle__separator">/</span>
+          <span class="lang-toggle__active-en">EN</span>
+        </button>
+
+        <button
+          class="navbar__hamburger"
+          id="hamburger"
+          aria-label="Buka menu"
+          aria-expanded="false"
+          aria-controls="nav-drawer"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="navbar__drawer" id="nav-drawer" role="menu">
+    <a href="index.html" role="menuitem">
+      ← <span data-lang="ms">Laman Utama Persidangan</span>
+      <span data-lang="en">Main Conference Site</span>
+    </a>
+    <a href="#rise-intro" role="menuitem">
+      <span data-lang="ms">Tentang RISE</span>
+      <span data-lang="en">About RISE</span>
+    </a>
+    <a href="#rise-categories" role="menuitem">
+      <span data-lang="ms">Kategori</span>
+      <span data-lang="en">Categories</span>
+    </a>
+    <a href="#rise-gallery" role="menuitem">
+      <span data-lang="ms">Galeri</span>
+      <span data-lang="en">Gallery</span>
+    </a>
+    <a href="#rise-downloads" role="menuitem">
+      <span data-lang="ms">Muat Turun</span>
+      <span data-lang="en">Downloads</span>
+    </a>
+    <a href="#rise-faq" role="menuitem">FAQ</a>
+    <a href="#rise-voting" role="menuitem">
+      <span data-lang="ms">Undi</span>
+      <span data-lang="en">Vote</span>
+    </a>
+
+    <button class="lang-toggle" style="align-self:flex-start; margin-top:0.5rem;">
+      <span class="lang-toggle__active-ms" style="color:var(--clr-gold)">BM</span>
+      <span class="lang-toggle__separator">/</span>
+      <span class="lang-toggle__active-en">EN</span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================
+     RISE HERO
+     ============================================================ -->
+<section class="rise-hero" id="rise-home" aria-label="RISE Symposium">
+
+  <div class="reveal">
+    <!-- Back link -->
+    <a href="index.html" class="back-to-main" aria-label="Kembali ke laman persidangan">
+      ← <span data-lang="ms">Laman Persidangan</span>
+      <span data-lang="en">Conference Site</span>
+    </a>
+
+    <!-- PKPJF badge -->
+    <div class="rise-hero__badge">
+      <span>PKPJF 2026</span>
+    </div>
+
+    <!-- RISE title -->
+    <h1 class="rise-hero__title">RISE</h1>
+
+    <!-- Full name -->
+    <p class="rise-hero__fullname">
+      Research · Innovation · Science · Excellence
+    </p>
+
+    <!-- Subtitle -->
+    <p class="rise-hero__conf">
+      <span data-lang="ms">Simposium Penyelidikan, Inovasi, Sains &amp; Kecemerlangan</span>
+      <span data-lang="en">Research, Innovation, Science &amp; Excellence Symposium</span>
+    </p>
+
+    <!-- CTA buttons -->
+    <div style="display:flex; gap:var(--sp-4); justify-content:center; flex-wrap:wrap;">
+      <a href="#rise-categories" class="btn btn--gold">
+        <span data-lang="ms">Lihat Kategori</span>
+        <span data-lang="en">View Categories</span>
+      </a>
+      <a href="#rise-downloads" class="btn btn--outline">
+        <span data-lang="ms">Muat Turun Panduan</span>
+        <span data-lang="en">Download Guidelines</span>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ============================================================
+     RISE SUB-NAVIGATION
+     ============================================================ -->
+<nav class="rise-subnav" aria-label="RISE navigation">
+  <a href="#rise-intro">
+    <span data-lang="ms">Tentang</span>
+    <span data-lang="en">About</span>
+  </a>
+  <a href="#rise-categories">
+    <span data-lang="ms">Kategori</span>
+    <span data-lang="en">Categories</span>
+  </a>
+  <a href="#rise-gallery">
+    <span data-lang="ms">Galeri</span>
+    <span data-lang="en">Gallery</span>
+  </a>
+  <a href="#rise-downloads">
+    <span data-lang="ms">Muat Turun</span>
+    <span data-lang="en">Downloads</span>
+  </a>
+  <a href="#rise-faq">FAQ</a>
+  <a href="#rise-voting">
+    🗳️
+    <span data-lang="ms">Undi</span>
+    <span data-lang="en">Vote</span>
+  </a>
+</nav>
+
+
+<!-- ============================================================
+     SECTION 1 — ABOUT RISE
+     ============================================================ -->
+<section id="rise-intro" class="section bg-rise" aria-labelledby="rise-intro-heading">
+  <div class="container">
+
+    <span class="section-subtitle" style="color:var(--clr-gold);">RISE 2026</span>
+    <h2 class="section-title" id="rise-intro-heading">
+      <span data-lang="ms">Mengenai RISE</span>
+      <span data-lang="en">About RISE</span>
+    </h2>
+    <div class="divider"></div>
+
+    <div class="grid-2 reveal">
+
+      <div>
+        <h3 style="color:var(--clr-gold); font-size:var(--fs-xl); margin-bottom:var(--sp-4);">
+          <span data-lang="ms">Apa itu RISE?</span>
+          <span data-lang="en">What is RISE?</span>
+        </h3>
+        <p style="color:rgba(var(--clr-cream-rgb),0.85); line-height:1.85; margin-bottom:var(--sp-6);">
+          <span data-lang="ms">RISE — <strong style="color:var(--clr-gold)">Research, Innovation, Science &amp; Excellence</strong> — adalah simposium penyelidikan dan inovasi yang diadakan seiring dengan Persidangan Kebangsaan Penguatkuasaan Jenayah Farmaseutikal 2026.</span>
+          <span data-lang="en">RISE — <strong style="color:var(--clr-gold)">Research, Innovation, Science &amp; Excellence</strong> — is the research and innovation symposium held in conjunction with the National Conference on Pharmaceutical Crime Enforcement 2026.</span>
+        </p>
+        <p style="color:rgba(var(--clr-cream-rgb),0.75); line-height:1.85;">
+          <span data-lang="ms">Platform ini memberi peluang kepada pegawai BPF untuk mempersembahkan hasil penyelidikan, inovasi dan projek penambahbaikan kualiti mereka kepada rakan sejawat dan panel juri yang dilantik.</span>
+          <span data-lang="en">This platform provides BPF officers the opportunity to present their research findings, innovations and quality improvement projects to peers and an appointed panel of judges.</span>
+        </p>
+      </div>
+
+      <div>
+        <h3 style="color:var(--clr-gold); font-size:var(--fs-xl); margin-bottom:var(--sp-4);">
+          <span data-lang="ms">Objektif</span>
+          <span data-lang="en">Objectives</span>
+        </h3>
+        <ul style="color:rgba(var(--clr-cream-rgb),0.82); line-height:1.85; padding-left:var(--sp-6);" role="list">
+          <li style="list-style:disc; margin-bottom:var(--sp-3);">
+            <span data-lang="ms">Memupuk budaya penyelidikan dan inovasi dalam kalangan pegawai BPF</span>
+            <span data-lang="en">Foster a culture of research and innovation among BPF officers</span>
+          </li>
+          <li style="list-style:disc; margin-bottom:var(--sp-3);">
+            <span data-lang="ms">Menyediakan platform perkongsian amalan terbaik antara cawangan</span>
+            <span data-lang="en">Provide a platform for best practice sharing across branches</span>
+          </li>
+          <li style="list-style:disc; margin-bottom:var(--sp-3);">
+            <span data-lang="ms">Mengiktiraf projek inovatif yang menyumbang kepada keberkesanan penguatkuasaan</span>
+            <span data-lang="en">Recognise innovative projects contributing to enforcement effectiveness</span>
+          </li>
+          <li style="list-style:disc;">
+            <span data-lang="ms">Menggalakkan penglibatan aktif dalam transformasi digital BPF</span>
+            <span data-lang="en">Encourage active participation in BPF's digital transformation</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Key info strip -->
+    <div class="grid-3 reveal" style="margin-top:var(--sp-12);">
+      <div class="rise-cat-card" style="text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:var(--sp-3);">📅</div>
+        <div class="rise-cat-card__title">
+          <span data-lang="ms">Tarikh Pameran</span>
+          <span data-lang="en">Exhibition Date</span>
+        </div>
+        <p class="rise-cat-card__desc">
+          <span data-lang="ms">28 Julai 2026 (Hari 2 Persidangan)</span>
+          <span data-lang="en">28 July 2026 (Conference Day 2)</span>
+        </p>
+      </div>
+      <div class="rise-cat-card" style="text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:var(--sp-3);">📍</div>
+        <div class="rise-cat-card__title">
+          <span data-lang="ms">Lokasi</span>
+          <span data-lang="en">Location</span>
+        </div>
+        <p class="rise-cat-card__desc">
+          <span data-lang="ms">Lobi Dewan Utama, KSL Esplanade Hotel, Klang</span>
+          <span data-lang="en">Main Hall Lobby, KSL Esplanade Hotel, Klang</span>
+        </p>
+      </div>
+      <div class="rise-cat-card" style="text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:var(--sp-3);">🏆</div>
+        <div class="rise-cat-card__title">
+          <span data-lang="ms">Anugerah</span>
+          <span data-lang="en">Award</span>
+        </div>
+        <p class="rise-cat-card__desc">
+          <span data-lang="ms">Anugerah Pilihan Inovasi — diundi oleh peserta persidangan</span>
+          <span data-lang="en">Innovation Choice Award — voted by conference participants</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 2 — CATEGORIES
+     ============================================================ -->
+<section id="rise-categories" class="section" style="background:var(--clr-primary-deep); color:var(--clr-cream);" aria-labelledby="rise-cat-heading">
+  <div class="container">
+
+    <span class="section-subtitle" style="color:var(--clr-gold);">
+      <span data-lang="ms">Penyertaan</span>
+      <span data-lang="en">Participation</span>
+    </span>
+    <h2 class="section-title" id="rise-cat-heading">
+      <span data-lang="ms">Kategori Penyertaan</span>
+      <span data-lang="en">Participation Categories</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Rendered by renderRiseCategories() -->
+    <div id="rise-categories-container"></div>
+
+    <!-- Comparison table -->
+    <div class="glass-card reveal" style="margin-top:var(--sp-12); overflow-x:auto;">
+      <table class="programme-table">
+        <thead>
+          <tr>
+            <th><span data-lang="ms">Kategori</span><span data-lang="en">Category</span></th>
+            <th><span data-lang="ms">Konsep</span><span data-lang="en">Concept</span></th>
+            <th><span data-lang="ms">Format</span><span data-lang="en">Format</span></th>
+            <th><span data-lang="ms">Saiz / Booth</span><span data-lang="en">Size / Booth</span></th>
+            <th><span data-lang="ms">Anugerah</span><span data-lang="en">Award</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700; color:var(--clr-primary);">
+              <span data-lang="ms">Kategori 1 — Poster R&D</span>
+              <span data-lang="en">Category 1 — R&D Poster</span>
+            </td>
+            <td>
+              <span class="type-badge type-badge--award">
+                <span data-lang="ms">Pertandingan</span>
+                <span data-lang="en">Competition</span>
+              </span>
+            </td>
+            <td><span data-lang="ms">Poster Fizikal</span><span data-lang="en">Physical Poster</span></td>
+            <td>A0 Board</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:var(--clr-primary);">
+              <span data-lang="ms">Kategori 2 — Kolokium Poster</span>
+              <span data-lang="en">Category 2 — Poster Colloquium</span>
+            </td>
+            <td>
+              <span class="type-badge type-badge--break">
+                <span data-lang="ms">Perkongsian</span>
+                <span data-lang="en">Sharing</span>
+              </span>
+            </td>
+            <td><span data-lang="ms">Poster Fizikal</span><span data-lang="en">Physical Poster</span></td>
+            <td>A0 Board</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:var(--clr-primary);">
+              <span data-lang="ms">Kategori 3 — QIP</span>
+              <span data-lang="en">Category 3 — QIP</span>
+            </td>
+            <td>
+              <span class="type-badge type-badge--award">
+                <span data-lang="ms">Pertandingan</span>
+                <span data-lang="en">Competition</span>
+              </span>
+            </td>
+            <td><span data-lang="ms">Pameran Booth</span><span data-lang="en">Booth Exhibition</span></td>
+            <td>Shell Scheme 3×3m</td>
+            <td>✅</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 3 — POSTER & ABSTRACT GALLERY
+     ============================================================ -->
+<section id="rise-gallery" class="section bg-rise" aria-labelledby="rise-gallery-heading">
+  <div class="container">
+
+    <span class="section-subtitle" style="color:var(--clr-gold);">
+      <span data-lang="ms">Hasil Kerja Peserta</span>
+      <span data-lang="en">Participant Works</span>
+    </span>
+    <h2 class="section-title" id="rise-gallery-heading">
+      <span data-lang="ms">Galeri Poster & Abstrak</span>
+      <span data-lang="en">Poster & Abstract Gallery</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Rendered by renderRiseGallery() — all categories, with filter tabs -->
+    <div id="rise-gallery-container" class="reveal"></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 4 — DOWNLOADS
+     ============================================================ -->
+<section id="rise-downloads" class="section" style="background:var(--clr-primary-dark); color:var(--clr-cream);" aria-labelledby="rise-dl-heading">
+  <div class="container">
+
+    <span class="section-subtitle" style="color:var(--clr-gold);">
+      <span data-lang="ms">Dokumen RISE</span>
+      <span data-lang="en">RISE Documents</span>
+    </span>
+    <h2 class="section-title" id="rise-dl-heading">
+      <span data-lang="ms">Muat Turun</span>
+      <span data-lang="en">Downloads</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Rendered by renderRiseDownloads() -->
+    <div id="rise-downloads-container" class="reveal"></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 5 — FAQ
+     ============================================================ -->
+<section id="rise-faq" class="section bg-rise" aria-labelledby="rise-faq-heading">
+  <div class="container">
+
+    <span class="section-subtitle" style="color:var(--clr-gold);">
+      <span data-lang="ms">Pertanyaan RISE</span>
+      <span data-lang="en">RISE Enquiries</span>
+    </span>
+    <h2 class="section-title" id="rise-faq-heading">
+      <span data-lang="ms">Soalan Lazim RISE</span>
+      <span data-lang="en">RISE FAQ</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Rendered by renderFaq() — rise section only -->
+    <div id="rise-faq-container" class="reveal"></div>
+
+    <!-- Back to main FAQ -->
+    <div style="text-align:center; margin-top:var(--sp-10);">
+      <a href="index.html#faq" class="btn btn--outline btn--sm">
+        <span data-lang="ms">← Soalan Lazim Persidangan</span>
+        <span data-lang="en">← Conference FAQ</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 6 — INNOVATION CHOICE AWARD VOTING
+     Links to external Google Apps Script Web App URL
+     Controlled by RISE.voting in config.js:
+       enabled: false → shows "coming soon" teaser
+       enabled: true  → shows "Vote Now" button linking to url
+     ============================================================ -->
+<section id="rise-voting" class="section" style="background:var(--clr-primary-deep); color:var(--clr-cream);" aria-labelledby="rise-voting-heading">
+  <div class="container">
+
+    <span class="section-subtitle" style="color:var(--clr-gold);">
+      <span data-lang="ms">Undi Pilihan Anda</span>
+      <span data-lang="en">Cast Your Vote</span>
+    </span>
+    <h2 class="section-title" id="rise-voting-heading">
+      <span data-lang="ms">Anugerah Pilihan Inovasi</span>
+      <span data-lang="en">Innovation Choice Award</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Context blurb -->
+    <div class="reveal" style="text-align:center; max-width:680px; margin:0 auto var(--sp-10);">
+      <p style="color:rgba(var(--clr-cream-rgb),0.75); font-size:var(--fs-base); line-height:1.85;">
+        <span data-lang="ms">Anugerah Pilihan Inovasi merupakan pengiktirafan khas yang diundi oleh semua peserta persidangan. Satu undi bagi setiap peserta. Sistem undi diakses melalui pautan khas yang diberikan semasa persidangan.</span>
+        <span data-lang="en">The Innovation Choice Award is a special recognition voted by all conference participants. One vote per participant. The voting system is accessed via a dedicated link provided during the conference.</span>
+      </p>
+    </div>
+
+    <!-- Voting button / stub — rendered by renderVoting() -->
+    <div id="rise-voting-container" class="reveal"></div>
+
+    <!-- How it works -->
+    <div class="grid-3 reveal" style="margin-top:var(--sp-12);">
+      <div class="rise-cat-card" style="text-align:center;">
+        <div style="font-size:2rem; margin-bottom:var(--sp-3);">01</div>
+        <div class="rise-cat-card__title">
+          <span data-lang="ms">Lawati Pameran</span>
+          <span data-lang="en">Visit the Exhibition</span>
+        </div>
+        <p class="rise-cat-card__desc">
+          <span data-lang="ms">Lawati semua pameran poster dan booth QIP pada Hari 2 persidangan.</span>
+          <span data-lang="en">Visit all poster exhibitions and QIP booths on Day 2 of the conference.</span>
+        </p>
+      </div>
+      <div class="rise-cat-card" style="text-align:center;">
+        <div style="font-size:2rem; margin-bottom:var(--sp-3);">02</div>
+        <div class="rise-cat-card__title">
+          <span data-lang="ms">Buka Sistem Undi</span>
+          <span data-lang="en">Open Voting System</span>
+        </div>
+        <p class="rise-cat-card__desc">
+          <span data-lang="ms">Klik butang "Undi Sekarang" di bawah atau imbas QR code yang disediakan.</span>
+          <span data-lang="en">Click the "Vote Now" button below or scan the QR code provided at the venue.</span>
+        </p>
+      </div>
+      <div class="rise-cat-card" style="text-align:center;">
+        <div style="font-size:2rem; margin-bottom:var(--sp-3);">03</div>
+        <div class="rise-cat-card__title">
+          <span data-lang="ms">Hantar Undi</span>
+          <span data-lang="en">Submit Your Vote</span>
+        </div>
+        <p class="rise-cat-card__desc">
+          <span data-lang="ms">Pilih poster atau projek pilihan anda dan hantar undi. Satu undi sahaja dibenarkan.</span>
+          <span data-lang="en">Choose your favourite poster or project and submit your vote. Only one vote is allowed per participant.</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+
+<!-- ============================================================
+     FOOTER (same as index.html)
+     ============================================================ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+
+    <div class="footer__grid">
+      <div>
+        <img class="footer__logo" src="assets/img/logo.png" alt="Logo PKPJF 2026">
+        <p class="footer__desc">
+          <span data-lang="ms">RISE Symposium 2026 — Simposium Penyelidikan, Inovasi, Sains &amp; Kecemerlangan. Sebahagian daripada PKPJF 2026, dianjurkan oleh BPF, KKM.</span>
+          <span data-lang="en">RISE Symposium 2026 — Research, Innovation, Science &amp; Excellence Symposium. Part of PKPJF 2026, organised by BPF, MOH Malaysia.</span>
+        </p>
+      </div>
+
+      <div>
+        <div class="footer__heading">RISE</div>
+        <nav class="footer__links">
+          <a href="#rise-intro">
+            <span data-lang="ms">Tentang RISE</span>
+            <span data-lang="en">About RISE</span>
+          </a>
+          <a href="#rise-categories">
+            <span data-lang="ms">Kategori</span>
+            <span data-lang="en">Categories</span>
+          </a>
+          <a href="#rise-gallery">
+            <span data-lang="ms">Galeri</span>
+            <span data-lang="en">Gallery</span>
+          </a>
+          <a href="#rise-downloads">
+            <span data-lang="ms">Muat Turun</span>
+            <span data-lang="en">Downloads</span>
+          </a>
+          <a href="#rise-voting">
+            <span data-lang="ms">Undi</span>
+            <span data-lang="en">Vote</span>
+          </a>
+        </nav>
+      </div>
+
+      <div>
+        <div class="footer__heading">
+          <span data-lang="ms">Persidangan</span>
+          <span data-lang="en">Conference</span>
+        </div>
+        <nav class="footer__links">
+          <a href="index.html">
+            <span data-lang="ms">← Kembali ke Laman Utama</span>
+            <span data-lang="en">← Back to Main Site</span>
+          </a>
+          <a href="index.html#programme">
+            <span data-lang="ms">Atur Cara</span>
+            <span data-lang="en">Programme</span>
+          </a>
+          <a href="index.html#contact">
+            <span data-lang="ms">Hubungi Kami</span>
+            <span data-lang="en">Contact Us</span>
+          </a>
+          <a href="mailto:bpf@moh.gov.my">bpf@moh.gov.my</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">
+        &copy; 2026
+        <span data-lang="ms">Bahagian Penguatkuasaan Farmasi, Kementerian Kesihatan Malaysia. Hak cipta terpelihara.</span>
+        <span data-lang="en">Pharmaceutical Enforcement Division, Ministry of Health Malaysia. All rights reserved.</span>
+      </p>
+      <p class="footer__meta">PKPJF 2026 · RISE Symposium · CMIP v1.0</p>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- FAB Group -->
+<div class="fab-group" role="group" aria-label="Butang tindakan pantas">
+  <button class="fab-btn fab-btn--top" aria-label="Kembali ke atas">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+  <a href="index.html" class="fab-btn fab-btn--contact" aria-label="Kembali ke laman persidangan" style="text-decoration:none; font-size:1.1rem;">🏠</a>
+</div>
+
+<!-- Toast -->
+<div id="cmip-toast" class="toast" role="status" aria-live="polite"></div>
+
+
+<!-- ============================================================
+     SCRIPTS — ES Modules
+     ============================================================ -->
+<script type="module">
+  import { initLang }       from './assets/js/lang.js';
+  import {
+    initScrollReveal,
+    initNav,
+    initNavDrawer,
+    initBackToTop,
+    renderRiseCategories,
+    renderRiseGallery,
+    renderRiseDownloads,
+    renderFaq,
+    renderVoting,
+  } from './assets/js/ui.js';
+
+  /* ── 1. Language first ── */
+  initLang();
+
+  /* ── 2. UI components ── */
+  initNav();
+  initNavDrawer();
+  initBackToTop();
+  initScrollReveal();
+
+  /* ── 3. RISE sub-nav active state ── */
+  const riseSubLinks = document.querySelectorAll('.rise-subnav a');
+  const riseSections = document.querySelectorAll('section[id^="rise-"]');
+
+  const riseObserver = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        riseSubLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
+        });
+      }
+    }),
+    { threshold: 0.4 }
+  );
+  riseSections.forEach(s => riseObserver.observe(s));
+
+  /* ── 4. Data renders ── */
+  renderRiseCategories('rise-categories-container');
+  renderRiseGallery('rise-gallery-container');          // all categories + filter tabs
+  renderRiseDownloads('rise-downloads-container');
+  renderFaq('rise-faq-container', 'rise');
+  renderVoting('rise-voting-container');
+</script>
+
+</body>
+</html>

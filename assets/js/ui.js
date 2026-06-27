@@ -1,0 +1,1130 @@
+/**
+ * ui.js — CMIP Renderer & UI Components
+ *
+ * Responsibilities:
+ *  - Fetch data via api.js and render HTML for every section
+ *  - Handle loading, error, and empty states per section
+ *  - Initialise all interactive components (countdown, tabs,
+ *    accordion, scroll reveal, nav, lightbox, toast, FAB)
+ *
+ * Convention:
+ *  - render*() functions are async — they fetch then paint
+ *  - init*() functions are sync — they attach event listeners
+ *  - All text comes from LANG via t() / localise()
+ *  - Never hardcode BM or EN strings here
+ *
+ * Persidangan Kebangsaan Penguatkuasaan Jenayah Farmaseutikal 2026
+ */
+
+'use strict';
+
+import {
+  CONFERENCE, RISE as RISE_CONFIG, PROGRAMME_TYPES, FILE_ICONS,
+  t, localise, getLang,
+} from './config.js';
+
+import {
+  fetchSiteConfig, fetchProgrammeAll, fetchSpeakers,
+  fetchRise, fetchDownloads, fetchGallery,
+  fetchFaq, fetchSponsors, fetchContact,
+  ApiError,
+} from './api.js';
+
+
+/* ============================================================
+   DOM HELPERS
+   ============================================================ */
+
+/** @param {string} id @returns {HTMLElement|null} */
+const $ = id => document.getElementById(id);
+
+/** @param {string} sel @returns {HTMLElement|null} */
+const $q = sel => document.querySelector(sel);
+
+/** @param {string} sel @returns {NodeList} */
+const $all = sel => document.querySelectorAll(sel);
+
+/**
+ * Show a loading spinner inside a container.
+ * @param {HTMLElement} el
+ */
+function setLoading(el) {
+  if (!el) return;
+  el.innerHTML = `<div class="loading-spinner">${t('loading')}</div>`;
+}
+
+/**
+ * Show an error state inside a container.
+ * @param {HTMLElement} el
+ * @param {string} [msg]
+ */
+function setError(el, msg) {
+  if (!el) return;
+  el.innerHTML = `
+    <div class="error-state">
+      <div class="error-state__icon">⚠️</div>
+      <p>${msg || t('error_load')}</p>
+    </div>`;
+}
+
+/**
+ * Show an empty-state message inside a container.
+ * @param {HTMLElement} el
+ * @param {string} [msg]
+ */
+function setEmpty(el, msg) {
+  if (!el) return;
+  el.innerHTML = `
+    <div class="error-state">
+      <div class="error-state__icon">📭</div>
+      <p>${msg || t('no_data')}</p>
+    </div>`;
+}
+
+/**
+ * Convert a Google Drive shareable link to a direct image URL.
+ * Input:  https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+ * Output: https://drive.google.com/thumbnail?id=FILE_ID&sz=w400
+ * @param {string} url
+ * @param {number} [size]
+ * @returns {string}
+ */
+function driveThumb(url, size = 400) {
+  if (!url || url === '#') return '';
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (!match) return url;
+  return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w${size}`;
+}
+
+/**
+ * Returns a safe photo URL — falls back to initials avatar if empty.
+ * @param {string} url
+ * @param {string} name
+ * @returns {string}
+ */
+function safePhoto(url, name = '?') {
+  if (url && url !== '#') return driveThumb(url, 300) || url;
+  // SVG initials avatar (data URI)
+  const initials = name.split(' ').slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+    <rect width="160" height="160" fill="#800000"/>
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="52" font-weight="700" fill="#FFF4D6">${initials}</text>
+  </svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
+/**
+ * Get file icon emoji from file type string.
+ * @param {string} type
+ * @returns {string}
+ */
+function fileIcon(type) {
+  return FILE_ICONS[type?.toLowerCase()] ?? FILE_ICONS.default;
+}
+
+/**
+ * Format a time range string: "08:30 – 10:30"
+ * @param {string} start
+ * @param {string} [end]
+ * @returns {string}
+ */
+function timeRange(start, end) {
+  if (!end || start === end) return start;
+  return `${start} – ${end}`;
+}
+
+
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
+let _toastTimer = null;
+
+/** @param {string} message */
+export function showToast(message) {
+  let toast = $('cmip-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'cmip-toast';
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+
+/* ============================================================
+   COUNTDOWN TIMER
+   ============================================================ */
+
+/**
+ * Initialise the live countdown timer.
+ * Targets elements: #cd-days, #cd-hours, #cd-mins, #cd-secs
+ * @param {string} isoDate — target date in ISO 8601
+ */
+export function initCountdown(isoDate) {
+  const target = new Date(isoDate).getTime();
+
+  const elDays  = $('cd-days');
+  const elHours = $('cd-hours');
+  const elMins  = $('cd-mins');
+  const elSecs  = $('cd-secs');
+  const elMsg   = $('cd-ended-msg');
+
+  if (!elDays) return;
+
+  function pad(n) { return String(Math.max(0, n)).padStart(2, '0'); }
+
+  function tick() {
+    const now  = Date.now();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      // Conference has started
+      if (elMsg) {
+        elMsg.textContent = t('countdown_ended');
+        elMsg.style.display = 'block';
+      }
+      const wrap = $q('.countdown');
+      if (wrap) wrap.style.display = 'none';
+      return;
+    }
+
+    const d = Math.floor(diff / 86_400_000);
+    const h = Math.floor((diff % 86_400_000) / 3_600_000);
+    const m = Math.floor((diff % 3_600_000)  / 60_000);
+    const s = Math.floor((diff % 60_000)     / 1_000);
+
+    if (elDays)  elDays.textContent  = pad(d);
+    if (elHours) elHours.textContent = pad(h);
+    if (elMins)  elMins.textContent  = pad(m);
+    if (elSecs)  elSecs.textContent  = pad(s);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+
+/** Initialise IntersectionObserver for .reveal / .reveal-left / .reveal-right */
+export function initScrollReveal() {
+  const targets = $all('.reveal, .reveal-left, .reveal-right');
+  if (!targets.length) return;
+
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('active');
+        observer.unobserve(e.target);
+      }
+    }),
+    { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
+  );
+
+  targets.forEach(el => observer.observe(el));
+}
+
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+
+/** Navbar scroll class + active section highlighting */
+export function initNav() {
+  const navbar = $q('.navbar');
+  if (!navbar) return;
+
+  // Scroll class
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  // Active section highlighting via IntersectionObserver
+  const sections = $all('section[id]');
+  const navLinks = $all('.navbar__links a[href^="#"], .navbar__drawer a[href^="#"]');
+
+  const sectionObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(a => {
+            const href = a.getAttribute('href');
+            a.classList.toggle('active', href === `#${id}`);
+          });
+        }
+      });
+    },
+    { threshold: 0.35 }
+  );
+
+  sections.forEach(s => sectionObserver.observe(s));
+}
+
+/** Mobile hamburger drawer */
+export function initNavDrawer() {
+  const hamburger = $q('.navbar__hamburger');
+  const drawer    = $q('.navbar__drawer');
+  if (!hamburger || !drawer) return;
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = drawer.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Close drawer when a link is clicked
+  drawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!navbar?.contains(e.target) && !hamburger.contains(e.target)) {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+    }
+  });
+}
+
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+export function initBackToTop() {
+  const btn = $q('.fab-btn--top');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+
+/* ============================================================
+   PROGRAMME / AGENDA TABS
+   ============================================================ */
+
+/**
+ * Render the full programme section with day tabs.
+ * Target: container element wrapping .agenda-tabs + .agenda-panels
+ * @param {string} containerId
+ */
+export async function renderProgramme(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const byDay = await fetchProgrammeAll();
+    const days  = Object.keys(byDay).map(Number).sort();
+
+    if (!days.length) {
+      setEmpty(container);
+      return;
+    }
+
+    const lang       = getLang();
+    const dayLabels  = lang === 'en' ? CONFERENCE.dates.days_en : CONFERENCE.dates.days_ms;
+
+    // Build tabs
+    const tabsHtml = days.map((day, i) => `
+      <button
+        class="agenda-tab-btn${i === 0 ? ' active' : ''}"
+        data-day="${day}"
+        aria-controls="agenda-day-${day}"
+        aria-selected="${i === 0}"
+      >
+        ${dayLabels[day - 1] ?? `Day ${day}`}
+      </button>
+    `).join('');
+
+    // Build panels
+    const panelsHtml = days.map((day, i) => `
+      <div
+        id="agenda-day-${day}"
+        class="agenda-content${i === 0 ? ' active' : ''}"
+        role="tabpanel"
+      >
+        <div class="glass-card">
+          <div class="programme-table-wrap">
+            <table class="programme-table">
+              <thead>
+                <tr>
+                  <th>${lang === 'en' ? 'Time' : 'Masa'}</th>
+                  <th>${lang === 'en' ? 'Programme' : 'Atur Cara'}</th>
+                  <th>${lang === 'en' ? 'Speaker' : 'Pembentang'}</th>
+                  <th>${lang === 'en' ? 'Venue' : 'Lokasi'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${(byDay[day] || []).map(row => {
+                  const typeConf = PROGRAMME_TYPES[row.type] || {};
+                  const badge = typeConf.css
+                    ? `<br><span class="type-badge ${typeConf.css}">${lang === 'en' ? typeConf.label_en : typeConf.label_ms}</span>`
+                    : '';
+                  return `
+                    <tr>
+                      <td class="time-cell">${timeRange(row.time_start, row.time_end)}</td>
+                      <td>${lang === 'en' ? row.title_en : row.title_ms}${badge}</td>
+                      <td>${lang === 'en' ? (row.speaker_en || '—') : (row.speaker_ms || '—')}</td>
+                      <td>${lang === 'en' ? (row.venue_en || '—') : (row.venue_ms || '—')}</td>
+                    </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="agenda-tabs" role="tablist" aria-label="${t('section_programme')}">
+        ${tabsHtml}
+      </div>
+      <div class="agenda-panels">
+        ${panelsHtml}
+      </div>`;
+
+    // Attach tab click logic
+    container.querySelectorAll('.agenda-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        container.querySelectorAll('.agenda-tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        container.querySelectorAll('.agenda-content').forEach(p => p.classList.remove('active'));
+
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        const panel = $(`agenda-day-${btn.dataset.day}`);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+  } catch (err) {
+    console.error('[CMIP] renderProgramme error:', err);
+    setError(container);
+  }
+}
+
+
+/* ============================================================
+   SPEAKERS
+   ============================================================ */
+
+/**
+ * Render the speakers grid.
+ * @param {string} containerId
+ */
+export async function renderSpeakers(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const speakers = await fetchSpeakers();
+
+    if (!speakers?.length) {
+      setEmpty(container);
+      return;
+    }
+
+    const lang = getLang();
+
+    container.innerHTML = `
+      <div class="speaker-grid">
+        ${speakers.map(sp => {
+          const name  = lang === 'en' ? sp.name_en  : sp.name_ms;
+          const title = lang === 'en' ? sp.title_en : sp.title_ms;
+          const org   = lang === 'en' ? sp.org_en   : sp.org_ms;
+          const topic = lang === 'en' ? sp.topic_en : sp.topic_ms;
+          const photo = safePhoto(sp.photo_url, name);
+
+          return `
+            <div class="speaker-card reveal" data-delay="${Math.min(speakers.indexOf(sp) + 1, 5)}">
+              <img
+                class="speaker-card__photo"
+                src="${photo}"
+                alt="${name}"
+                loading="lazy"
+                onerror="this.src='${safePhoto('', name)}'"
+              >
+              <div class="speaker-card__name">${name}</div>
+              <div class="speaker-card__role">${title}</div>
+              <div class="speaker-card__org">${org}</div>
+              ${topic ? `<div class="speaker-card__topic">"${topic}"</div>` : ''}
+            </div>`;
+        }).join('')}
+      </div>`;
+
+    // Re-init reveal for newly added elements
+    initScrollReveal();
+
+  } catch (err) {
+    console.error('[CMIP] renderSpeakers error:', err);
+    setError(container);
+  }
+}
+
+
+/* ============================================================
+   DOWNLOADS
+   ============================================================ */
+
+/**
+ * Render download cards.
+ * @param {string} containerId
+ * @param {'main'|'rise'|undefined} [section]
+ */
+export async function renderDownloads(containerId, section) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const items = await fetchDownloads(section);
+
+    if (!items?.length) {
+      setEmpty(container);
+      return;
+    }
+
+    const lang = getLang();
+
+    container.innerHTML = `
+      <div class="download-grid">
+        ${items.map(item => {
+          const title = lang === 'en' ? item.title_en : item.title_ms;
+          const icon  = fileIcon(item.file_type);
+          const url   = item.drive_url || '#';
+
+          return `
+            <div class="download-card reveal">
+              <div class="download-card__icon">${icon}</div>
+              <div class="download-card__meta">
+                <div class="download-card__title">${title}</div>
+                <div class="download-card__type">${item.file_type?.toUpperCase() || 'FILE'}</div>
+                <a
+                  class="download-card__btn"
+                  href="${url}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ${url === '#' ? 'aria-disabled="true"' : ''}
+                >
+                  ⬇ ${t('download')}
+                </a>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>`;
+
+    initScrollReveal();
+
+  } catch (err) {
+    console.error('[CMIP] renderDownloads error:', err);
+    setError(container);
+  }
+}
+
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+
+/**
+ * Render the photo gallery grid with lightbox support.
+ * Shows "Coming Soon" placeholder when gallery is empty.
+ * @param {string} containerId
+ */
+export async function renderGallery(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const items = await fetchGallery();
+
+    if (!items?.length) {
+      // Coming soon placeholder
+      container.innerHTML = `
+        <div class="gallery-grid">
+          <div class="gallery-placeholder">
+            <div class="gallery-placeholder__icon">📸</div>
+            <h3 class="section-title" style="font-size:1.4rem; margin-bottom:0.5rem;">
+              ${t('gallery_placeholder_title')}
+            </h3>
+            <p class="gallery-placeholder__text">${t('gallery_placeholder_desc')}</p>
+          </div>
+        </div>`;
+      return;
+    }
+
+    const lang = getLang();
+
+    container.innerHTML = `
+      <div class="gallery-grid" id="gallery-grid">
+        ${items.map((item, i) => {
+          const url   = item.url || driveThumb(item.drive_url, 800);
+          const thumb = item.thumb_url || driveThumb(item.drive_url, 400) || url;
+          const title = lang === 'en' ? item.title_en : item.title_ms;
+          return `
+            <div class="gallery-item reveal" data-index="${i}" data-src="${url}" data-caption="${title}">
+              <img src="${thumb}" alt="${title}" loading="lazy">
+              <div class="gallery-item__overlay">🔍</div>
+            </div>`;
+        }).join('')}
+      </div>
+
+      <!-- Lightbox -->
+      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="${lang === 'en' ? 'Image preview' : 'Pratonton gambar'}">
+        <button class="lightbox__close" id="lightbox-close" aria-label="${t('close')}">✕</button>
+        <img class="lightbox__img" id="lightbox-img" src="" alt="">
+      </div>`;
+
+    initLightbox();
+    initScrollReveal();
+
+  } catch (err) {
+    console.error('[CMIP] renderGallery error:', err);
+    setError(container);
+  }
+}
+
+/** Attach lightbox open/close events. */
+function initLightbox() {
+  const lightbox  = $('lightbox');
+  const imgEl     = $('lightbox-img');
+  const closeBtn  = $('lightbox-close');
+  if (!lightbox || !imgEl) return;
+
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => {
+      imgEl.src = item.dataset.src || '';
+      imgEl.alt = item.dataset.caption || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    imgEl.src = '';
+    document.body.style.overflow = '';
+  };
+
+  closeBtn?.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+}
+
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+
+/**
+ * Render FAQ accordion.
+ * @param {string} containerId
+ * @param {'main'|'rise'|undefined} [section]
+ */
+export async function renderFaq(containerId, section) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const items = await fetchFaq(section);
+
+    if (!items?.length) {
+      setEmpty(container);
+      return;
+    }
+
+    const lang = getLang();
+
+    container.innerHTML = `
+      <div class="faq-list">
+        ${items.map((item, i) => {
+          const q = lang === 'en' ? item.question_en : item.question_ms;
+          const a = lang === 'en' ? item.answer_en   : item.answer_ms;
+          return `
+            <div class="faq-item" id="faq-item-${i}">
+              <button
+                class="faq-question"
+                aria-expanded="false"
+                aria-controls="faq-answer-${i}"
+              >
+                <span>${q}</span>
+                <span class="faq-question__icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" id="faq-answer-${i}" role="region">
+                <p>${a}</p>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>`;
+
+    initFaqAccordion(container);
+
+  } catch (err) {
+    console.error('[CMIP] renderFaq error:', err);
+    setError(container);
+  }
+}
+
+/**
+ * Attach accordion toggle logic to rendered FAQ items.
+ * @param {HTMLElement} [scope] — defaults to document
+ */
+export function initFaqAccordion(scope = document) {
+  scope.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item    = btn.closest('.faq-item');
+      const isOpen  = item.classList.contains('open');
+
+      // Close all others in the same list
+      btn.closest('.faq-list')?.querySelectorAll('.faq-item.open').forEach(open => {
+        open.classList.remove('open');
+        open.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+}
+
+
+/* ============================================================
+   SPONSORS
+   ============================================================ */
+
+/**
+ * Render sponsors/partners logo wall.
+ * @param {string} containerId
+ */
+export async function renderSponsors(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const items = await fetchSponsors();
+
+    if (!items?.length) {
+      setEmpty(container);
+      return;
+    }
+
+    const lang = getLang();
+
+    container.innerHTML = `
+      <div class="sponsors-grid">
+        ${items.map(item => {
+          const name = lang === 'en' ? item.full_name_en : item.full_name_ms;
+          const logo = item.logo_url ? driveThumb(item.logo_url, 200) : '';
+          const href = item.website || '#';
+
+          return `
+            <a
+              class="sponsor-item"
+              href="${href}"
+              target="${href !== '#' ? '_blank' : '_self'}"
+              rel="noopener noreferrer"
+              title="${name}"
+            >
+              ${logo
+                ? `<img src="${logo}" alt="${name}" loading="lazy">`
+                : `<span class="sponsor-item__text">${item.name || name}</span>`
+              }
+            </a>`;
+        }).join('')}
+      </div>`;
+
+  } catch (err) {
+    console.error('[CMIP] renderSponsors error:', err);
+    setError(container);
+  }
+}
+
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+
+/**
+ * Render contact / committee cards.
+ * @param {string} containerId
+ */
+export async function renderContact(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const items = await fetchContact();
+
+    if (!items?.length) {
+      setEmpty(container);
+      return;
+    }
+
+    const lang = getLang();
+
+    container.innerHTML = `
+      <div class="contact-grid">
+        ${items.map(item => {
+          const name = lang === 'en' ? item.name_en : item.name_ms;
+          const role = lang === 'en' ? item.role_en : item.role_ms;
+          return `
+            <div class="contact-card reveal">
+              <div class="contact-card__icon">📬</div>
+              <div class="contact-card__name">${name}</div>
+              <div class="contact-card__role">${role}</div>
+              ${item.email
+                ? `<a class="contact-card__email" href="mailto:${item.email}">${item.email}</a>`
+                : ''}
+              ${item.phone
+                ? `<div class="contact-card__email" style="margin-top:0.5rem;">${item.phone}</div>`
+                : ''}
+            </div>`;
+        }).join('')}
+      </div>`;
+
+    initScrollReveal();
+
+  } catch (err) {
+    console.error('[CMIP] renderContact error:', err);
+    setError(container);
+  }
+}
+
+
+/* ============================================================
+   ABOUT — from site config
+   ============================================================ */
+
+/**
+ * Render the About section text from site config.
+ * @param {string} containerId
+ */
+export async function renderAbout(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  try {
+    const cfg  = await fetchSiteConfig();
+    const lang = getLang();
+    const text = lang === 'en' ? cfg.about_en : cfg.about_ms;
+    const mil  = lang === 'en' ? cfg.milestone_desc_en : cfg.milestone_desc_ms;
+
+    if (text) {
+      const aboutText = container.querySelector('[data-about-text]');
+      if (aboutText) aboutText.textContent = text;
+    }
+    if (mil) {
+      const milText = container.querySelector('[data-milestone-text]');
+      if (milText) milText.textContent = mil;
+    }
+  } catch (err) {
+    console.warn('[CMIP] renderAbout: could not load config', err);
+  }
+}
+
+
+/* ============================================================
+   AWARDS / GENERAL TABS
+   ============================================================ */
+
+/**
+ * Initialise general tab switching for Awards section.
+ * Expects: .tab-nav-btn[data-target="PANEL_ID"] + .tab-panel[id="PANEL_ID"]
+ */
+export function initAwardsTabs() {
+  const container = $q('.tab-container');
+  if (!container) return;
+
+  container.querySelectorAll('.tab-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target;
+      if (!targetId) return;
+
+      container.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+      container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const panel = $(targetId);
+      if (panel) panel.classList.add('active');
+    });
+  });
+}
+
+
+/* ============================================================
+   RISE — CATEGORIES (rendered from config, not Sheets)
+   ============================================================ */
+
+/**
+ * Render RISE category cards from config.js (no API call needed).
+ * @param {string} containerId
+ */
+export function renderRiseCategories(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  const lang = getLang();
+
+  container.innerHTML = `
+    <div class="rise-cat-grid">
+      ${RISE_CONFIG.categories.map(cat => {
+        const title  = lang === 'en' ? cat.title_en  : cat.title_ms;
+        const type   = lang === 'en' ? cat.type_en   : cat.type_ms;
+        const method = lang === 'en' ? cat.method_en : cat.method_ms;
+        const desc   = lang === 'en' ? cat.desc_en   : cat.desc_ms;
+        const detail = lang === 'en' ? cat.detail_en : cat.detail_ms;
+        const label  = lang === 'en' ? cat.label_en  : cat.label_ms;
+
+        return `
+          <div class="rise-cat-card reveal" data-delay="${RISE_CONFIG.categories.indexOf(cat) + 1}">
+            <div class="rise-cat-card__num">${cat.num}</div>
+            <div class="rise-cat-card__badge">${label} — ${type}</div>
+            <div class="rise-cat-card__title">${title}</div>
+            <div class="rise-cat-card__desc">${desc}</div>
+            <div class="rise-cat-card__meta">
+              <span>📋 ${method}</span>
+              <span>📐 ${detail}</span>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`;
+
+  initScrollReveal();
+}
+
+
+/* ============================================================
+   RISE — POSTER / ABSTRACT GALLERY
+   ============================================================ */
+
+/**
+ * Render RISE poster/abstract gallery from Sheets.
+ * @param {string} containerId
+ * @param {'poster'|'kolokium'|'qip'|undefined} [category]
+ */
+export async function renderRiseGallery(containerId, category) {
+  const container = $(containerId);
+  if (!container) return;
+
+  setLoading(container);
+
+  try {
+    const items = await fetchRise(category);
+
+    if (!items?.length) {
+      setEmpty(container);
+      return;
+    }
+
+    const lang = getLang();
+
+    // Build filter tabs if no specific category was requested
+    const cats = [...new Set(items.map(i => i.category))];
+    const filterHtml = !category && cats.length > 1 ? `
+      <div class="agenda-tabs" style="margin-bottom:2rem;">
+        <button class="agenda-tab-btn active" data-filter="all">
+          ${lang === 'en' ? 'All' : 'Semua'} (${items.length})
+        </button>
+        ${cats.map(c => {
+          const catConf = RISE_CONFIG.categories.find(r => r.id === c);
+          const label   = catConf ? (lang === 'en' ? catConf.label_en : catConf.label_ms) : c;
+          const count   = items.filter(i => i.category === c).length;
+          return `<button class="agenda-tab-btn" data-filter="${c}">${label} (${count})</button>`;
+        }).join('')}
+      </div>` : '';
+
+    container.innerHTML = `
+      ${filterHtml}
+      <div class="rise-poster-grid" id="rise-poster-grid">
+        ${items.map(item => {
+          const title  = lang === 'en' ? item.title_en  : item.title_ms;
+          const author = lang === 'en' ? item.author_en : item.author_ms;
+          const branch = lang === 'en' ? item.cawangan_en : item.cawangan_ms;
+          const catConf  = RISE_CONFIG.categories.find(r => r.id === item.category);
+          const catLabel = catConf ? (lang === 'en' ? catConf.label_en : catConf.label_ms) : item.category;
+          const thumb    = driveThumb(item.drive_url, 300);
+
+          return `
+            <div class="rise-poster-card" data-category="${item.category}">
+              <div class="rise-poster-card__thumb">
+                ${thumb
+                  ? `<img src="${thumb}" alt="${title}" loading="lazy">`
+                  : '📄'}
+              </div>
+              <div class="rise-poster-card__body">
+                <div class="rise-poster-card__cat">${catLabel}</div>
+                <div class="rise-poster-card__title">${title}</div>
+                <div class="rise-poster-card__author">👤 ${author} · ${branch}</div>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                  ${item.drive_url && item.drive_url !== '#'
+                    ? `<a class="btn btn--gold btn--sm" href="${item.drive_url}" target="_blank" rel="noopener">${t('view')} Poster</a>`
+                    : ''}
+                  ${item.abstract_url && item.abstract_url !== '#'
+                    ? `<a class="btn btn--outline btn--sm" href="${item.abstract_url}" target="_blank" rel="noopener">${t('view')} Abstrak</a>`
+                    : ''}
+                </div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>`;
+
+    // Filter tabs logic
+    if (!category) {
+      container.querySelectorAll('.agenda-tab-btn[data-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          container.querySelectorAll('.agenda-tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filter = btn.dataset.filter;
+          container.querySelectorAll('.rise-poster-card').forEach(card => {
+            const show = filter === 'all' || card.dataset.category === filter;
+            card.style.display = show ? '' : 'none';
+          });
+        });
+      });
+    }
+
+  } catch (err) {
+    console.error('[CMIP] renderRiseGallery error:', err);
+    setError(container);
+  }
+}
+
+
+/* ============================================================
+   RISE — DOWNLOADS
+   ============================================================ */
+
+/** Render RISE-specific downloads. Delegates to renderDownloads. */
+export async function renderRiseDownloads(containerId) {
+  return renderDownloads(containerId, 'rise');
+}
+
+
+/* ============================================================
+   RISE — VOTING STUB
+   ============================================================ */
+
+/**
+ * Render the voting section.
+ * If voting is disabled (RISE_CONFIG.voting.enabled = false),
+ * shows a placeholder. When enabled, this function can be
+ * replaced with real voting UI — no other files need to change.
+ * @param {string} containerId
+ */
+export function renderVoting(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+
+  const lang = getLang();
+  const cfg  = RISE_CONFIG.voting;
+
+  const award = lang === 'en' ? cfg.award_en : cfg.award_ms;
+
+  if (!cfg.enabled) {
+    // Voting not yet open — show teaser
+    const opens = lang === 'en' ? cfg.opens_en : cfg.opens_ms;
+    container.innerHTML = `
+      <div class="voting-stub">
+        <div class="voting-stub__icon">🗳️</div>
+        <div class="voting-stub__title">${award}</div>
+        <p class="voting-stub__text">${opens}</p>
+      </div>`;
+    return;
+  }
+
+  // Voting is enabled — link to external webapp
+  const isConfigured = cfg.url && !cfg.url.includes('REPLACE_WITH');
+  const btnLabel     = lang === 'en' ? cfg.btn_en : cfg.btn_ms;
+  const target       = cfg.open_new_tab ? '_blank' : '_self';
+
+  container.innerHTML = `
+    <div class="voting-stub" style="border-color:rgba(250,206,92,0.6);">
+      <div class="voting-stub__icon">🗳️</div>
+      <div class="voting-stub__title">${award}</div>
+      ${isConfigured
+        ? `<a
+             class="btn btn--gold"
+             href="${cfg.url}"
+             target="${target}"
+             rel="noopener noreferrer"
+             style="margin-top:var(--sp-6); display:inline-flex;"
+           >
+             🗳️ ${btnLabel}
+           </a>`
+        : `<p class="voting-stub__text" style="color:rgba(250,206,92,0.5); font-size:0.8rem; margin-top:var(--sp-4);">
+             [Voting URL not configured — update RISE.voting.url in config.js]
+           </p>`
+      }
+    </div>`;
+}
+
+
+/* ============================================================
+   LANGUAGE CHANGE — RE-RENDER
+   Called by lang.js after toggling the active language.
+   Re-renders all data-driven sections with the new language.
+   ============================================================ */
+
+/**
+ * Re-render all dynamic sections after a language switch.
+ * Only re-renders sections that are present on the current page.
+ */
+export async function reRenderAll() {
+  const jobs = [];
+
+  if ($('programme-container'))  jobs.push(renderProgramme('programme-container'));
+  if ($('speakers-container'))   jobs.push(renderSpeakers('speakers-container'));
+  if ($('downloads-container'))  jobs.push(renderDownloads('downloads-container', 'main'));
+  if ($('gallery-container'))    jobs.push(renderGallery('gallery-container'));
+  if ($('faq-container'))        jobs.push(renderFaq('faq-container', 'main'));
+  if ($('sponsors-container'))   jobs.push(renderSponsors('sponsors-container'));
+  if ($('contact-container'))    jobs.push(renderContact('contact-container'));
+  if ($('about-container'))      jobs.push(renderAbout('about-container'));
+
+  // RISE page
+  if ($('rise-categories-container')) renderRiseCategories('rise-categories-container');
+  if ($('rise-gallery-container'))    jobs.push(renderRiseGallery('rise-gallery-container'));
+  if ($('rise-downloads-container'))  jobs.push(renderRiseDownloads('rise-downloads-container'));
+  if ($('rise-faq-container'))        jobs.push(renderFaq('rise-faq-container', 'rise'));
+  if ($('rise-voting-container'))     renderVoting('rise-voting-container');
+
+  await Promise.allSettled(jobs);
+}
