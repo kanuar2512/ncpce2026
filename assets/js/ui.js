@@ -905,23 +905,21 @@ export function renderRiseCategories(containerId) {
   container.innerHTML = `
     <div class="rise-cat-grid">
       ${RISE_CONFIG.categories.map((cat, idx) => {
-        const title  = lang === 'en' ? cat.title_en : cat.title_ms;
-        const type   = lang === 'en' ? cat.type_en  : cat.type_ms;
+        const title  = lang === 'en' ? cat.title_en  : cat.title_ms;
+        const type   = lang === 'en' ? cat.type_en   : cat.type_ms;
         const method = lang === 'en' ? cat.method_en : cat.method_ms;
-        const desc   = lang === 'en' ? cat.desc_en  : cat.desc_ms;
-        const label  = lang === 'en' ? cat.label_en : cat.label_ms;
+        const label  = lang === 'en' ? cat.label_en  : cat.label_ms;
 
         return `
           <div class="rise-cat-card reveal" data-delay="${idx + 1}">
             <div class="rise-cat-card__num">${cat.icon || cat.num}</div>
             <div class="rise-cat-card__badge">${label} · ${type}</div>
             <div class="rise-cat-card__title">${title}</div>
-            <div class="rise-cat-card__desc">${desc}</div>
             <div class="rise-cat-card__meta">
               <span>📋 ${method}</span>
             </div>
             <a href="#rise-gallery" class="btn btn--outline btn--sm" style="margin-top:1rem;"
-               onclick="document.querySelector('[data-filter=\\'${cat.id}\\']')?.click()">
+               onclick="document.querySelector('[data-filter=\\'${cat.num}\\']')?.click()">
               ${lang === 'en' ? 'View Presentations' : 'Lihat Pembentangan'} →
             </a>
           </div>`;
