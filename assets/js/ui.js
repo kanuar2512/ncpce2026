@@ -913,7 +913,7 @@ export function renderRiseCategories(containerId) {
         return `
           <div class="rise-cat-card reveal" data-delay="${idx + 1}">
             <div class="rise-cat-card__badge-wrap">
-              <div class="rise-cat-card__badge">${label} · ${type}</div>
+              <div class="rise-cat-card__badge">${label}</div>
             </div>
             <div class="rise-cat-card__title">${title}</div>
             <a href="#rise-gallery" class="btn btn--outline btn--sm rise-cat-card__cta"
