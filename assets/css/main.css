@@ -560,34 +560,32 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   border-color: var(--clr-gold) !important;
 }
 
-/* ── Conference sub-nav ── */
+/* ── Conference sub-nav — mirrors rise-subnav style ── */
 .conf-subnav {
-  background: rgba(var(--clr-primary-rgb, 128,0,0), 0.97);
-  border-bottom: 1px solid rgba(250, 206, 92, 0.15);
+  background: rgba(var(--clr-primary-deep), 0.97);
+  border-bottom: 1px solid rgba(250, 206, 92, 0.2);
   position: sticky;
   top: var(--nav-height);
   z-index: 890;
+  padding: var(--sp-3) var(--container-pad);
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
   backdrop-filter: blur(8px);
 }
 
 .conf-subnav__inner {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: var(--sp-2) var(--container-pad);
-  display: flex;
-  justify-content: center;
-  gap: var(--sp-1);
-  flex-wrap: wrap;
-  overflow-x: auto;
+  display: contents; /* flatten — links sit directly in .conf-subnav */
 }
 
 .conf-subnav__link {
   font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 1px;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 1px;
   color: rgba(var(--clr-cream-rgb), 0.6);
-  padding: var(--sp-2) var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
   border-radius: var(--radius-full);
   white-space: nowrap;
   transition: var(--transition-fast);
