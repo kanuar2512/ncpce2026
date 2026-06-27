@@ -560,13 +560,13 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   border-color: var(--clr-gold) !important;
 }
 
-/* ── Conference sub-nav — mirrors rise-subnav style ── */
-.conf-subnav {
-  background: rgba(var(--clr-primary-deep), 0.97);
+/* ── Shared sub-nav (used by both index.html and rise.html) ── */
+.rise-subnav {
+  background: #280000;
   border-bottom: 1px solid rgba(250, 206, 92, 0.2);
   position: sticky;
   top: var(--nav-height);
-  z-index: 890;
+  z-index: 900;
   padding: var(--sp-3) var(--container-pad);
   display: flex;
   justify-content: center;
@@ -575,11 +575,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   backdrop-filter: blur(8px);
 }
 
-.conf-subnav__inner {
-  display: contents; /* flatten — links sit directly in .conf-subnav */
-}
-
-.conf-subnav__link {
+.rise-subnav a {
   font-size: var(--fs-xs);
   font-weight: 700;
   text-transform: uppercase;
@@ -587,12 +583,12 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   color: rgba(var(--clr-cream-rgb), 0.6);
   padding: var(--sp-2) var(--sp-4);
   border-radius: var(--radius-full);
-  white-space: nowrap;
   transition: var(--transition-fast);
+  white-space: nowrap;
 }
 
-.conf-subnav__link:hover,
-.conf-subnav__link.active {
+.rise-subnav a:hover,
+.rise-subnav a.active {
   color: var(--clr-gold);
   background: rgba(250, 206, 92, 0.1);
 }

@@ -247,7 +247,7 @@ export function initNav() {
 
   // Active section highlighting — conf-subnav links + drawer links
   const sections    = $all('section[id]');
-  const subNavLinks = $all('.conf-subnav__link, .navbar__drawer a[href^="#"]');
+  const subNavLinks = $all('#conf-subnav a, .navbar__drawer a[href^="#"]');
 
   const sectionObserver = new IntersectionObserver(
     entries => {
