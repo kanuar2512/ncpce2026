@@ -38,12 +38,10 @@
    ============================================================ */
 
 /**
- * The ID of the Google Spreadsheet containing all conference data.
- * Find it in the Sheets URL: /spreadsheets/d/<SPREADSHEET_ID>/edit
- *
- * @type {string}
+ * Container-bound script — no SPREADSHEET_ID needed.
+ * The script is embedded directly in the Google Sheet.
+ * Access via SpreadsheetApp.getActiveSpreadsheet().
  */
-var SPREADSHEET_ID = '1WDOulgi-1JfgQs7z4PV7FcNmJ64A_uNJOjjXOEj2Y9c';
 
 /**
  * Cache duration in seconds.
@@ -378,7 +376,7 @@ function _readSheet(sheetName) {
   }
 
   // Live read from Spreadsheet
-  var ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var ss    = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(sheetName);
 
   if (!sheet) {
@@ -537,7 +535,7 @@ function _truthy(val) {
  *   4. Check the Spreadsheet — new tabs should appear
  */
 function createSheetStructure() {
-  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
 
   var structure = {
     SiteConfig: [
