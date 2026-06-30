@@ -132,8 +132,8 @@ async function fetchSheet(sheet, params = {}) {
     // Timeout
     const timer = setTimeout(() => {
       cleanup();
-      reject(new ApiError('Request timed out after 15 seconds', 408, sheet));
-    }, 15_000);
+      reject(new ApiError('Request timed out after 45 seconds', 408, sheet));
+    }, 45_000);
 
     function cleanup() {
       clearTimeout(timer);
