@@ -3434,3 +3434,138 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   .tab-panel { padding: var(--sp-8) var(--sp-5); }
   .venue-map { height: 240px; }
 }
+
+
+/* ============================================================
+   29. RISE PAGE — hero, sub-nav & FX
+   (consolidated from rise.html inline styles + premium pass)
+   ============================================================ */
+
+/* ── RISE cinematic hero ── */
+.rise-hero {
+  position: relative;
+  width: 100%;
+  min-height: 82vh;
+  background:
+    radial-gradient(150% 130% at 50% -18%, #3a0010 0%, var(--clr-primary-deep) 46%, #0a0708 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: calc(var(--nav-height) + var(--sp-16)) var(--container-pad) var(--sp-16);
+  overflow: hidden;
+}
+
+/* faint concentric rings, slowly rotating */
+.rise-hero::before,
+.rise-hero::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(250, 206, 92, 0.10);
+  pointer-events: none;
+}
+.rise-hero::before { width: 480px; height: 480px; transform: translate(-50%, -50%); animation: fxSpin 70s linear infinite; }
+.rise-hero::after  { width: 720px; height: 720px; transform: translate(-50%, -50%); border-color: rgba(250, 206, 92, 0.05); animation: fxSpin 110s linear infinite reverse; }
+
+.rise-hero > .reveal { position: relative; z-index: 1; }
+
+.rise-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: rgba(250, 206, 92, 0.12);
+  border: 1px solid rgba(250, 206, 92, 0.35);
+  color: var(--clr-gold);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: var(--sp-2) var(--sp-6);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--sp-6);
+}
+
+.rise-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 9vw, 7rem);
+  letter-spacing: 5px;
+  line-height: 1;
+  margin-bottom: var(--sp-4);
+  background: linear-gradient(180deg, var(--gold-3) 0%, var(--gold-1) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 8px 44px rgba(212, 175, 55, 0.18);
+}
+
+.rise-hero__fullname {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  font-weight: 400;
+  color: rgba(var(--clr-cream-rgb), 0.68);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-inline: auto;
+  margin-bottom: var(--sp-8);
+  max-width: 680px;
+}
+
+.rise-hero__conf {
+  font-size: var(--fs-sm);
+  color: rgba(var(--clr-cream-rgb), 0.5);
+  max-width: 720px;
+  margin-inline: auto;
+  margin-bottom: var(--sp-8);
+  line-height: 1.6;
+}
+
+.back-to-main {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: rgba(var(--clr-cream-rgb), 0.55);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: var(--transition-fast);
+  margin-bottom: var(--sp-8);
+}
+.back-to-main:hover { color: var(--clr-gold); }
+
+/* ── RISE sub-nav → glass pill + scroll progress ── */
+.rise-subnav {
+  background: rgba(40, 0, 8, 0.72);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.rise-subnav::-webkit-scrollbar { display: none; }
+
+.rise-subnav a.active {
+  color: var(--clr-primary-deep);
+  background: linear-gradient(135deg, var(--gold-2), var(--clr-gold));
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+}
+
+.rise-subnav__progress {
+  position: absolute;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--clr-gold), var(--gold-2));
+  transition: width 0.1s linear;
+}
+
+@media (max-width: 768px) {
+  .rise-hero { min-height: 70vh; padding-top: calc(var(--nav-height) + var(--sp-10)); }
+  .rise-hero::before { width: 320px; height: 320px; }
+  .rise-hero::after  { width: 460px; height: 460px; }
+}

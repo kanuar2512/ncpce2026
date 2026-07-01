@@ -23,118 +23,7 @@
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="icon" type="image/png" href="assets/img/logo.png">
 
-  <!-- RISE-specific overrides -->
-  <style>
-    /* Deep dark hero for RISE */
-    .rise-hero {
-      position: relative;
-      width: 100%;
-      min-height: 60vh;
-      background: linear-gradient(
-        135deg,
-        var(--clr-primary-deep) 0%,
-        var(--clr-charcoal) 60%,
-        #0a0a0a 100%
-      );
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: calc(var(--nav-height) + 4rem) var(--container-pad) 4rem;
-      overflow: hidden;
-    }
-
-    /* Decorative gold ring */
-    .rise-hero::before {
-      content: '';
-      position: absolute;
-      width: 480px;
-      height: 480px;
-      border-radius: 50%;
-      border: 1px solid rgba(250, 206, 92, 0.1);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .rise-hero::after {
-      content: '';
-      position: absolute;
-      width: 700px;
-      height: 700px;
-      border-radius: 50%;
-      border: 1px solid rgba(250, 206, 92, 0.05);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .rise-hero__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--sp-2);
-      background: rgba(250, 206, 92, 0.12);
-      border: 1px solid rgba(250, 206, 92, 0.35);
-      color: var(--clr-gold);
-      font-size: var(--fs-xs);
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: var(--sp-2) var(--sp-6);
-      border-radius: var(--radius-full);
-      margin-bottom: var(--sp-6);
-    }
-
-    .rise-hero__title {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 8vw, 6rem);
-      color: var(--clr-gold);
-      letter-spacing: 4px;
-      line-height: 1;
-      margin-bottom: var(--sp-3);
-    }
-
-    .rise-hero__fullname {
-      font-family: var(--font-body);
-      font-size: clamp(0.85rem, 2vw, 1.1rem);
-      font-weight: 400;
-      color: rgba(var(--clr-cream-rgb), 0.65);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: var(--sp-8);
-      max-width: 680px;
-    }
-
-    .rise-hero__conf {
-      font-size: var(--fs-sm);
-      color: rgba(var(--clr-cream-rgb), 0.5);
-      margin-bottom: var(--sp-6);
-    }
-
-    /* RISE sub-nav (sticky within page) */
-    /* rise-subnav styles now in main.css */
-
-    /* Back to main link */
-    .back-to-main {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--sp-2);
-      color: rgba(var(--clr-cream-rgb), 0.55);
-      font-size: var(--fs-xs);
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      transition: var(--transition-fast);
-      margin-bottom: var(--sp-8);
-    }
-
-    .back-to-main:hover {
-      color: var(--clr-gold);
-    }
-  </style>
+  <!-- RISE-specific styles are consolidated in main.css (section 29) -->
 </head>
 
 <body>
@@ -222,6 +111,19 @@
      ============================================================ -->
 <section class="rise-hero" id="rise-home" aria-label="RISE Symposium">
 
+  <!-- Cinematic animated background (decorative) -->
+  <div class="hero__fx" aria-hidden="true">
+    <div class="fx-glow fx-glow--a"></div>
+    <div class="fx-glow fx-glow--b"></div>
+    <div class="fx-mesh"></div>
+    <svg class="fx-hex fx-hex--1" viewBox="0 0 100 100"><polygon points="50,3 93,27 93,73 50,97 7,73 7,27"/></svg>
+    <svg class="fx-hex fx-hex--2" viewBox="0 0 100 100"><polygon points="50,3 93,27 93,73 50,97 7,73 7,27"/></svg>
+    <div class="fx-particles">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
   <div class="reveal">
 
     <!-- RISE title -->
@@ -260,6 +162,7 @@
      RISE SUB-NAVIGATION
      ============================================================ -->
 <nav class="rise-subnav" aria-label="RISE navigation">
+  <div class="rise-subnav__progress" id="rise-progress" aria-hidden="true"></div>
   <a href="#rise-intro">
     <span data-lang="ms">Pengenalan</span>
     <span data-lang="en">Overview</span>
@@ -339,7 +242,7 @@
 <!-- ============================================================
      SECTION 2 — CATEGORIES
      ============================================================ -->
-<section id="rise-categories" class="section" style="background:var(--clr-primary-deep); color:var(--clr-cream);" aria-labelledby="rise-cat-heading">
+<section id="rise-categories" class="section bg-maroon-deep" aria-labelledby="rise-cat-heading">
   <div class="container">
 
     <h2 class="section-title" id="rise-cat-heading">
@@ -378,7 +281,7 @@
 <!-- ============================================================
      SECTION 5 — VOTING
      ============================================================ -->
-<section id="rise-voting" class="section" style="background:var(--clr-primary-deep); color:var(--clr-cream);" aria-labelledby="rise-voting-heading">
+<section id="rise-voting" class="section bg-maroon-deep" aria-labelledby="rise-voting-heading">
   <div class="container">
 
     <h2 class="section-title" id="rise-voting-heading">
@@ -600,6 +503,19 @@
     { threshold: 0.4 }
   );
   riseSections.forEach(s => riseObserver.observe(s));
+
+  /* ── 3b. Scroll-progress bar in the RISE sub-nav ── */
+  const riseProgress = document.getElementById('rise-progress');
+  if (riseProgress) {
+    const updRiseProgress = () => {
+      const d = document.documentElement;
+      const max = d.scrollHeight - d.clientHeight;
+      riseProgress.style.width = (max > 0 ? (d.scrollTop / max) * 100 : 0).toFixed(2) + '%';
+    };
+    updRiseProgress();
+    window.addEventListener('scroll', updRiseProgress, { passive: true });
+    window.addEventListener('resize', updRiseProgress);
+  }
 
   /* ── 4. Data renders ── */
   renderRiseCategories('rise-categories-container');
