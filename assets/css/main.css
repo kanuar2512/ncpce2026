@@ -3653,3 +3653,57 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   -webkit-text-fill-color: transparent;
 }
 .voting-stub__text { color: rgba(var(--clr-cream-rgb), 0.72); }
+
+
+/* ── RISE brand monogram watermark (varied placement per section) ── */
+#rise-intro,
+#rise-voting {
+  position: relative;
+  overflow: hidden;
+}
+
+#rise-intro > .container,
+#rise-voting > .container {
+  position: relative;
+  z-index: 1;
+}
+
+#rise-intro::before,
+#rise-voting::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  aspect-ratio: 208 / 320;
+  background: url('../img/monogram.png') no-repeat center / contain;
+  filter: brightness(0) invert(1);
+}
+
+/* Overview — monogram anchored left, tilted right */
+#rise-intro::before {
+  top: 50%;
+  left: -4%;
+  transform: translateY(-50%) rotate(7deg);
+  width: min(60vh, 480px);
+  opacity: 0.10;
+}
+
+/* Voting — monogram anchored right, tilted left */
+#rise-voting::before {
+  top: 46%;
+  right: -3%;
+  transform: translateY(-50%) rotate(-9deg);
+  width: min(64vh, 520px);
+  opacity: 0.11;
+}
+
+@media (max-width: 768px) {
+  #rise-intro::before,
+  #rise-voting::before {
+    left: auto;
+    right: 50%;
+    transform: translate(50%, -50%) rotate(-6deg);
+    width: 82vw;
+    opacity: 0.06;
+  }
+}
