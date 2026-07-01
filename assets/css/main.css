@@ -288,10 +288,24 @@ p {
   text-transform: uppercase;
   letter-spacing: 3px;
   color: var(--clr-gold);
-  text-align: center;
-  margin-bottom: var(--sp-3);
-  display: block;
+  margin-bottom: var(--sp-4);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: fit-content;
+  margin-inline: auto;
 }
+
+/* decorative flanking hairlines */
+.section-subtitle::before,
+.section-subtitle::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--clr-gold));
+  flex-shrink: 0;
+}
+.section-subtitle::after { transform: scaleX(-1); }
 
 
 /* ============================================================
@@ -982,33 +996,46 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   background:
     radial-gradient(100% 140% at 50% 0%, rgba(128, 0, 0, 0.55), transparent 60%),
     linear-gradient(160deg, var(--clr-charcoal) 0%, #240202 100%);
-  border-bottom: 3px solid var(--clr-cream);
+  border-top: 1px solid rgba(212, 175, 55, 0.16);
   text-align: center;
 }
 
 .countdown {
   display: inline-flex;
-  gap: var(--sp-4);
+  gap: var(--sp-5);
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: var(--sp-8);
+  margin-top: var(--sp-10);
 }
 
+/* Premium statistic cards */
 .countdown__item {
-  min-width: 110px;
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(var(--clr-cream-rgb), 0.2);
+  position: relative;
+  min-width: 128px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(212, 175, 55, 0.28);
   border-radius: var(--radius-lg);
-  padding: var(--sp-6) var(--sp-4);
-  transition: var(--transition);
+  padding: var(--sp-8) var(--sp-6) var(--sp-6);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
   cursor: default;
+  overflow: hidden;
+}
+
+/* thin gold accent along the top edge */
+.countdown__item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--clr-gold), transparent);
+  opacity: 0.7;
 }
 
 .countdown__item:hover {
-  transform: translateY(-10px);
-  background: var(--clr-cream);
-  border-color: var(--clr-white);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px);
+  border-color: rgba(212, 175, 55, 0.6);
+  box-shadow: var(--shadow-lg), var(--shadow-gold);
 }
 
 .countdown__num {
@@ -1016,28 +1043,22 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-family: var(--font-body);
   font-size: var(--fs-4xl);
   font-weight: 800;
-  color: var(--clr-cream);
   line-height: 1;
-  margin-bottom: var(--sp-2);
-  transition: var(--transition);
-}
-
-.countdown__item:hover .countdown__num {
-  color: var(--clr-primary);
-  transform: scale(1.08);
+  margin-bottom: var(--sp-3);
+  background: linear-gradient(180deg, var(--gold-3) 0%, var(--gold-1) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
 }
 
 .countdown__label {
   font-family: var(--font-display);
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--clr-cream);
-  transition: var(--transition);
-}
-
-.countdown__item:hover .countdown__label {
-  color: var(--clr-primary);
+  letter-spacing: 3px;
+  color: rgba(var(--clr-cream-rgb), 0.75);
 }
 
 /* Conference date badge */
@@ -1162,29 +1183,38 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
    12. SECTION BACKGROUNDS
    ============================================================ */
 
-/* Maroon (default) */
+/*
+ * Cohesive cinematic background system.
+ * Each colour tier is a layered gradient (radial lift + directional
+ * depth) rather than a flat fill, and sections are separated by a
+ * subtle gold hairline instead of a hard cream border — so the page
+ * flows smoothly from one section to the next.
+ */
+
+/* Maroon */
 .bg-maroon {
-  background-color: var(--clr-primary);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(212, 175, 55, 0.07), transparent 58%),
+    linear-gradient(180deg, var(--clr-primary) 0%, var(--bg-deep-2) 125%);
   color: var(--clr-cream);
+  border-top: 1px solid rgba(212, 175, 55, 0.16);
 }
 
 /* Deep maroon */
 .bg-maroon-deep {
-  background: radial-gradient(120% 120% at 80% 15%,
-    #9c0d0d 0%,
-    var(--clr-primary) 45%,
-    var(--clr-primary-dark) 100%);
+  background:
+    radial-gradient(120% 120% at 82% 12%, #9c0d0d 0%, var(--clr-primary) 44%, var(--bg-deep-2) 100%);
   color: var(--clr-cream);
-  border-bottom: 4px solid var(--clr-cream);
+  border-top: 1px solid rgba(212, 175, 55, 0.16);
 }
 
 /* Dark charcoal */
 .bg-dark {
   background:
-    radial-gradient(100% 120% at 15% 10%, rgba(128, 0, 0, 0.35), transparent 55%),
+    radial-gradient(100% 120% at 15% 8%, rgba(128, 0, 0, 0.38), transparent 55%),
     linear-gradient(165deg, var(--clr-charcoal) 0%, #141414 60%, #0d0d0d 100%);
   color: var(--clr-cream);
-  border-bottom: 4px solid var(--clr-cream);
+  border-top: 1px solid rgba(212, 175, 55, 0.14);
 }
 
 /* Light (white card areas) */
@@ -1195,16 +1225,20 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 /* RISE deep dark */
 .bg-rise {
-  background: linear-gradient(135deg, var(--clr-primary-deep) 0%, var(--clr-charcoal) 100%);
+  background:
+    radial-gradient(90% 90% at 80% 10%, rgba(212, 175, 55, 0.06), transparent 55%),
+    linear-gradient(150deg, var(--clr-primary-deep) 0%, var(--clr-charcoal) 100%);
   color: var(--clr-cream);
-  border-bottom: 4px solid var(--clr-gold);
+  border-top: 1px solid rgba(212, 175, 55, 0.22);
 }
 
 /* About section */
 .bg-about {
-  background: var(--clr-primary-dark);
+  background:
+    radial-gradient(110% 100% at 80% 0%, rgba(90, 0, 21, 0.7), transparent 55%),
+    linear-gradient(180deg, var(--bg-deep-2) 0%, var(--clr-primary-dark) 100%);
   color: var(--clr-cream);
-  border-bottom: 4px solid var(--clr-cream);
+  border-top: 1px solid rgba(212, 175, 55, 0.16);
 }
 
 
@@ -1559,12 +1593,21 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   transition: background 0.2s;
 }
 
+.programme-table tbody tr:nth-child(even) td {
+  background: rgba(var(--clr-primary-rgb), 0.025);
+}
+
 .programme-table tbody tr:hover td {
-  background: rgba(var(--clr-primary-rgb), 0.04);
+  background: rgba(212, 175, 55, 0.10);
 }
 
 .programme-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+/* executive accent: gold rule under the time column */
+.programme-table .time-cell {
+  box-shadow: inset 3px 0 0 rgba(212, 175, 55, 0.55);
 }
 
 .programme-table .time-cell {
