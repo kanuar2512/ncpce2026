@@ -3445,7 +3445,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 .rise-hero {
   position: relative;
   width: 100%;
-  min-height: 82vh;
+  min-height: 100vh;
   background:
     radial-gradient(150% 130% at 50% -18%, #3a0010 0%, var(--clr-primary-deep) 46%, #0a0708 100%);
   display: flex;
@@ -3502,25 +3502,29 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   text-shadow: 0 8px 44px rgba(212, 175, 55, 0.18);
 }
 
+/* gold kicker above the title */
 .rise-hero__fullname {
   font-family: var(--font-body);
-  font-size: clamp(0.85rem, 2vw, 1.1rem);
-  font-weight: 400;
-  color: rgba(var(--clr-cream-rgb), 0.68);
-  letter-spacing: 2px;
+  font-size: clamp(0.7rem, 1.6vw, 0.95rem);
+  font-weight: 700;
+  color: var(--clr-gold);
+  letter-spacing: 3px;
   text-transform: uppercase;
   margin-inline: auto;
-  margin-bottom: var(--sp-8);
-  max-width: 680px;
+  margin-bottom: var(--sp-5);
+  max-width: 720px;
 }
 
+/* prominent symposium subheading */
 .rise-hero__conf {
-  font-size: var(--fs-sm);
-  color: rgba(var(--clr-cream-rgb), 0.5);
-  max-width: 720px;
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 2.6vw, 1.7rem);
+  font-weight: 400;
+  color: rgba(var(--clr-cream-rgb), 0.9);
+  max-width: 820px;
   margin-inline: auto;
-  margin-bottom: var(--sp-8);
-  line-height: 1.6;
+  margin-bottom: var(--sp-10);
+  line-height: 1.5;
 }
 
 .back-to-main {
@@ -3565,7 +3569,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 @media (max-width: 768px) {
-  .rise-hero { min-height: 70vh; padding-top: calc(var(--nav-height) + var(--sp-10)); }
-  .rise-hero::before { width: 320px; height: 320px; }
-  .rise-hero::after  { width: 460px; height: 460px; }
+  .rise-hero { min-height: 100vh; padding-top: calc(var(--nav-height) + var(--sp-10)); }
+  .rise-hero::before { width: 300px; height: 300px; }
+  .rise-hero::after  { width: 440px; height: 440px; }
 }
