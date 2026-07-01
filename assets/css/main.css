@@ -106,25 +106,42 @@
   --nav-height:     72px;
 
   /* — Border Radius — */
-  --radius-sm:   6px;
-  --radius-md:   12px;
+  --radius-sm:   8px;
+  --radius-md:   14px;
   --radius-lg:   20px;
   --radius-xl:   30px;
+  --radius-2xl:  40px;
   --radius-full: 9999px;
 
-  /* — Shadows — */
-  --shadow-sm:   0 2px 8px rgba(0,0,0,0.12);
-  --shadow-md:   0 8px 24px rgba(0,0,0,0.18);
-  --shadow-lg:   0 16px 48px rgba(0,0,0,0.28);
-  --shadow-xl:   0 24px 64px rgba(0,0,0,0.40);
+  /* — Shadows — layered & softly tinted for a premium, realistic depth — */
+  --shadow-sm:   0 1px 2px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.08);
+  --shadow-md:   0 2px 6px rgba(0,0,0,0.10), 0 8px 20px rgba(0,0,0,0.16);
+  --shadow-lg:   0 6px 16px rgba(0,0,0,0.14), 0 18px 40px rgba(0,0,0,0.22);
+  --shadow-xl:   0 12px 28px rgba(0,0,0,0.20), 0 30px 60px rgba(0,0,0,0.32);
+  /* Coloured accent glows — used for hover states on branded elements */
+  --shadow-gold: 0 10px 30px rgba(250, 206, 92, 0.28);
+  --shadow-maroon: 0 12px 34px rgba(128, 0, 0, 0.30);
+
+  /* — Surfaces & borders (subtle, additive helpers) — */
+  --surface-1:      rgba(255, 255, 255, 0.05);
+  --surface-2:      rgba(255, 255, 255, 0.08);
+  --surface-hover:  rgba(255, 255, 255, 0.12);
+  --border-subtle:  rgba(255, 244, 214, 0.14);
+  --border-strong:  rgba(255, 244, 214, 0.32);
+  --ring:           0 0 0 3px rgba(250, 206, 92, 0.55);
 
   /* — Transitions — */
   --ease:        cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --transition:  all 0.35s var(--ease);
-  --transition-fast: all 0.18s ease;
+  --transition-fast: all 0.18s var(--ease-out);
 
   /* — Section padding shorthand — */
   --section-py: clamp(4rem, 8vw, 7rem);
+
+  /* — Anchor scroll offset so sections clear the fixed navbar — */
+  --scroll-offset: calc(var(--nav-height) + 1.25rem);
 }
 
 
@@ -141,7 +158,9 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--scroll-offset);
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   font-size: 16px;
 }
 
@@ -219,9 +238,14 @@ h3 { font-size: var(--fs-xl); }
 h4 { font-size: var(--fs-lg); }
 h5 { font-size: var(--fs-base); font-weight: 600; }
 
+h1, h2, h3, h4, h5, .section-title {
+  text-wrap: balance;   /* tidier multi-line headings on modern browsers */
+}
+
 p {
   font-size: var(--fs-base);
   line-height: 1.75;
+  text-wrap: pretty;    /* avoids typographic orphans */
 }
 
 .text-muted     { color: var(--txt-muted); }
@@ -386,13 +410,28 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 /* Divider */
 .divider {
-  height: 4px;
-  width: 60px;
-  background: var(--clr-gold);
+  height: 3px;
+  width: 72px;
+  background: linear-gradient(90deg, var(--clr-gold), var(--clr-gold-bright));
   border-radius: var(--radius-full);
   margin-inline: auto;
   margin-bottom: var(--sp-8);
+  position: relative;
 }
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(250, 206, 92, 0.5));
+  transform: translateY(-50%);
+}
+
+.divider::before { right: 100%; margin-right: var(--sp-3); }
+.divider::after  { left: 100%;  margin-left: var(--sp-3); transform: translateY(-50%) scaleX(-1); }
 
 
 /* ============================================================
@@ -434,6 +473,12 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   height: 44px;
   width: auto;
   flex-shrink: 0;
+  transition: transform 0.3s var(--ease-out), filter 0.3s var(--ease-out);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+
+.navbar__logo:hover {
+  transform: scale(1.05);
 }
 
 /* Nav links */
@@ -780,6 +825,9 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
    11. BUTTONS
    ============================================================ */
 .btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -792,9 +840,32 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   border-radius: var(--radius-full);
   padding: var(--sp-4) var(--sp-10);
   border: 2px solid transparent;
-  transition: var(--transition);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out),
+              background-color 0.3s var(--ease-out), color 0.3s var(--ease-out),
+              border-color 0.3s var(--ease-out);
   cursor: pointer;
   white-space: nowrap;
+  will-change: transform;
+}
+
+/* Soft light sweep on hover — subtle, premium micro-interaction */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.btn:hover::before { transform: translateX(120%); }
+
+.btn:active { transform: translateY(-1px) scale(0.99); }
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
 }
 
 /* Primary — cream on maroon */
@@ -806,8 +877,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 .btn--primary:hover {
   background: var(--clr-white);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Outline — cream border */
@@ -820,21 +891,22 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 .btn--outline:hover {
   background: var(--clr-cream);
   color: var(--clr-primary);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Gold — for RISE module */
 .btn--gold {
-  background: var(--clr-gold);
+  background: linear-gradient(135deg, var(--clr-gold-bright), var(--clr-gold));
   color: var(--clr-primary-dark);
   border-color: var(--clr-gold);
   box-shadow: var(--shadow-md);
 }
 
 .btn--gold:hover {
-  background: var(--clr-gold-bright);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
+  background: linear-gradient(135deg, var(--clr-gold-bright), var(--clr-gold-bright));
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-gold);
 }
 
 /* Small variant */
@@ -954,7 +1026,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .speaker-card:hover {
-  transform: translateY(-14px);
+  transform: translateY(-10px);
   box-shadow: var(--shadow-xl);
   background: var(--clr-cream);
 }
@@ -1089,22 +1161,30 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 /* — Info Card (About, Venue) — */
 .info-card {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(var(--clr-cream-rgb), 0.18);
+  background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--sp-8);
   transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .info-card:hover {
-  background: rgba(255,255,255,0.11);
-  border-color: rgba(var(--clr-cream-rgb), 0.35);
+  background: linear-gradient(160deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06));
+  border-color: var(--border-strong);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
 }
 
 .info-card__icon {
   font-size: 2.5rem;
   margin-bottom: var(--sp-4);
   color: var(--clr-gold);
+  transition: transform 0.35s var(--ease-spring);
+}
+
+.info-card:hover .info-card__icon {
+  transform: scale(1.12) rotate(-4deg);
 }
 
 .info-card__title {
@@ -1182,7 +1262,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .programme-table th {
-  background: var(--clr-primary);
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
   color: var(--clr-cream);
   font-family: var(--font-body);
   font-size: var(--fs-xs);
@@ -1192,6 +1272,9 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   padding: var(--sp-4) var(--sp-6);
   text-align: left;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .programme-table td {
@@ -1704,6 +1787,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   background: rgba(255,255,255,0.09);
   border-color: rgba(250, 206, 92, 0.55);
   transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
 }
 
 .rise-cat-card:hover::after {
@@ -2117,10 +2201,11 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
    24. FOOTER
    ============================================================ */
 .footer {
-  background: var(--clr-black);
+  background: linear-gradient(180deg, #0b0202 0%, var(--clr-black) 100%);
   color: var(--clr-cream);
   padding-block: var(--sp-16);
   border-top: 3px solid var(--clr-primary);
+  border-image: linear-gradient(90deg, var(--clr-primary), var(--clr-gold), var(--clr-primary)) 1;
 }
 
 .footer__grid {
@@ -2504,4 +2589,63 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     background: white;
     color: black;
   }
+}
+
+
+/* ============================================================
+   27. FINISHING LAYER — accessibility, selection, scrollbars
+   Additive polish only; no existing selectors overridden.
+   ============================================================ */
+
+/* Text selection — on-brand highlight */
+::selection {
+  background: rgba(250, 206, 92, 0.85);
+  color: var(--clr-primary-deep);
+}
+
+/* Custom scrollbars (WebKit + Firefox) — subtle, premium */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(250, 206, 92, 0.45) transparent;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(250, 206, 92, 0.35);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 206, 92, 0.6);
+  background-clip: padding-box;
+}
+
+/*
+ * Reduced-motion: honour the user's OS preference.
+ * Critically, reveal-on-scroll elements are forced visible so that
+ * users with reduced motion (and any edge case where the observer
+ * hasn't fired) always see the content — never a blank section.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .btn::before { display: none; }
 }
