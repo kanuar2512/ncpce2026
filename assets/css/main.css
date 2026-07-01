@@ -1095,13 +1095,13 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   z-index: 0;
   pointer-events: none;
   top: 50%;
-  right: -3%;
+  right: 1%;
   transform: translateY(-50%) rotate(-8deg);
-  width: min(58vh, 460px);
+  width: min(66vh, 540px);
   aspect-ratio: 208 / 320;
   background: url('../img/monogram.png') no-repeat center / contain;
   filter: brightness(0) invert(1);   /* render the maroon mark as a soft white silhouette */
-  opacity: 0.05;
+  opacity: 0.12;
 }
 
 /* On mobile, centre the watermark and ease it back so text stays crisp */
@@ -1111,8 +1111,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   #contact::before {
     right: 50%;
     transform: translate(50%, -50%) rotate(-8deg);
-    width: 70vw;
-    opacity: 0.04;
+    width: 80vw;
+    opacity: 0.08;
   }
 }
 
