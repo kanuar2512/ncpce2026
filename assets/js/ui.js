@@ -1321,6 +1321,196 @@ export function renderVoting(containerId) {
 
 
 /* ============================================================
+   ANNOUNCEMENT BANNER
+   Live-editable notice driven by the `config` sheet.
+   Add these keys to the config sheet to control it (no redeploy):
+     announcement_active  → yes | no      (turns the banner on/off)
+     announcement_ms      → Malay text
+     announcement_en      → English text
+     announcement_level   → info | warning (colour; optional)
+   ============================================================ */
+
+const _ANN_DISMISS_KEY = 'cmip_ann_dismissed';
+
+/**
+ * Render (or hide) the announcement banner from site config.
+ * @param {string} containerId
+ */
+export async function renderAnnouncement(containerId) {
+  const el = $(containerId);
+  if (!el) return;
+
+  try {
+    const cfg    = await fetchSiteConfig();
+    const raw    = String(cfg.announcement_active ?? '').trim().toLowerCase();
+    const isOn   = ['yes', 'true', '1', 'ya', 'on'].includes(raw);
+    const lang   = getLang();
+    const msg    = lang === 'en'
+      ? (cfg.announcement_en || cfg.announcement_ms || '')
+      : (cfg.announcement_ms || cfg.announcement_en || '');
+
+    if (!isOn || !msg) {
+      el.hidden = true;
+      el.innerHTML = '';
+      return;
+    }
+
+    // Respect a per-message dismissal for this browser session
+    let dismissed = '';
+    try { dismissed = sessionStorage.getItem(_ANN_DISMISS_KEY) || ''; } catch (_) {}
+    if (dismissed === msg) {
+      el.hidden = true;
+      el.innerHTML = '';
+      return;
+    }
+
+    const level = String(cfg.announcement_level ?? 'info').trim().toLowerCase();
+    el.hidden = false;
+    el.className = `announce announce--${level === 'warning' ? 'warning' : 'info'}`;
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML = `
+      <div class="announce__inner">
+        <span class="announce__icon" aria-hidden="true">📢</span>
+        <span class="announce__text">${msg}</span>
+        <button class="announce__close" aria-label="${lang === 'en' ? 'Dismiss' : 'Tutup'}">✕</button>
+      </div>`;
+
+    el.querySelector('.announce__close')?.addEventListener('click', () => {
+      el.hidden = true;
+      try { sessionStorage.setItem(_ANN_DISMISS_KEY, msg); } catch (_) {}
+    });
+
+  } catch (err) {
+    console.warn('[CMIP] renderAnnouncement:', err);
+    el.hidden = true;
+  }
+}
+
+
+/* ============================================================
+   NOW / NEXT SESSION INDICATOR
+   Auto-highlights the current and upcoming session using the
+   existing programme data. Time is resolved in Malaysia time
+   (Asia/Kuala_Lumpur) so it is correct regardless of the
+   visitor's device timezone.
+   ============================================================ */
+
+/** Current wall-clock time in Malaysia, as a comparable UTC-based number. */
+function _mytNow() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kuala_Lumpur', hour12: false,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  }).formatToParts(new Date());
+  const get = type => parts.find(p => p.type === type)?.value;
+  let hh = Number(get('hour'));
+  if (hh === 24) hh = 0;   // some engines emit '24' for midnight
+  return Date.UTC(Number(get('year')), Number(get('month')) - 1, Number(get('day')), hh, Number(get('minute')));
+}
+
+/** Comparable value for a session on conference day `d` at "HH:MM". */
+function _sessionVal(day, hhmm) {
+  const [by, bm, bd] = CONFERENCE.dates.start.slice(0, 10).split('-').map(Number);
+  const [h, m] = String(hhmm).split(':').map(Number);
+  return Date.UTC(by, bm - 1, bd + (Number(day) - 1), h || 0, m || 0);
+}
+
+/**
+ * Fetch programme, build a sorted session list, and paint the indicator.
+ * @param {string} containerId
+ */
+export async function renderNowNext(containerId) {
+  const el = $(containerId);
+  if (!el) return;
+
+  try {
+    const byDay = await fetchProgrammeAll();
+    const rows = Object.values(byDay).flat()
+      .filter(r => r && r.time_start)
+      .map(r => ({
+        ...r,
+        _s: _sessionVal(r.day, r.time_start),
+        _e: _sessionVal(r.day, r.time_end || r.time_start),
+      }))
+      .sort((a, b) => a._s - b._s);
+
+    if (!rows.length) { el.hidden = true; return; }
+
+    el._nnRows = rows;   // cached for the ticker
+    _paintNowNext(el);
+  } catch (err) {
+    console.warn('[CMIP] renderNowNext:', err);
+    el.hidden = true;
+  }
+}
+
+/** Paint the Now/Next card from cached rows + current MYT time. */
+function _paintNowNext(el) {
+  const rows = el._nnRows;
+  if (!rows || !rows.length) return;
+
+  const now   = _mytNow();
+  const lang  = getLang();
+  const first = rows[0];
+  const last  = rows[rows.length - 1];
+
+  const title = r => (lang === 'en' ? r.title_en : r.title_ms) || '';
+  const venue = r => (lang === 'en' ? r.venue_en : r.venue_ms) || '';
+  const range = r => timeRange(r.time_start, r.time_end);
+  const meta  = r => `${range(r)}${venue(r) ? ' · ' + venue(r) : ''}`;
+
+  const L = {
+    head:  lang === 'en' ? 'Live now'          : 'Kini Berlangsung',
+    now:   lang === 'en' ? 'Now'               : 'Berlangsung',
+    next:  lang === 'en' ? 'Next'              : 'Seterusnya',
+    soon:  lang === 'en' ? 'Starting soon'     : 'Akan Bermula',
+    brk:   lang === 'en' ? 'Break'             : 'Rehat',
+    firstS:lang === 'en' ? 'First session'     : 'Sesi Pertama',
+    nobody:lang === 'en' ? 'No session in progress' : 'Tiada sesi sedang berlangsung',
+    ended: lang === 'en' ? 'The conference has concluded. Thank you!' : 'Persidangan telah tamat. Terima kasih!',
+  };
+
+  const row = (badge, cls, titleHtml, metaHtml) => `
+    <div class="now-next__row${cls ? ' ' + cls : ''}">
+      <span class="now-next__badge${cls === 'now-next__row--live' ? ' now-next__badge--live' : (badge === L.next ? ' now-next__badge--next' : '')}">${badge}</span>
+      <div class="now-next__body">
+        ${titleHtml ? `<div class="now-next__title">${titleHtml}</div>` : ''}
+        ${metaHtml ? `<div class="now-next__meta">${metaHtml}</div>` : ''}
+      </div>
+    </div>`;
+
+  let body = '';
+
+  if (now < first._s) {
+    body = row(L.soon, '', title(first), `${L.firstS} · ${meta(first)}`);
+  } else if (now >= last._e) {
+    body = row('✓', '', L.ended, '');
+  } else {
+    const current = rows.find(r => now >= r._s && now < r._e);
+    const next    = rows.find(r => r._s > now);
+    body += current
+      ? row(L.now, 'now-next__row--live', title(current), meta(current))
+      : row(L.brk, '', '', L.nobody);
+    if (next) body += row(L.next, '', title(next), meta(next));
+  }
+
+  el.hidden = false;
+  el.innerHTML = `<div class="now-next__head">${L.head}</div>${body}`;
+}
+
+/**
+ * Start the Now/Next auto-refresh (repaints every 30s from cached rows).
+ * @param {string} containerId
+ */
+export function initNowNext(containerId) {
+  const el = $(containerId);
+  if (!el) return;
+  setInterval(() => { if (el._nnRows) _paintNowNext(el); }, 30_000);
+}
+
+
+/* ============================================================
    LANGUAGE CHANGE — RE-RENDER
    Called by lang.js after toggling the active language.
    Re-renders all data-driven sections with the new language.
@@ -1332,6 +1522,9 @@ export function renderVoting(containerId) {
  */
 export async function reRenderAll() {
   const jobs = [];
+
+  if ($('announcement-bar'))     jobs.push(renderAnnouncement('announcement-bar'));
+  if ($('now-next'))             jobs.push(renderNowNext('now-next'));
 
   if ($('programme-container'))  jobs.push(renderProgramme('programme-container'));
   if ($('speakers-container'))   jobs.push(renderSpeakers('speakers-container'));

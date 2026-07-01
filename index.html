@@ -118,6 +118,9 @@
 
 </header>
 
+<!-- Live announcement banner (controlled via the config sheet) -->
+<div id="announcement-bar" class="announce" hidden></div>
+
 <main>
 
 <!-- ============================================================
@@ -450,6 +453,9 @@
       <span data-lang="en">Conference Programme</span>
     </h2>
     <div class="divider"></div>
+
+    <!-- Live "Now / Next" indicator — rendered by renderNowNext() -->
+    <div id="now-next" class="now-next" hidden></div>
 
     <!-- Rendered by renderProgramme() -->
     <div id="programme-container" class="reveal"></div>
@@ -823,6 +829,9 @@
     initNavDrawer,
     initBackToTop,
     initAwardsTabs,
+    initNowNext,
+    renderAnnouncement,
+    renderNowNext,
     renderProgramme,
     renderSpeakers,
     renderDownloads,
@@ -844,8 +853,11 @@
   initScrollReveal();
   initCountdown('2026-07-27T08:30:00');
   initAwardsTabs();
+  initNowNext('now-next');
 
   /* ── 3. Data sections (async — fetch from API / fallback) ── */
+  renderAnnouncement('announcement-bar');
+  renderNowNext('now-next');
   renderAbout('about-container');
   renderProgramme('programme-container');
   renderSpeakers('speakers-container');

@@ -2245,6 +2245,159 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 
 /* ============================================================
+   21b. ANNOUNCEMENT BANNER (live, config-driven)
+   Fixed just below the navbar; only shown when active.
+   ============================================================ */
+.announce {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  z-index: 990;
+  background: linear-gradient(90deg, var(--clr-primary-dark), var(--clr-primary));
+  border-bottom: 1px solid rgba(250, 206, 92, 0.45);
+  box-shadow: var(--shadow-md);
+  animation: fadeIn 0.4s var(--ease);
+}
+
+.announce[hidden] { display: none; }
+
+.announce--warning {
+  background: linear-gradient(90deg, #7a1010, #a31d1d);
+}
+
+.announce__inner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--container-pad);
+  color: var(--clr-cream);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.announce__icon { color: var(--clr-gold); flex-shrink: 0; }
+.announce__text { flex: 1; }
+
+.announce__close {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 244, 214, 0.35);
+  color: var(--clr-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-sm);
+  transition: var(--transition-fast);
+}
+
+.announce__close:hover { background: rgba(255, 255, 255, 0.15); }
+
+
+/* ============================================================
+   21c. NOW / NEXT SESSION INDICATOR
+   ============================================================ */
+.now-next {
+  max-width: 860px;
+  margin: 0 auto var(--sp-10);
+  background: linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5) var(--sp-6);
+  box-shadow: var(--shadow-md);
+}
+
+.now-next[hidden] { display: none; }
+
+.now-next__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--clr-gold);
+  margin-bottom: var(--sp-3);
+}
+
+.now-next__head::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--clr-gold);
+  animation: pulseDot 2s ease-out infinite;
+}
+
+.now-next__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+}
+
+.now-next__row + .now-next__row {
+  border-top: 1px solid rgba(var(--clr-cream-rgb), 0.1);
+}
+
+.now-next__badge {
+  flex-shrink: 0;
+  min-width: 104px;
+  text-align: center;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(var(--clr-cream-rgb), 0.12);
+  color: var(--clr-cream);
+  border: 1px solid rgba(var(--clr-cream-rgb), 0.25);
+}
+
+.now-next__badge--live {
+  background: var(--clr-gold);
+  color: var(--clr-primary-dark);
+  border-color: var(--clr-gold);
+}
+
+.now-next__badge--next {
+  background: rgba(250, 206, 92, 0.1);
+  color: var(--clr-gold);
+  border-color: rgba(250, 206, 92, 0.5);
+}
+
+.now-next__title {
+  font-weight: 600;
+  color: var(--clr-cream);
+  line-height: 1.35;
+}
+
+.now-next__meta {
+  font-size: var(--fs-sm);
+  color: rgba(var(--clr-cream-rgb), 0.65);
+  margin-top: 2px;
+}
+
+@keyframes pulseDot {
+  0%   { box-shadow: 0 0 0 0 rgba(250, 206, 92, 0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(250, 206, 92, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(250, 206, 92, 0); }
+}
+
+@media (max-width: 560px) {
+  .now-next__row { flex-direction: column; gap: var(--sp-1); }
+  .now-next__badge { min-width: 0; align-self: flex-start; }
+}
+
+
+/* ============================================================
    22. TOAST NOTIFICATION
    ============================================================ */
 .toast {

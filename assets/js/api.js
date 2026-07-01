@@ -318,6 +318,11 @@ function getFallbackData(sheet, params = {}) {
         { key: 'about_en',           value: 'The National Conference on Pharmaceutical Crime Enforcement 2026 is the premier platform uniting pharmaceutical enforcement officers across Malaysia to share knowledge, experience and innovation in combating pharmaceutical crime.' },
         { key: 'milestone_desc_ms',  value: 'Tahun ini menandakan jubli emas 50 tahun penguatkuasaan farmasi Malaysia — satu pencapaian bersejarah yang mencerminkan dedikasi generasi pegawai dalam melindungi kesihatan awam.' },
         { key: 'milestone_desc_en',  value: 'This year marks the golden jubilee of 50 years of pharmaceutical enforcement in Malaysia — a historic milestone reflecting the dedication of generations of officers in protecting public health.' },
+        // Live announcement banner — controlled from the `config` sheet during the event.
+        { key: 'announcement_active', value: 'no' },     // yes | no
+        { key: 'announcement_ms',     value: '' },
+        { key: 'announcement_en',     value: '' },
+        { key: 'announcement_level',  value: 'info' },    // info | warning
       ];
 
     case API.SHEETS.PROGRAMME: {
