@@ -1071,6 +1071,52 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 
+/* ── Brand monogram watermark — subtle, behind content on key dark sections ── */
+.countdown-section,
+#speakers,
+#contact {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Keep section content above the watermark */
+.countdown-section > .container,
+#speakers > .container,
+#contact > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.countdown-section::before,
+#speakers::before,
+#contact::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  top: 50%;
+  right: -3%;
+  transform: translateY(-50%) rotate(-8deg);
+  width: min(58vh, 460px);
+  aspect-ratio: 208 / 320;
+  background: url('../img/monogram.png') no-repeat center / contain;
+  filter: brightness(0) invert(1);   /* render the maroon mark as a soft white silhouette */
+  opacity: 0.05;
+}
+
+/* On mobile, centre the watermark and ease it back so text stays crisp */
+@media (max-width: 768px) {
+  .countdown-section::before,
+  #speakers::before,
+  #contact::before {
+    right: 50%;
+    transform: translate(50%, -50%) rotate(-8deg);
+    width: 70vw;
+    opacity: 0.04;
+  }
+}
+
+
 /* ============================================================
    13. CARDS
    ============================================================ */
