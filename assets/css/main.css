@@ -3110,6 +3110,46 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 
 /* ============================================================
+   25c. STAGE 5 — MOTION & MICROINTERACTIONS
+   ============================================================ */
+
+/* Smoother reveal easing */
+.reveal, .reveal-left, .reveal-right {
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+/* Staggered cascade for cards inside a revealed grid */
+.grid-2.reveal.active > *,
+.grid-3.reveal.active > * {
+  animation: fadeUp 0.7s var(--ease-out) both;
+}
+.grid-2.reveal.active > *:nth-child(1), .grid-3.reveal.active > *:nth-child(1) { animation-delay: 0.04s; }
+.grid-2.reveal.active > *:nth-child(2), .grid-3.reveal.active > *:nth-child(2) { animation-delay: 0.12s; }
+.grid-2.reveal.active > *:nth-child(3), .grid-3.reveal.active > *:nth-child(3) { animation-delay: 0.20s; }
+.grid-3.reveal.active > *:nth-child(4) { animation-delay: 0.28s; }
+.grid-3.reveal.active > *:nth-child(5) { animation-delay: 0.36s; }
+.grid-3.reveal.active > *:nth-child(6) { animation-delay: 0.44s; }
+
+/* Tactile press feedback */
+.section-nav__inner a { will-change: transform; }
+.section-nav__inner a:active { transform: scale(0.95); }
+.nav-tab:active { transform: scale(0.97); }
+
+/* Composited hover targets */
+.speaker-card__photo { will-change: transform; }
+.gallery-item img { will-change: transform; }
+
+/* Keyboard focus polish */
+.section-nav__inner a:focus-visible,
+.footer__links a:focus-visible,
+.faq-question:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: var(--radius-sm);
+}
+
+
+/* ============================================================
    26. RESPONSIVE — MOBILE FIRST
    ============================================================ */
 
@@ -3364,5 +3404,33 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     transform: none !important;
   }
 
+  .grid-2.reveal.active > *,
+  .grid-3.reveal.active > * { animation: none !important; }
+
   .btn::before { display: none; }
+}
+
+
+/* ============================================================
+   28. RESPONSIVE FINE-TUNING (Stage 5)
+   ============================================================ */
+
+/* Ultra-wide displays — let the layout breathe */
+@media (min-width: 1600px) {
+  :root { --container-max: 1320px; }
+}
+@media (min-width: 2000px) {
+  :root { --container-max: 1440px; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .section-nav__inner { gap: var(--sp-1); padding-inline: var(--sp-4); }
+  .section-nav__inner a { padding: var(--sp-2) var(--sp-4); letter-spacing: 0.5px; }
+  .hero__emblem { width: clamp(120px, 34vw, 175px); }
+  .countdown { gap: var(--sp-2); }
+  .countdown__item { min-width: 66px; padding: var(--sp-5) var(--sp-2); }
+  .countdown__num { font-size: var(--fs-2xl); }
+  .tab-panel { padding: var(--sp-8) var(--sp-5); }
+  .venue-map { height: 240px; }
 }
