@@ -2245,6 +2245,72 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 
 /* ============================================================
+   21a. SECTION SUB-NAV (homepage) — glass pill + scroll spy
+   Sticks below the main navbar; scroll-progress + gold active.
+   ============================================================ */
+.section-nav {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 900;
+  background: rgba(40, 0, 8, 0.72);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+.section-nav__progress {
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--clr-gold), var(--clr-gold-bright));
+  transition: width 0.1s linear;
+}
+
+.section-nav__inner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  display: flex;
+  gap: var(--sp-2);
+  justify-content: center;
+  align-items: center;
+  padding: var(--sp-3) var(--container-pad);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.section-nav__inner::-webkit-scrollbar { display: none; }
+
+.section-nav__inner a {
+  flex-shrink: 0;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(var(--clr-cream-rgb), 0.62);
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.section-nav__inner a:hover {
+  color: var(--clr-gold);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+.section-nav__inner a.active {
+  color: var(--clr-primary-deep);
+  background: linear-gradient(135deg, var(--clr-gold-bright), var(--clr-gold));
+  border-color: var(--clr-gold);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+}
+
+@media (max-width: 768px) {
+  .section-nav__inner { justify-content: flex-start; }
+}
+
+
+/* ============================================================
    21b. ANNOUNCEMENT BANNER (live, config-driven)
    Fixed just below the navbar; only shown when active.
    ============================================================ */

@@ -118,17 +118,17 @@ export const CONFERENCE = Object.freeze({
    Order here controls render order in nav and mobile drawer.
    ============================================================ */
 export const NAV = Object.freeze([
-  { id: 'home',      href: '#home',      label_ms: 'Utama',        label_en: 'Home',        page: 'index' },
-  { id: 'about',     href: '#about',     label_ms: 'Tentang',      label_en: 'About',       page: 'index' },
-  { id: 'venue',     href: '#venue',     label_ms: 'Tempat',       label_en: 'Venue',       page: 'index' },
-  { id: 'programme', href: '#programme', label_ms: 'Aturcara',     label_en: 'Programme',   page: 'index' },
-  { id: 'speakers',  href: '#speakers',  label_ms: 'Pembentang',   label_en: 'Speakers',    page: 'index' },
-  { id: 'downloads', href: '#downloads', label_ms: 'Muat Turun',   label_en: 'Downloads',   page: 'index' },
-  { id: 'gallery',   href: '#gallery',   label_ms: 'Galeri',       label_en: 'Gallery',     page: 'index' },
-  { id: 'sponsors',  href: '#sponsors',  label_ms: 'Rakan Kongsi', label_en: 'Partners',    page: 'index' },
-  { id: 'faq',       href: '#faq',       label_ms: 'Soal Jawab',   label_en: 'FAQ',         page: 'index' },
-  { id: 'contact',   href: '#contact',   label_ms: 'Hubungi',      label_en: 'Contact',     page: 'index' },
-  { id: 'rise',      href: 'rise.html',  label_ms: 'RISE',         label_en: 'RISE',        page: 'both',  isRise: true },
+  { id: 'home',      href: '#home',      label_ms: 'Utama',       label_en: 'Home',       page: 'index' },
+  { id: 'about',     href: '#about',     label_ms: 'Tentang',     label_en: 'About',      page: 'index' },
+  { id: 'why',       href: '#why',       label_ms: 'Sorotan',     label_en: 'Highlights', page: 'index' },
+  { id: 'programme', href: '#programme', label_ms: 'Atur Cara',   label_en: 'Programme',  page: 'index' },
+  { id: 'venue',     href: '#venue',     label_ms: 'Tempat',      label_en: 'Venue',      page: 'index' },
+  { id: 'speakers',  href: '#speakers',  label_ms: 'Pembentang',  label_en: 'Speakers',   page: 'index' },
+  { id: 'awards',    href: '#awards',    label_ms: 'Anugerah',    label_en: 'Awards',     page: 'index' },
+  { id: 'gallery',   href: '#gallery',   label_ms: 'Galeri',      label_en: 'Gallery',    page: 'index' },
+  { id: 'faq',       href: '#faq',       label_ms: 'Soal Jawab',  label_en: 'FAQ',        page: 'index' },
+  { id: 'contact',   href: '#contact',   label_ms: 'Hubungi',     label_en: 'Contact',    page: 'index' },
+  { id: 'rise',      href: 'rise.html',  label_ms: 'RISE',        label_en: 'RISE',       page: 'both',  isRise: true },
 ]);
 
 /** RISE sub-navigation (used in rise.html) */

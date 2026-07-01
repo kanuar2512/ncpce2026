@@ -1321,6 +1321,47 @@ export function renderVoting(containerId) {
 
 
 /* ============================================================
+   SECTION NAV — scroll-progress bar + active-pill auto-scroll
+   Active-link highlighting is handled by initNav() (scroll spy
+   already targets "#conf-subnav a").
+   ============================================================ */
+
+/** Initialise the sticky section sub-nav progress bar + mobile auto-scroll. */
+export function initSectionNav() {
+  const nav = $('conf-subnav');
+  if (!nav) return;
+
+  const bar   = $('section-progress');
+  const inner = nav.querySelector('.section-nav__inner');
+
+  // Scroll-progress fill across the whole page
+  const updateProgress = () => {
+    if (!bar) return;
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
+    bar.style.width = `${pct.toFixed(2)}%`;
+  };
+  updateProgress();
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+
+  // Keep the active pill in view on mobile (horizontal scroll)
+  if (inner) {
+    const mo = new MutationObserver(() => {
+      const active = inner.querySelector('a.active');
+      if (!active) return;
+      const target = active.offsetLeft - inner.clientWidth / 2 + active.offsetWidth / 2;
+      inner.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    });
+    inner.querySelectorAll('a').forEach(a =>
+      mo.observe(a, { attributes: true, attributeFilter: ['class'] })
+    );
+  }
+}
+
+
+/* ============================================================
    ANNOUNCEMENT BANNER
    Live-editable notice driven by the `config` sheet.
    Add these keys to the config sheet to control it (no redeploy):
