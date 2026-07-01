@@ -2928,6 +2928,188 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 
 /* ============================================================
+   25b. STAGE 4 — PREMIUM COMPONENT REFINEMENTS
+   Cohesive overrides layered above the base components.
+   Placed before the responsive rules so mobile still wins.
+   ============================================================ */
+
+/* ── Speaker cards ── */
+.speaker-grid { gap: var(--sp-10); }
+
+.speaker-card {
+  background: linear-gradient(170deg, #ffffff 0%, #fbf6ec 100%);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-bottom: none;
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+}
+.speaker-card::before {
+  height: 3px;
+  background: linear-gradient(90deg, var(--clr-primary), var(--clr-gold));
+  opacity: 1;
+}
+.speaker-card:hover {
+  transform: translateY(-10px);
+  background: linear-gradient(170deg, #ffffff 0%, #fff6e0 100%);
+  box-shadow: var(--shadow-xl), 0 18px 40px rgba(128, 0, 0, 0.18);
+}
+.speaker-card__photo {
+  border: 4px solid rgba(212, 175, 55, 0.55);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* ── Awards ── */
+.tab-container {
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 18px;
+}
+.tab-nav { background: linear-gradient(180deg, #1e1e1e, #131313); }
+.tab-nav-btn.active {
+  background: rgba(212, 175, 55, 0.10);
+  color: var(--clr-gold);
+  border-bottom-color: var(--clr-gold);
+}
+.tab-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #fdf8ee 100%);
+  padding: var(--sp-12) var(--sp-10);
+}
+.tab-panel h3 {
+  position: relative;
+  padding-bottom: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+.tab-panel h3::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 48px; height: 3px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--clr-gold), var(--clr-gold-bright));
+}
+
+/* ── Venue ── */
+.venue-map {
+  height: 440px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 18px;
+}
+.venue-details__item {
+  align-items: center;
+  padding: var(--sp-4) var(--sp-2);
+  border-radius: 12px;
+  transition: background 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.venue-details__item:hover {
+  background: rgba(212, 175, 55, 0.06);
+  transform: translateX(4px);
+}
+.venue-details__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-size: 1.15rem;
+  margin-top: 0;
+}
+
+/* ── FAQ — premium card accordion ── */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.faq-item {
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0 var(--sp-6);
+  transition: border-color 0.25s var(--ease-out), background 0.25s var(--ease-out);
+}
+.faq-item:first-child { border-top: 1px solid var(--border-subtle); }
+.faq-item.open {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.05);
+}
+.faq-question { padding: var(--sp-5) 0; }
+
+/* ── Contact cards ── */
+.contact-card {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+}
+.contact-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: var(--shadow-lg);
+}
+.contact-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; height: 56px;
+  margin-inline: auto;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* ── Gallery ── */
+.gallery-item { border-radius: 16px; }
+.gallery-item__overlay {
+  background: linear-gradient(to top, rgba(90, 0, 21, 0.88), rgba(90, 0, 21, 0.15));
+}
+.gallery-placeholder {
+  border: 1px dashed rgba(212, 175, 55, 0.3);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 18px;
+}
+
+/* ── Footer redesign ── */
+.footer {
+  position: relative;
+  overflow: hidden;
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  top: -40%; right: -10%;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.06), transparent 70%);
+  pointer-events: none;
+}
+.footer__grid { position: relative; z-index: 1; }
+.footer__heading {
+  position: relative;
+  padding-bottom: var(--sp-3);
+}
+.footer__heading::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 32px; height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--clr-gold), transparent);
+}
+.footer__links a {
+  width: fit-content;
+  transition: color 0.2s var(--ease-out), padding-left 0.2s var(--ease-out);
+}
+.footer__links a:hover {
+  color: var(--clr-gold);
+  padding-left: var(--sp-2);
+}
+.footer__logo {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+}
+
+
+/* ============================================================
    26. RESPONSIVE — MOBILE FIRST
    ============================================================ */
 
