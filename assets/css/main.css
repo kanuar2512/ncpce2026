@@ -3707,3 +3707,78 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     opacity: 0.06;
   }
 }
+
+
+/* ── RISE Overview — premium intro panel + objective cards ── */
+.rise-intro { align-items: start; }
+
+.rise-intro__lead {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: var(--sp-8);
+  box-shadow: var(--shadow-md);
+}
+
+.rise-intro__text {
+  color: rgba(var(--clr-cream-rgb), 0.85);
+  line-height: 1.85;
+}
+.rise-intro__text + .rise-intro__text {
+  margin-top: var(--sp-5);
+  color: rgba(var(--clr-cream-rgb), 0.72);
+}
+.rise-intro__text strong { color: var(--clr-gold); font-weight: 700; }
+
+.rise-intro__obj-title {
+  color: var(--clr-gold);
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-5);
+}
+
+.rise-objectives {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.rise-objectives li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: var(--sp-5);
+  transition: transform 0.25s var(--ease-out), border-color 0.25s var(--ease-out), background 0.25s var(--ease-out);
+}
+.rise-objectives li:hover {
+  transform: translateX(4px);
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.rise-objectives__num {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--clr-primary-deep);
+  background: linear-gradient(135deg, var(--gold-2), var(--clr-gold));
+  box-shadow: var(--shadow-gold);
+}
+
+.rise-objectives li p {
+  margin: 0;
+  color: rgba(var(--clr-cream-rgb), 0.82);
+  line-height: 1.7;
+  font-size: var(--fs-sm);
+}
