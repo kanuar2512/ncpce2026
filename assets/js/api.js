@@ -16,22 +16,13 @@
 
 'use strict';
 
-import { API } from './config.js?v=20260702f';
+import { API } from './config.js';
 
 /* ============================================================
    IN-MEMORY CACHE
    Structure: { [cacheKey]: { data: any, expiresAt: number } }
    ============================================================ */
 const _cache = new Map();
-
-/**
- * In-flight request map — de-duplicates concurrent identical fetches so
- * the same sheet isn't requested twice at once (e.g. `programme` is used
- * by both the Now/Next indicator and the programme table on page load).
- * This keeps concurrent calls to the Apps Script deployment low.
- * @type {Map<string, Promise<any>>}
- */
-const _inflight = new Map();
 
 /**
  * Read from cache. Returns data if fresh, null if expired/missing.
@@ -97,56 +88,8 @@ function useFallback() {
    ============================================================ */
 
 /**
- * Perform a single JSONP request (no caching). Resolves with the payload.
- * A fresh callback name is used per attempt so retries don't collide.
- * @param {URL} url
- * @param {string} sheet
- * @param {number} [timeoutMs]
- * @returns {Promise<Array|Object>}
- */
-function jsonpOnce(url, sheet, timeoutMs = 20_000) {
-  return new Promise((resolve, reject) => {
-    const cbName = '_cmip_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new ApiError('Request timed out', 408, sheet));
-    }, timeoutMs);
-
-    function cleanup() {
-      clearTimeout(timer);
-      delete window[cbName];
-      const el = document.getElementById(cbName);
-      if (el) el.remove();
-    }
-
-    // Apps Script calls cbName({ status, data })
-    window[cbName] = function (json) {
-      cleanup();
-      if (!json || json.status === 'error') {
-        reject(new ApiError(json?.message || 'Apps Script returned an error', 0, sheet));
-        return;
-      }
-      resolve(json.data ?? json);
-    };
-
-    const u = new URL(url.toString());
-    u.searchParams.set('callback', cbName);
-
-    const script = document.createElement('script');
-    script.id  = cbName;
-    script.src = u.toString();
-    script.onerror = () => {
-      cleanup();
-      reject(new ApiError(`Network error fetching "${sheet}"`, 0, sheet));
-    };
-    document.head.appendChild(script);
-  });
-}
-
-/**
  * Fetch a sheet from the Apps Script JSON API using JSONP.
- * Retries with backoff to survive Apps Script cold starts.
+ * JSONP injects a <script> tag — no CORS preflight, works with GAS redirects.
  *
  * @param {string} sheet    — Sheet name (from API.SHEETS)
  * @param {Object} [params] — Additional query params (e.g. { day: 1 })
@@ -175,12 +118,6 @@ async function fetchSheet(sheet, params = {}) {
     return fallback;
   }
 
-  // Reuse an in-flight request for the same key (prevents duplicate
-  // concurrent JSONP calls hitting the Apps Script deployment at once).
-  if (_inflight.has(cacheKey)) {
-    return _inflight.get(cacheKey);
-  }
-
   // Build URL
   const url = new URL(API.ENDPOINT);
   url.searchParams.set('sheet', sheet);
@@ -188,31 +125,46 @@ async function fetchSheet(sheet, params = {}) {
 
   console.debug(`[CMIP API] JSONP fetch: ${url.toString()}`);
 
-  // Try several times with backoff — recovers from Apps Script cold starts
-  // (the first request after idle can be slow) and transient mobile network drops.
-  const request = (async () => {
-    const attempts = 2;   // one gentle retry — enough for a cold start, without hammering quota
-    let lastErr;
-    for (let i = 0; i < attempts; i++) {
-      try {
-        const data = await jsonpOnce(url, sheet, 30_000);
-        cacheSet(cacheKey, data);
-        return data;
-      } catch (err) {
-        lastErr = err;
-        console.warn(`[CMIP API] attempt ${i + 1}/${attempts} failed for "${sheet}": ${err.message}`);
-        if (i < attempts - 1) {
-          await new Promise(r => setTimeout(r, 3000));
-        }
-      }
-    }
-    throw lastErr;
-  })();
+  return new Promise((resolve, reject) => {
+    // Unique callback name — safe global identifier
+    const cbName = '_cmip_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
 
-  // Track as in-flight; clear once settled so failures can be retried later.
-  _inflight.set(cacheKey, request);
-  request.finally(() => _inflight.delete(cacheKey));
-  return request;
+    // Timeout
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new ApiError('Request timed out after 45 seconds', 408, sheet));
+    }, 45_000);
+
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cbName];
+      const el = document.getElementById(cbName);
+      if (el) el.remove();
+    }
+
+    // Register global callback — Apps Script will call cbName({ status, data })
+    window[cbName] = function (json) {
+      cleanup();
+      if (!json || json.status === 'error') {
+        reject(new ApiError(json?.message || 'Apps Script returned an error', 0, sheet));
+        return;
+      }
+      const data = json.data ?? json;
+      cacheSet(cacheKey, data);
+      resolve(data);
+    };
+
+    // Inject <script> tag — triggers JSONP call
+    url.searchParams.set('callback', cbName);
+    const script = document.createElement('script');
+    script.id  = cbName;
+    script.src = url.toString();
+    script.onerror = () => {
+      cleanup();
+      reject(new ApiError(`Network error fetching "${sheet}"`, 0, sheet));
+    };
+    document.head.appendChild(script);
+  });
 }
 
 
@@ -246,13 +198,10 @@ export class ApiError extends Error {
  */
 export async function fetchSiteConfig() {
   const rows = await fetchSheet(API.SHEETS.CONFIG);
-  // Convert rows to a flat key→value object.
-  // The sheet stores bilingual columns (value_ms / value_en); fall back to a
-  // plain `value` column for older layouts. Empty strings fall through so a
-  // key populated in only one language still resolves correctly.
+  // Convert [{key, value}, ...] array to a flat object
   if (Array.isArray(rows)) {
     return rows.reduce((acc, row) => {
-      if (row.key) acc[row.key] = row.value_ms || row.value_en || row.value || '';
+      if (row.key) acc[row.key] = row.value;
       return acc;
     }, {});
   }

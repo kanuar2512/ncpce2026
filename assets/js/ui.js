@@ -21,14 +21,14 @@
 import {
   CONFERENCE, RISE as RISE_CONFIG, PROGRAMME_TYPES, FILE_ICONS,
   t, localise, getLang,
-} from './config.js?v=20260702f';
+} from './config.js';
 
 import {
   fetchSiteConfig, fetchProgrammeAll, fetchSpeakers,
   fetchRise, fetchDownloads, fetchGallery,
   fetchFaq, fetchSponsors, fetchContact,
   ApiError,
-} from './api.js?v=20260702f';
+} from './api.js';
 
 
 /* ============================================================
@@ -129,27 +129,8 @@ function fileIcon(type) {
  * @returns {string}
  */
 function timeRange(start, end) {
-  const s = fmtTime(start);
-  const e = fmtTime(end);
-  if (!e || s === e) return s;
-  return `${s} – ${e}`;
-}
-
-/**
- * Normalise a time value to "HH:MM".
- * Google Sheets serialises time-only cells as "1899-12-30THH:MM:SS";
- * this also accepts plain "HH:MM" or "HH:MM:SS".
- * @param {string} v
- * @returns {string}
- */
-function fmtTime(v) {
-  if (!v) return '';
-  const s = String(v);
-  const iso = s.match(/T(\d{2}):(\d{2})/);      // 1899-12-30T08:00:00
-  if (iso) return `${iso[1]}:${iso[2]}`;
-  const hm = s.match(/^(\d{1,2}):(\d{2})/);      // 08:00 or 8:00
-  if (hm) return `${hm[1].padStart(2, '0')}:${hm[2]}`;
-  return s;
+  if (!end || start === end) return start;
+  return `${start} – ${end}`;
 }
 
 
@@ -401,8 +382,8 @@ export async function renderProgramme(containerId) {
                     <tr>
                       <td class="time-cell">${timeRange(row.time_start, row.time_end)}</td>
                       <td>${lang === 'en' ? row.title_en : row.title_ms}${badge}</td>
-                      <td>${row.speaker || (lang === 'en' ? row.speaker_en : row.speaker_ms) || '—'}</td>
-                      <td>${row.venue || (lang === 'en' ? row.venue_en : row.venue_ms) || '—'}</td>
+                      <td>${lang === 'en' ? (row.speaker_en || '—') : (row.speaker_ms || '—')}</td>
+                      <td>${lang === 'en' ? (row.venue_en || '—') : (row.venue_ms || '—')}</td>
                     </tr>`;
                 }).join('')}
               </tbody>
@@ -1472,7 +1453,7 @@ function _mytNow() {
 /** Comparable value for a session on conference day `d` at "HH:MM". */
 function _sessionVal(day, hhmm) {
   const [by, bm, bd] = CONFERENCE.dates.start.slice(0, 10).split('-').map(Number);
-  const [h, m] = fmtTime(hhmm).split(':').map(Number);
+  const [h, m] = String(hhmm).split(':').map(Number);
   return Date.UTC(by, bm - 1, bd + (Number(day) - 1), h || 0, m || 0);
 }
 
@@ -1516,7 +1497,7 @@ function _paintNowNext(el) {
   const last  = rows[rows.length - 1];
 
   const title = r => (lang === 'en' ? r.title_en : r.title_ms) || '';
-  const venue = r => r.venue || (lang === 'en' ? r.venue_en : r.venue_ms) || '';
+  const venue = r => (lang === 'en' ? r.venue_en : r.venue_ms) || '';
   const range = r => timeRange(r.time_start, r.time_end);
   const meta  = r => `${range(r)}${venue(r) ? ' · ' + venue(r) : ''}`;
 

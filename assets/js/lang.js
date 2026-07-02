@@ -26,7 +26,7 @@
 
 'use strict';
 
-import { reRenderAll } from './ui.js?v=20260702f';
+import { reRenderAll } from './ui.js';
 
 /* ============================================================
    CONSTANTS
