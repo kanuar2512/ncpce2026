@@ -16,7 +16,7 @@
 
 'use strict';
 
-import { API } from './config.js?v=20260702b';
+import { API } from './config.js?v=20260702c';
 
 /* ============================================================
    IN-MEMORY CACHE
@@ -97,8 +97,56 @@ function useFallback() {
    ============================================================ */
 
 /**
+ * Perform a single JSONP request (no caching). Resolves with the payload.
+ * A fresh callback name is used per attempt so retries don't collide.
+ * @param {URL} url
+ * @param {string} sheet
+ * @param {number} [timeoutMs]
+ * @returns {Promise<Array|Object>}
+ */
+function jsonpOnce(url, sheet, timeoutMs = 20_000) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cmip_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new ApiError('Request timed out', 408, sheet));
+    }, timeoutMs);
+
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cbName];
+      const el = document.getElementById(cbName);
+      if (el) el.remove();
+    }
+
+    // Apps Script calls cbName({ status, data })
+    window[cbName] = function (json) {
+      cleanup();
+      if (!json || json.status === 'error') {
+        reject(new ApiError(json?.message || 'Apps Script returned an error', 0, sheet));
+        return;
+      }
+      resolve(json.data ?? json);
+    };
+
+    const u = new URL(url.toString());
+    u.searchParams.set('callback', cbName);
+
+    const script = document.createElement('script');
+    script.id  = cbName;
+    script.src = u.toString();
+    script.onerror = () => {
+      cleanup();
+      reject(new ApiError(`Network error fetching "${sheet}"`, 0, sheet));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+/**
  * Fetch a sheet from the Apps Script JSON API using JSONP.
- * JSONP injects a <script> tag — no CORS preflight, works with GAS redirects.
+ * Retries with backoff to survive Apps Script cold starts.
  *
  * @param {string} sheet    — Sheet name (from API.SHEETS)
  * @param {Object} [params] — Additional query params (e.g. { day: 1 })
@@ -140,46 +188,26 @@ async function fetchSheet(sheet, params = {}) {
 
   console.debug(`[CMIP API] JSONP fetch: ${url.toString()}`);
 
-  const request = new Promise((resolve, reject) => {
-    // Unique callback name — safe global identifier
-    const cbName = '_cmip_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-
-    // Timeout
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new ApiError('Request timed out after 45 seconds', 408, sheet));
-    }, 45_000);
-
-    function cleanup() {
-      clearTimeout(timer);
-      delete window[cbName];
-      const el = document.getElementById(cbName);
-      if (el) el.remove();
-    }
-
-    // Register global callback — Apps Script will call cbName({ status, data })
-    window[cbName] = function (json) {
-      cleanup();
-      if (!json || json.status === 'error') {
-        reject(new ApiError(json?.message || 'Apps Script returned an error', 0, sheet));
-        return;
+  // Try several times with backoff — recovers from Apps Script cold starts
+  // (the first request after idle can be slow) and transient mobile network drops.
+  const request = (async () => {
+    const attempts = 4;
+    let lastErr;
+    for (let i = 0; i < attempts; i++) {
+      try {
+        const data = await jsonpOnce(url, sheet, i === 0 ? 20_000 : 30_000);
+        cacheSet(cacheKey, data);
+        return data;
+      } catch (err) {
+        lastErr = err;
+        console.warn(`[CMIP API] attempt ${i + 1}/${attempts} failed for "${sheet}": ${err.message}`);
+        if (i < attempts - 1) {
+          await new Promise(r => setTimeout(r, 1500 + i * 1500));
+        }
       }
-      const data = json.data ?? json;
-      cacheSet(cacheKey, data);
-      resolve(data);
-    };
-
-    // Inject <script> tag — triggers JSONP call
-    url.searchParams.set('callback', cbName);
-    const script = document.createElement('script');
-    script.id  = cbName;
-    script.src = url.toString();
-    script.onerror = () => {
-      cleanup();
-      reject(new ApiError(`Network error fetching "${sheet}"`, 0, sheet));
-    };
-    document.head.appendChild(script);
-  });
+    }
+    throw lastErr;
+  })();
 
   // Track as in-flight; clear once settled so failures can be retried later.
   _inflight.set(cacheKey, request);
