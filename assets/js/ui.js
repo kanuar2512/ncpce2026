@@ -448,28 +448,37 @@ export async function renderSpeakers(containerId) {
 
     const lang = getLang();
 
+    // Keep only rows that actually have a name (ignore blank rows)
+    const list = speakers.filter(sp => sp && (sp.name_ms || sp.name_en));
+
+    if (!list.length) {
+      setEmpty(container);
+      return;
+    }
+
     container.innerHTML = `
       <div class="speaker-grid">
-        ${speakers.map(sp => {
-          const name  = lang === 'en' ? sp.name_en  : sp.name_ms;
-          const title = lang === 'en' ? sp.title_en : sp.title_ms;
-          const org   = lang === 'en' ? sp.org_en   : sp.org_ms;
-          const topic = lang === 'en' ? sp.topic_en : sp.topic_ms;
-          const photo = safePhoto(sp.photo_url, name);
+        ${list.map((sp, i) => {
+          // Sheet columns: name_ms/en, role_ms/en, organisation_ms/en, session, photo_url
+          const name    = (lang === 'en' ? sp.name_en : sp.name_ms) || sp.name_ms || sp.name_en || '';
+          const role    = (lang === 'en' ? sp.role_en : sp.role_ms) || sp.role_ms || sp.role_en || '';
+          const org     = (lang === 'en' ? sp.organisation_en : sp.organisation_ms) || sp.organisation_ms || sp.organisation_en || '';
+          const session = sp.session || '';
+          const photo   = safePhoto(sp.photo_url, name);
 
           return `
-            <div class="speaker-card reveal" data-delay="${Math.min(speakers.indexOf(sp) + 1, 5)}">
+            <div class="speaker-card reveal" data-delay="${Math.min(i + 1, 5)}">
               <img
                 class="speaker-card__photo"
                 src="${photo}"
                 alt="${name}"
                 loading="lazy"
-                onerror="this.src='${safePhoto('', name)}'"
+                onerror="this.onerror=null; this.src='${safePhoto('', name)}'"
               >
               <div class="speaker-card__name">${name}</div>
-              <div class="speaker-card__role">${title}</div>
-              <div class="speaker-card__org">${org}</div>
-              ${topic ? `<div class="speaker-card__topic">"${topic}"</div>` : ''}
+              ${role    ? `<div class="speaker-card__role">${role}</div>` : ''}
+              ${org     ? `<div class="speaker-card__org">${org}</div>` : ''}
+              ${session ? `<div class="speaker-card__topic">${session}</div>` : ''}
             </div>`;
         }).join('')}
       </div>`;
