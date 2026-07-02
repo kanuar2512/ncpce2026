@@ -129,8 +129,27 @@ function fileIcon(type) {
  * @returns {string}
  */
 function timeRange(start, end) {
-  if (!end || start === end) return start;
-  return `${start} – ${end}`;
+  const s = fmtTime(start);
+  const e = fmtTime(end);
+  if (!e || s === e) return s;
+  return `${s} – ${e}`;
+}
+
+/**
+ * Normalise a time value to "HH:MM".
+ * Google Sheets serialises time-only cells as "1899-12-30THH:MM:SS";
+ * this also accepts plain "HH:MM" or "HH:MM:SS".
+ * @param {string} v
+ * @returns {string}
+ */
+function fmtTime(v) {
+  if (!v) return '';
+  const s = String(v);
+  const iso = s.match(/T(\d{2}):(\d{2})/);      // 1899-12-30T08:00:00
+  if (iso) return `${iso[1]}:${iso[2]}`;
+  const hm = s.match(/^(\d{1,2}):(\d{2})/);      // 08:00 or 8:00
+  if (hm) return `${hm[1].padStart(2, '0')}:${hm[2]}`;
+  return s;
 }
 
 
@@ -1462,7 +1481,7 @@ function _mytNow() {
 /** Comparable value for a session on conference day `d` at "HH:MM". */
 function _sessionVal(day, hhmm) {
   const [by, bm, bd] = CONFERENCE.dates.start.slice(0, 10).split('-').map(Number);
-  const [h, m] = String(hhmm).split(':').map(Number);
+  const [h, m] = fmtTime(hhmm).split(':').map(Number);
   return Date.UTC(by, bm - 1, bd + (Number(day) - 1), h || 0, m || 0);
 }
 
