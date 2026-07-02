@@ -78,8 +78,9 @@ export const CONFERENCE = Object.freeze({
 
   /** Venue information */
   venue: Object.freeze({
-    name:      'KSL Esplanade Hotel & Resort',
-    address:   'Jalan Meru, 41050 Klang, Selangor',
+    name_ms:   'Hotel KSL Esplanade, Klang',
+    name_en:   'KSL Esplanade Hotel, Klang',
+    address:   'No. 1, Persiaran Bestari 2/KS09, Bandar Bestari, 41200 Klang, Selangor, Malaysia',
     city_ms:   'Klang, Selangor',
     city_en:   'Klang, Selangor',
     /** Google Maps embed src URL */
@@ -243,7 +244,7 @@ export const LANG = Object.freeze({
 
     /* Hero */
     hero_date:       '27 – 29 Julai 2026',
-    hero_venue:      'KSL Esplanade Hotel & Resort, Klang',
+    hero_venue:      'Hotel KSL Esplanade, Klang',
     hero_scroll:     'Tatal ke bawah',
 
     /* Countdown */
@@ -331,7 +332,7 @@ export const LANG = Object.freeze({
 
     /* Hero */
     hero_date:       '27 – 29 July 2026',
-    hero_venue:      'KSL Esplanade Hotel & Resort, Klang',
+    hero_venue:      'KSL Esplanade Hotel, Klang',
     hero_scroll:     'Scroll down',
 
     /* Countdown */
