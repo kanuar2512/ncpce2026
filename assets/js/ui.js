@@ -1574,3 +1574,14 @@ export async function reRenderAll() {
   if ($('faq-container'))        jobs.push(renderFaq('faq-container', 'main'));
   if ($('sponsors-container'))   jobs.push(renderSponsors('sponsors-container'));
   if ($('contact-container'))    jobs.push(renderContact('contact-container'));
+  if ($('about-container'))      jobs.push(renderAbout('about-container'));
+
+  // RISE page
+  if ($('rise-categories-container')) renderRiseCategories('rise-categories-container');
+  if ($('rise-gallery-container'))    jobs.push(renderRiseGallery('rise-gallery-container'));
+  if ($('rise-downloads-container'))  jobs.push(renderRiseDownloads('rise-downloads-container'));
+  if ($('rise-faq-container'))        jobs.push(renderFaq('rise-faq-container', 'rise'));
+  if ($('rise-voting-container'))     renderVoting('rise-voting-container');
+
+  await Promise.allSettled(jobs);
+}

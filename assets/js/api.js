@@ -455,4 +455,72 @@ function getFallbackData(sheet, params = {}) {
  * @property {string} bio_en
  * @property {string} photo_url  — Google Drive shareable link
  * @property {string} topic_ms
- * @property {string} topi
+ * @property {string} topic_en
+ * @property {number} day
+ */
+
+/**
+ * @typedef {Object} RiseRow
+ * @property {string} category     — "1" | "2" | "3"
+ * @property {string} title        — Presentation title
+ * @property {string} author       — Presenter name
+ * @property {string} branch       — State / Branch
+ * @property {string} abstract_url — Google Drive PDF link for abstract
+ * @property {string} poster_url   — Google Drive image/PDF link for poster
+ * @property {number} order        — Display order (ascending)
+ */
+
+/**
+ * @typedef {Object} DownloadRow
+ * @property {string} id
+ * @property {string} title_ms
+ * @property {string} title_en
+ * @property {string} filename
+ * @property {string} file_type  — pdf|docx|xlsx|pptx|zip
+ * @property {string} section    — main|rise
+ * @property {string} drive_url
+ */
+
+/**
+ * @typedef {Object} FaqRow
+ * @property {string} id
+ * @property {string} question_ms
+ * @property {string} question_en
+ * @property {string} answer_ms
+ * @property {string} answer_en
+ * @property {string} section  — main|rise
+ */
+
+/**
+ * @typedef {Object} SponsorRow
+ * @property {string} id
+ * @property {string} name
+ * @property {string} full_name_ms
+ * @property {string} full_name_en
+ * @property {string} logo_url
+ * @property {string} website
+ * @property {string} tier  — strategic|supporting
+ */
+
+/**
+ * @typedef {Object} ContactRow
+ * @property {string} id
+ * @property {string} name_ms
+ * @property {string} name_en
+ * @property {string} role_ms
+ * @property {string} role_en
+ * @property {string} email
+ * @property {string} phone
+ * @property {string} unit_ms
+ * @property {string} unit_en
+ */
+
+/**
+ * @typedef {Object} GalleryRow
+ * @property {string} id
+ * @property {string} title_ms
+ * @property {string} title_en
+ * @property {string} url        — direct image URL or Drive thumbnail URL
+ * @property {string} thumb_url
+ * @property {string} date
+ */
