@@ -16,7 +16,7 @@
 
 'use strict';
 
-import { API } from './config.js?v=20260702d';
+import { API } from './config.js?v=20260702e';
 
 /* ============================================================
    IN-MEMORY CACHE
@@ -191,18 +191,18 @@ async function fetchSheet(sheet, params = {}) {
   // Try several times with backoff — recovers from Apps Script cold starts
   // (the first request after idle can be slow) and transient mobile network drops.
   const request = (async () => {
-    const attempts = 4;
+    const attempts = 2;   // one gentle retry — enough for a cold start, without hammering quota
     let lastErr;
     for (let i = 0; i < attempts; i++) {
       try {
-        const data = await jsonpOnce(url, sheet, i === 0 ? 20_000 : 30_000);
+        const data = await jsonpOnce(url, sheet, 30_000);
         cacheSet(cacheKey, data);
         return data;
       } catch (err) {
         lastErr = err;
         console.warn(`[CMIP API] attempt ${i + 1}/${attempts} failed for "${sheet}": ${err.message}`);
         if (i < attempts - 1) {
-          await new Promise(r => setTimeout(r, 1500 + i * 1500));
+          await new Promise(r => setTimeout(r, 3000));
         }
       }
     }
@@ -506,9 +506,4 @@ function getFallbackData(sheet, params = {}) {
  * @property {string} bio_en
  * @property {string} photo_url  — Google Drive shareable link
  * @property {string} topic_ms
- * @property {string} topic_en
- * @property {number} day
- */
-
-/**
- * @t
+ * @property {string} topi
