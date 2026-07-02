@@ -16,7 +16,7 @@
 
 'use strict';
 
-import { API } from './config.js?v=20260702c';
+import { API } from './config.js?v=20260702d';
 
 /* ============================================================
    IN-MEMORY CACHE
@@ -246,10 +246,13 @@ export class ApiError extends Error {
  */
 export async function fetchSiteConfig() {
   const rows = await fetchSheet(API.SHEETS.CONFIG);
-  // Convert [{key, value}, ...] array to a flat object
+  // Convert rows to a flat key→value object.
+  // The sheet stores bilingual columns (value_ms / value_en); fall back to a
+  // plain `value` column for older layouts. Empty strings fall through so a
+  // key populated in only one language still resolves correctly.
   if (Array.isArray(rows)) {
     return rows.reduce((acc, row) => {
-      if (row.key) acc[row.key] = row.value;
+      if (row.key) acc[row.key] = row.value_ms || row.value_en || row.value || '';
       return acc;
     }, {});
   }
@@ -508,67 +511,4 @@ function getFallbackData(sheet, params = {}) {
  */
 
 /**
- * @typedef {Object} RiseRow
- * @property {string} category     — "1" | "2" | "3"
- * @property {string} title        — Presentation title
- * @property {string} author       — Presenter name
- * @property {string} branch       — State / Branch
- * @property {string} abstract_url — Google Drive PDF link for abstract
- * @property {string} poster_url   — Google Drive image/PDF link for poster
- * @property {number} order        — Display order (ascending)
- */
-
-/**
- * @typedef {Object} DownloadRow
- * @property {string} id
- * @property {string} title_ms
- * @property {string} title_en
- * @property {string} filename
- * @property {string} file_type  — pdf|docx|xlsx|pptx|zip
- * @property {string} section    — main|rise
- * @property {string} drive_url
- */
-
-/**
- * @typedef {Object} FaqRow
- * @property {string} id
- * @property {string} question_ms
- * @property {string} question_en
- * @property {string} answer_ms
- * @property {string} answer_en
- * @property {string} section  — main|rise
- */
-
-/**
- * @typedef {Object} SponsorRow
- * @property {string} id
- * @property {string} name
- * @property {string} full_name_ms
- * @property {string} full_name_en
- * @property {string} logo_url
- * @property {string} website
- * @property {string} tier  — strategic|supporting
- */
-
-/**
- * @typedef {Object} ContactRow
- * @property {string} id
- * @property {string} name_ms
- * @property {string} name_en
- * @property {string} role_ms
- * @property {string} role_en
- * @property {string} email
- * @property {string} phone
- * @property {string} unit_ms
- * @property {string} unit_en
- */
-
-/**
- * @typedef {Object} GalleryRow
- * @property {string} id
- * @property {string} title_ms
- * @property {string} title_en
- * @property {string} url        — direct image URL or Drive thumbnail URL
- * @property {string} thumb_url
- * @property {string} date
- */
+ * @t

@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
   <meta name="description" content="RISE — Simposium Penyelidikan dan Pembangunan (R&D) dan Inisiatif Penambahbaikan Kualiti Penguatkuasaan Farmasi. Portal rasmi penyertaan poster, kolokium dan QIP bagi PKPJF 2026.">
   <meta name="theme-color" content="#280000">
 
@@ -20,7 +22,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=20260702c">
+  <link rel="stylesheet" href="assets/css/main.css?v=20260702d">
   <link rel="icon" type="image/png" href="assets/img/logo.png">
 
   <!-- RISE-specific styles are consolidated in main.css (section 29) -->
@@ -470,7 +472,7 @@
      SCRIPTS — ES Modules
      ============================================================ -->
 <script type="module">
-  import { initLang }       from './assets/js/lang.js?v=20260702c';
+  import { initLang }       from './assets/js/lang.js?v=20260702d';
   import {
     initScrollReveal,
     initNav,
@@ -480,7 +482,7 @@
     renderRiseGallery,
     renderFaq,
     renderVoting,
-  } from './assets/js/ui.js?v=20260702c';
+  } from './assets/js/ui.js?v=20260702d';
 
   /* ── 1. Language first ── */
   initLang();
@@ -523,10 +525,4 @@
 
   /* ── 4. Data renders ── */
   renderRiseCategories('rise-categories-container');
-  renderRiseGallery('rise-gallery-container');
-  renderFaq('rise-faq-container', 'rise');
-  renderVoting('rise-voting-container');
-</script>
-
-</body>
-</html>
+  renderRiseGallery('rise-gallery-c
