@@ -16,13 +16,22 @@
 
 'use strict';
 
-import { API } from './config.js?v=20260702';
+import { API } from './config.js?v=20260702b';
 
 /* ============================================================
    IN-MEMORY CACHE
    Structure: { [cacheKey]: { data: any, expiresAt: number } }
    ============================================================ */
 const _cache = new Map();
+
+/**
+ * In-flight request map — de-duplicates concurrent identical fetches so
+ * the same sheet isn't requested twice at once (e.g. `programme` is used
+ * by both the Now/Next indicator and the programme table on page load).
+ * This keeps concurrent calls to the Apps Script deployment low.
+ * @type {Map<string, Promise<any>>}
+ */
+const _inflight = new Map();
 
 /**
  * Read from cache. Returns data if fresh, null if expired/missing.
@@ -118,6 +127,12 @@ async function fetchSheet(sheet, params = {}) {
     return fallback;
   }
 
+  // Reuse an in-flight request for the same key (prevents duplicate
+  // concurrent JSONP calls hitting the Apps Script deployment at once).
+  if (_inflight.has(cacheKey)) {
+    return _inflight.get(cacheKey);
+  }
+
   // Build URL
   const url = new URL(API.ENDPOINT);
   url.searchParams.set('sheet', sheet);
@@ -125,7 +140,7 @@ async function fetchSheet(sheet, params = {}) {
 
   console.debug(`[CMIP API] JSONP fetch: ${url.toString()}`);
 
-  return new Promise((resolve, reject) => {
+  const request = new Promise((resolve, reject) => {
     // Unique callback name — safe global identifier
     const cbName = '_cmip_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
 
@@ -165,6 +180,11 @@ async function fetchSheet(sheet, params = {}) {
     };
     document.head.appendChild(script);
   });
+
+  // Track as in-flight; clear once settled so failures can be retried later.
+  _inflight.set(cacheKey, request);
+  request.finally(() => _inflight.delete(cacheKey));
+  return request;
 }
 
 
