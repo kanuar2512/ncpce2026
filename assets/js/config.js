@@ -187,7 +187,7 @@ export const RISE = Object.freeze({
       method_en:  'Physical Poster',
       desc_ms:    'Poster bersaiz A0 dipamerkan menggunakan A0 board sepanjang persidangan. Peserta akan dinilai oleh panel juri yang dilantik.',
       desc_en:    'A0-size posters displayed on A0 boards throughout the conference. Participants are assessed by an appointed panel of judges.',
-      icon:       '🏆',
+      icon:       'trophy',
     },
     {
       id:         'cat2',
@@ -202,7 +202,7 @@ export const RISE = Object.freeze({
       method_en:  'Physical Poster',
       desc_ms:    'Platform perkongsian pengetahuan melalui poster R&D. Tidak dipertandingkan — bertujuan memupuk budaya penyelidikan dalam kalangan pegawai.',
       desc_en:    'A knowledge-sharing platform via R&D posters. Non-competitive — aimed at cultivating a research culture among officers.',
-      icon:       '🔬',
+      icon:       'beaker',
     },
     {
       id:         'cat3',
@@ -217,7 +217,7 @@ export const RISE = Object.freeze({
       method_en:  'Project Exhibition',
       desc_ms:    'Pameran projek inisiatif penambahbaikan kualiti menggunakan shell scheme booth.',
       desc_en:    'Exhibition of quality improvement initiative projects using shell scheme booths.',
-      icon:       '⚙️',
+      icon:       'cog',
     },
   ]),
 
@@ -441,19 +441,20 @@ export const PROGRAMME_TYPES = Object.freeze({
 
 /* ============================================================
    DOWNLOAD FILE TYPES → ICON MAP
-   Maps file extension strings to emoji icons for download cards.
+   Maps file extension strings to Heroicon (Outline) names.
+   Names are resolved to inline SVG by hicon() in ui.js.
    ============================================================ */
 export const FILE_ICONS = Object.freeze({
-  pdf:  '📄',
-  doc:  '📝',
-  docx: '📝',
-  xls:  '📊',
-  xlsx: '📊',
-  ppt:  '📑',
-  pptx: '📑',
-  zip:  '🗜️',
-  img:  '🖼️',
-  default: '📎',
+  pdf:  'document-text',
+  doc:  'document-text',
+  docx: 'document-text',
+  xls:  'document-text',
+  xlsx: 'document-text',
+  ppt:  'document-text',
+  pptx: 'document-text',
+  zip:  'document-text',
+  img:  'photo',
+  default: 'document-text',
 });
 
 

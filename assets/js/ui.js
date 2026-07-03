@@ -32,6 +32,59 @@ import {
 
 
 /* ============================================================
+   ICON SYSTEM — Heroicons (Outline)
+   ------------------------------------------------------------
+   Single source of truth for every icon in JS-rendered markup.
+   hicon(name) returns an inline <svg> that inherits its size
+   from the parent font-size (.hicon { width:1em; height:1em })
+   and its colour from `currentColor` (never hardcoded).
+   Static HTML uses the same markup inline. Heroicons v2 Outline.
+   ============================================================ */
+
+/** Inner path data for each Heroicon (24×24, stroke, round caps). */
+const HEROICON_PATHS = Object.freeze({
+  'map-pin': '<path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>',
+  'clock': '<path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+  'building-office-2': '<path d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/>',
+  'flag': '<path d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"/>',
+  'trophy': '<path d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"/>',
+  'microphone': '<path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"/>',
+  'beaker': '<path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/>',
+  'globe-alt': '<path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/>',
+  'light-bulb': '<path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/>',
+  'calendar-days': '<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"/>',
+  'map': '<path d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/>',
+  'truck': '<path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>',
+  'envelope': '<path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>',
+  'phone': '<path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>',
+  'exclamation-triangle': '<path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>',
+  'inbox': '<path d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"/>',
+  'arrow-down-tray': '<path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>',
+  'photo': '<path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>',
+  'document-text': '<path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>',
+  'megaphone': '<path d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/>',
+  'lock-closed': '<path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>',
+  'check': '<path d="M4.5 12.75l6 6 9-13.5"/>',
+  'check-badge': '<path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>',
+  'x-mark': '<path d="M6 18L18 6M6 6l12 12"/>',
+  'cog': '<path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>',
+  'clipboard': '<path d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>',
+  'home': '<path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>',
+});
+
+/**
+ * Return an inline Heroicons (Outline) SVG string for the given name.
+ * Inherits size from parent font-size and colour from currentColor.
+ * @param {string} name  key in HEROICON_PATHS
+ * @returns {string}
+ */
+function hicon(name) {
+  const paths = HEROICON_PATHS[name] || HEROICON_PATHS['clipboard'];
+  return `<svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${paths}</svg>`;
+}
+
+
+/* ============================================================
    DOM HELPERS
    ============================================================ */
 
@@ -62,7 +115,7 @@ function setError(el, msg) {
   if (!el) return;
   el.innerHTML = `
     <div class="error-state">
-      <div class="error-state__icon">⚠️</div>
+      <div class="error-state__icon">${hicon('exclamation-triangle')}</div>
       <p>${msg || t('error_load')}</p>
     </div>`;
 }
@@ -76,7 +129,7 @@ function setEmpty(el, msg) {
   if (!el) return;
   el.innerHTML = `
     <div class="error-state">
-      <div class="error-state__icon">📭</div>
+      <div class="error-state__icon">${hicon('inbox')}</div>
       <p>${msg || t('no_data')}</p>
     </div>`;
 }
@@ -119,7 +172,7 @@ function safePhoto(url, name = '?') {
  * @returns {string}
  */
 function fileIcon(type) {
-  return FILE_ICONS[type?.toLowerCase()] ?? FILE_ICONS.default;
+  return hicon(FILE_ICONS[type?.toLowerCase()] ?? FILE_ICONS.default);
 }
 
 /**
@@ -557,7 +610,7 @@ export async function renderDownloads(containerId, section) {
                   rel="noopener noreferrer"
                   ${url === '#' ? 'aria-disabled="true"' : ''}
                 >
-                  ⬇ ${t('download')}
+                  ${hicon('arrow-down-tray')} ${t('download')}
                 </a>
               </div>
             </div>`;
@@ -607,7 +660,7 @@ export function renderGallery(containerId) {
 
         return `
           <div class="gallery-day-card reveal" data-delay="${i + 1}">
-            <div class="gallery-day-card__icon" aria-hidden="true">🖼️</div>
+            <div class="gallery-day-card__icon" aria-hidden="true">${hicon('photo')}</div>
             <div class="gallery-day-card__title">${title}</div>
             <p class="gallery-day-card__desc">${desc}</p>
             ${ready
@@ -818,7 +871,7 @@ export async function renderContact(containerId) {
           const role = lang === 'en' ? item.role_en : item.role_ms;
           return `
             <div class="contact-card reveal">
-              <div class="contact-card__icon">📬</div>
+              <div class="contact-card__icon">${hicon('envelope')}</div>
               <div class="contact-card__name">${name}</div>
               <div class="contact-card__role">${role}</div>
               ${item.email
@@ -987,7 +1040,7 @@ export async function renderRiseGallery(containerId) {
     if (!items?.length) {
       container.innerHTML = `
         <div class="empty-state" style="text-align:center; padding:4rem 1rem; color:rgba(var(--clr-cream-rgb),0.5);">
-          <div style="font-size:3rem; margin-bottom:1rem;">🕐</div>
+          <div style="font-size:3rem; margin-bottom:1rem;">${hicon('clock')}</div>
           <p style="font-size:1.1rem;">Senarai pembentangan akan dikemaskini tidak lama lagi.</p>
           <p style="font-size:0.85rem; margin-top:0.5rem; opacity:0.6;">Presentation list will be updated soon.</p>
         </div>`;
@@ -1024,11 +1077,11 @@ export async function renderRiseGallery(containerId) {
             const rowPoster     = item.poster_url   || '';
 
             const abstractHtml = rowAbstract
-              ? `<a class="rise-table__action-btn" href="${rowAbstract}" target="_blank" rel="noopener">📄</a>`
+              ? `<a class="rise-table__action-btn" href="${rowAbstract}" target="_blank" rel="noopener" aria-label="Abstrak / Abstract">${hicon('document-text')}</a>`
               : `<span class="rise-table__no-action">—</span>`;
 
             const posterHtml = rowPoster
-              ? `<a class="rise-table__action-btn" href="${rowPoster}" target="_blank" rel="noopener">🖼</a>`
+              ? `<a class="rise-table__action-btn" href="${rowPoster}" target="_blank" rel="noopener" aria-label="Poster">${hicon('photo')}</a>`
               : `<span class="rise-table__no-action">—</span>`;
 
             return `
@@ -1048,7 +1101,7 @@ export async function renderRiseGallery(containerId) {
                   aria-expanded="${isOpen}"
                   data-acc-toggle="${cat.num}">
             <div class="rise-accordion__hdr-left">
-              <span class="rise-accordion__icon">${cat.icon || '📋'}</span>
+              <span class="rise-accordion__icon">${hicon(cat.icon || 'clipboard')}</span>
               <div>
                 <div class="rise-accordion__label">${label}</div>
                 <div class="rise-accordion__subtitle">${title}</div>
@@ -1141,7 +1194,7 @@ function _initRiseLightbox() {
       <div class="rise-lb__panel">
         <div class="rise-lb__toolbar">
           <span class="rise-lb__title"></span>
-          <button class="rise-lb__close" aria-label="Tutup">✕</button>
+          <button class="rise-lb__close" aria-label="Tutup">${hicon('x-mark')}</button>
         </div>
         <div class="rise-lb__img-wrap">
           <img class="rise-lb__img" src="" alt="" draggable="false">
@@ -1225,14 +1278,14 @@ function _initRiseLightbox() {
       const a = document.createElement('a');
       a.href = posterPdfUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.className = 'btn btn--gold btn--sm';
-      a.textContent = '🖼 Poster PDF';
+      a.innerHTML = `${hicon('photo')} Poster PDF`;
       btns.appendChild(a);
     }
     if (abstractUrl) {
       const a = document.createElement('a');
       a.href = abstractUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.className = 'btn btn--outline btn--sm';
-      a.textContent = '📄 Abstrak';
+      a.innerHTML = `${hicon('document-text')} Abstrak`;
       btns.appendChild(a);
     }
 
@@ -1293,7 +1346,7 @@ export function renderVoting(containerId) {
            rel="noopener noreferrer"
            style="margin-top:var(--sp-6); display:inline-flex;"
          >
-           🗳️ BUKA SISTEM UNDIAN
+           ${hicon('check-badge')} BUKA SISTEM UNDIAN
          </a>`
       : `<p class="voting-stub__text" style="color:rgba(250,206,92,0.5); font-size:0.8rem; margin-top:var(--sp-4);">
            [URL belum dikonfigurasi — kemaskini voting.url dalam config.js]
@@ -1302,7 +1355,7 @@ export function renderVoting(containerId) {
   } else if (status === 'closed') {
     buttonHtml = `
       <button class="btn btn--outline" disabled style="margin-top:var(--sp-6); opacity:0.45; cursor:not-allowed;">
-        🔒 UNDIAN TELAH DITUTUP
+        ${hicon('lock-closed')} UNDIAN TELAH DITUTUP
       </button>`;
     messageHtml = `
       <p class="voting-stub__text" style="margin-top:var(--sp-4);">
@@ -1313,7 +1366,7 @@ export function renderVoting(containerId) {
     /* 'before' — default */
     buttonHtml = `
       <button class="btn btn--outline" disabled style="margin-top:var(--sp-6); opacity:0.45; cursor:not-allowed;">
-        🕐 UNDIAN BELUM DIBUKA
+        ${hicon('clock')} UNDIAN BELUM DIBUKA
       </button>`;
     messageHtml = `
       <p class="voting-stub__text" style="margin-top:var(--sp-4);">
@@ -1323,7 +1376,7 @@ export function renderVoting(containerId) {
 
   container.innerHTML = `
     <div class="voting-stub" style="${status === 'open' ? 'border-color:rgba(250,206,92,0.6);' : ''}">
-      <div class="voting-stub__icon">🗳️</div>
+      <div class="voting-stub__icon">${hicon('check-badge')}</div>
       <div class="voting-stub__title">${CARD_TITLE}</div>
       <p class="voting-stub__text">${CARD_DESC}</p>
       ${buttonHtml}
@@ -1424,9 +1477,9 @@ export async function renderAnnouncement(containerId) {
     el.setAttribute('aria-live', 'polite');
     el.innerHTML = `
       <div class="announce__inner">
-        <span class="announce__icon" aria-hidden="true">📢</span>
+        <span class="announce__icon" aria-hidden="true">${hicon('megaphone')}</span>
         <span class="announce__text">${msg}</span>
-        <button class="announce__close" aria-label="${lang === 'en' ? 'Dismiss' : 'Tutup'}">✕</button>
+        <button class="announce__close" aria-label="${lang === 'en' ? 'Dismiss' : 'Tutup'}">${hicon('x-mark')}</button>
       </div>`;
 
     el.querySelector('.announce__close')?.addEventListener('click', () => {
@@ -1538,7 +1591,7 @@ function _paintNowNext(el) {
   if (now < first._s) {
     body = row(L.soon, '', title(first), `${L.firstS} · ${meta(first)}`);
   } else if (now >= last._e) {
-    body = row('✓', '', L.ended, '');
+    body = row(hicon('check'), '', L.ended, '');
   } else {
     const current = rows.find(r => now >= r._s && now < r._e);
     const next    = rows.find(r => r._s > now);
