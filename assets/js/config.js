@@ -143,6 +143,23 @@ export const NAV_RISE = Object.freeze([
 
 
 /* ============================================================
+   GALLERY DIRECTORY
+   Per-day gallery folder links (Google Drive / Google Photos).
+   HOW TO UPDATE: paste each day's shared folder URL into `url`.
+   Leave url as '' until the folder is ready — the button is then
+   disabled and shows the "available after the event" message.
+   No HTML/CSS changes are needed.
+   ============================================================ */
+export const GALLERY = Object.freeze({
+  days: Object.freeze([
+    { day: 1, date_ms: '27 Julai 2026', date_en: '27 July 2026', url: 'https://drive.google.com/drive/folders/1GAmZuWq5gg7BhCWZhk6p7LITU1ZuBhxg?usp=drive_link' },
+    { day: 2, date_ms: '28 Julai 2026', date_en: '28 July 2026', url: 'https://drive.google.com/drive/folders/1MPpDjPeOWAc8AgCZglsdeOnSmB1VCzSu?usp=drive_link' },
+    { day: 3, date_ms: '29 Julai 2026', date_en: '29 July 2026', url: 'https://drive.google.com/drive/folders/1LcabyrZ0m0NVFjaW46mjafopIL9gM1bz?usp=drive_link' },
+  ]),
+});
+
+
+/* ============================================================
    RISE MODULE CONFIGURATION
    ============================================================ */
 export const RISE = Object.freeze({

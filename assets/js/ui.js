@@ -19,7 +19,7 @@
 'use strict';
 
 import {
-  CONFERENCE, RISE as RISE_CONFIG, PROGRAMME_TYPES, FILE_ICONS,
+  CONFERENCE, RISE as RISE_CONFIG, GALLERY, PROGRAMME_TYPES, FILE_ICONS,
   t, localise, getLang,
 } from './config.js';
 
@@ -578,63 +578,47 @@ export async function renderDownloads(containerId, section) {
    ============================================================ */
 
 /**
- * Render the photo gallery grid with lightbox support.
- * Shows "Coming Soon" placeholder when gallery is empty.
+ * Render the gallery as a simple per-day directory of cards.
+ * Each card links to that day's Google Drive / Photos folder
+ * (from GALLERY.days in config.js). If a folder URL isn't set yet,
+ * the button is disabled and a "available after the event" note shows.
  * @param {string} containerId
  */
-export async function renderGallery(containerId) {
+export function renderGallery(containerId) {
   const container = $(containerId);
   if (!container) return;
 
-  setLoading(container);
+  const lang = getLang();
+  const days = (GALLERY && GALLERY.days) || [];
 
-  try {
-    const items = await fetchGallery();
+  container.innerHTML = `
+    <div class="gallery-dir-grid">
+      ${days.map((d, i) => {
+        const title    = lang === 'en' ? `Day ${d.day} (${d.date_en})` : `Hari ${d.day} (${d.date_ms})`;
+        const desc     = lang === 'en'
+          ? `Photos and highlights from Day ${d.day} of the conference.`
+          : `Foto dan sorotan sepanjang Hari ${d.day} persidangan.`;
+        const url      = String(d.url || '').trim();
+        const ready    = url && !/replace/i.test(url) && url !== '#';
+        const btnLabel = lang === 'en' ? 'View Gallery' : 'Lihat Galeri';
+        const soon     = lang === 'en'
+          ? 'The gallery will be available after the event.'
+          : 'Galeri akan tersedia selepas majlis berlangsung.';
 
-    if (!items?.length) {
-      // Coming soon placeholder
-      container.innerHTML = `
-        <div class="gallery-grid">
-          <div class="gallery-placeholder">
-            <div class="gallery-placeholder__icon">📸</div>
-            <h3 class="section-title" style="font-size:1.4rem; margin-bottom:0.5rem;">
-              ${t('gallery_placeholder_title')}
-            </h3>
-            <p class="gallery-placeholder__text">${t('gallery_placeholder_desc')}</p>
-          </div>
-        </div>`;
-      return;
-    }
+        return `
+          <div class="gallery-day-card reveal" data-delay="${i + 1}">
+            <div class="gallery-day-card__icon" aria-hidden="true">🖼️</div>
+            <div class="gallery-day-card__title">${title}</div>
+            <p class="gallery-day-card__desc">${desc}</p>
+            ${ready
+              ? `<a class="btn btn--gold btn--sm gallery-day-card__btn" href="${url}" target="_blank" rel="noopener noreferrer">${btnLabel}</a>`
+              : `<button class="btn btn--outline btn--sm gallery-day-card__btn" type="button" disabled aria-disabled="true">${btnLabel}</button>
+                 <p class="gallery-day-card__note">${soon}</p>`}
+          </div>`;
+      }).join('')}
+    </div>`;
 
-    const lang = getLang();
-
-    container.innerHTML = `
-      <div class="gallery-grid" id="gallery-grid">
-        ${items.map((item, i) => {
-          const url   = item.url || driveThumb(item.drive_url, 800);
-          const thumb = item.thumb_url || driveThumb(item.drive_url, 400) || url;
-          const title = lang === 'en' ? item.title_en : item.title_ms;
-          return `
-            <div class="gallery-item reveal" data-index="${i}" data-src="${url}" data-caption="${title}">
-              <img src="${thumb}" alt="${title}" loading="lazy">
-              <div class="gallery-item__overlay">🔍</div>
-            </div>`;
-        }).join('')}
-      </div>
-
-      <!-- Lightbox -->
-      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="${lang === 'en' ? 'Image preview' : 'Pratonton gambar'}">
-        <button class="lightbox__close" id="lightbox-close" aria-label="${t('close')}">✕</button>
-        <img class="lightbox__img" id="lightbox-img" src="" alt="">
-      </div>`;
-
-    initLightbox();
-    initScrollReveal();
-
-  } catch (err) {
-    console.error('[CMIP] renderGallery error:', err);
-    setError(container);
-  }
+  initScrollReveal();
 }
 
 /** Attach lightbox open/close events. */
