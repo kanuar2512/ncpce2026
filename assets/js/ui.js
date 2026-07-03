@@ -1599,7 +1599,7 @@ export async function reRenderAll() {
   if ($('speakers-container'))   jobs.push(renderSpeakers('speakers-container'));
   if ($('downloads-container'))  jobs.push(renderDownloads('downloads-container', 'main'));
   if ($('gallery-container'))    jobs.push(renderGallery('gallery-container'));
-  if ($('faq-container'))        jobs.push(renderFaq('faq-container', 'main'));
+  if ($('faq-container'))        jobs.push(renderFaq('faq-container', 'general'));
   if ($('sponsors-container'))   jobs.push(renderSponsors('sponsors-container'));
   if ($('contact-container'))    jobs.push(renderContact('contact-container'));
   if ($('about-container'))      jobs.push(renderAbout('about-container'));
