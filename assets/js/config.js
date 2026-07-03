@@ -97,7 +97,7 @@ export const CONFERENCE = Object.freeze({
   /** Organiser information */
   organiser: Object.freeze({
     name_ms: 'Bahagian Penguatkuasaan Farmasi (BPF)',
-    name_en: 'Pharmaceutical Enforcement Division (BPF)',
+    name_en: 'Pharmacy Enforcement Division (BPF)',
     parent_ms: 'Kementerian Kesihatan Malaysia',
     parent_en: 'Ministry of Health Malaysia',
     abbr:    'BPF, KKM',
@@ -372,7 +372,7 @@ export const LANG = Object.freeze({
 
     /* Footer */
     footer_rights:     'All rights reserved.',
-    footer_org:        'Pharmaceutical Enforcement Division, Ministry of Health Malaysia',
+    footer_org:        'Pharmacy Enforcement Division, Ministry of Health Malaysia',
     footer_links:      'Quick Links',
     footer_contact:    'Contact',
     footer_dev:        'This website was developed for official conference use.',
