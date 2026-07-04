@@ -2895,6 +2895,14 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   gap: var(--sp-4);
 }
 
+/* Solo copyright — no grid, no border, centred */
+.footer__bottom--solo {
+  justify-content: center;
+  text-align: center;
+  border-top: none;
+  padding-top: 0;
+}
+
 .footer__copy {
   font-size: var(--fs-xs);
   color: rgba(var(--clr-cream-rgb), 0.45);
