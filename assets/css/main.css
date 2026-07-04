@@ -3849,12 +3849,12 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 .rise-objectives li {
   display: flex;
-  align-items: flex-start;
-  gap: var(--sp-4);
+  align-items: center;
+  gap: var(--sp-5);
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-subtle);
   border-radius: 14px;
-  padding: var(--sp-5);
+  padding: var(--sp-5) var(--sp-6);
   transition: transform 0.25s var(--ease-out), border-color 0.25s var(--ease-out), background 0.25s var(--ease-out);
 }
 .rise-objectives li:hover {
@@ -3865,8 +3865,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 .rise-objectives__num {
   flex-shrink: 0;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -3875,7 +3875,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-size: var(--fs-lg);
   color: var(--clr-primary-deep);
   background: linear-gradient(135deg, var(--gold-2), var(--clr-gold));
-  box-shadow: var(--shadow-gold);
+  box-shadow: var(--shadow-gold), 0 0 0 5px rgba(212, 175, 55, 0.10);
 }
 
 .rise-objectives li p {
