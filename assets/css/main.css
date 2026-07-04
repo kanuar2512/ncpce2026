@@ -778,7 +778,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   flex-direction: column;
   align-items: center;
   gap: var(--sp-2);
-  margin-bottom: var(--sp-8);
+  margin-bottom: calc(var(--sp-8) + 18px);
 }
 
 /* Soft spotlight behind the entire block (dimmed so it never
@@ -788,12 +788,12 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 132%;
+  width: 112%;
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   z-index: -1;
-  background: radial-gradient(circle, rgba(255,244,214,0.15) 0%, transparent 66%);
+  background: radial-gradient(circle, rgba(255,244,214,0.10) 0%, transparent 68%);
 }
 
 .hero__emblem-wrap {
@@ -802,7 +802,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .hero__emblem {
-  width: clamp(170px, 26vh, 290px);
+  width: clamp(162px, 24.7vh, 276px);
   height: auto;
   filter: drop-shadow(0 10px 26px rgba(0,0,0,0.5));
 }
@@ -817,7 +817,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-family: var(--font-body);
   font-size: clamp(0.72rem, 1.5vw, 0.92rem);
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--clr-cream);
   opacity: 0.92;
@@ -833,7 +833,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 .hero__title {
   text-transform: uppercase;
   line-height: 0.94;
-  margin-bottom: var(--sp-5);
+  margin-bottom: calc(var(--sp-5) + 12px);
 }
 
 .hero__title .l1,
@@ -851,7 +851,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .hero__title .l2 {
-  font-size: clamp(2.5rem, 9.5vw, 6.25rem);
+  font-size: clamp(2.35rem, 8.9vw, 5.85rem);
   letter-spacing: 1px;
   color: var(--clr-white);
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
@@ -1029,11 +1029,11 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 124%;
+  width: 106%;
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px dashed rgba(212, 175, 55, 0.24);
+  border: 1px dashed rgba(212, 175, 55, 0.22);
   z-index: -1;
   animation: fxHaloSpin 48s linear infinite;
 }
