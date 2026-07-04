@@ -769,20 +769,36 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 .hero__scroll-hint { z-index: 1; }
 
-/* 50-year emblem with a soft spotlight for contrast against the maroon */
-.hero__emblem-wrap {
+/* ── Government branding block: Jata Negara + organiser identity ──
+   Jata Negara and both text lines form one cohesive, centred block;
+   the animated halo + soft spotlight frame the WHOLE block. */
+.hero__brand {
   position: relative;
   display: inline-flex;
-  justify-content: center;
-  margin-bottom: var(--sp-6);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-8);
 }
 
-.hero__emblem-wrap::before {
+/* Soft spotlight behind the entire block (dimmed so it never
+   competes with the conference title). */
+.hero__brand::before {
   content: '';
   position: absolute;
-  inset: -14% -8%;
+  left: 50%;
+  top: 50%;
+  width: 132%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
   z-index: -1;
-  background: radial-gradient(circle, rgba(255,244,214,0.22) 0%, transparent 66%);
+  background: radial-gradient(circle, rgba(255,244,214,0.15) 0%, transparent 66%);
+}
+
+.hero__emblem-wrap {
+  display: inline-flex;
+  justify-content: center;
 }
 
 .hero__emblem {
@@ -791,10 +807,13 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   filter: drop-shadow(0 10px 26px rgba(0,0,0,0.5));
 }
 
-/* Organiser wordmark beneath the KKM emblem */
+/* Organiser identity — two lines, identical styling, centred */
 .hero__organiser {
-  display: block;
-  margin: var(--sp-4) 0 var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25em;
+  margin: 0;
   font-family: var(--font-body);
   font-size: clamp(0.72rem, 1.5vw, 0.92rem);
   font-weight: 600;
@@ -803,6 +822,11 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   color: var(--clr-cream);
   opacity: 0.92;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+}
+
+.hero__organiser-line {
+  display: block;
+  text-align: center;
 }
 
 /* Live, responsive, bilingual conference title */
@@ -998,14 +1022,25 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 .fx-particles span:nth-child(12) { left: 96%; animation-duration: 19s; animation-delay: 6s; }
 
 /* Commemorative orbit ring around the 50-year emblem */
-.hero__emblem-wrap::after {
+/* Slow, subtle animated halo framing the FULL branding block.
+   Uses fxHaloSpin so the rotation preserves the centring transform. */
+.hero__brand::after {
   content: '';
   position: absolute;
-  inset: -18% -18%;
+  left: 50%;
+  top: 50%;
+  width: 124%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px dashed rgba(212, 175, 55, 0.35);
+  border: 1px dashed rgba(212, 175, 55, 0.24);
   z-index: -1;
-  animation: fxSpin 48s linear infinite;
+  animation: fxHaloSpin 48s linear infinite;
+}
+
+@keyframes fxHaloSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 @keyframes fxBreath {
