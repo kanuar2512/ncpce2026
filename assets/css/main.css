@@ -491,6 +491,14 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 /* Logo in nav */
+/* Brand lockup — two logos side by side (Persidangan + Jubli 50) */
+.navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
 .navbar__logo {
   height: 44px;
   width: auto;
@@ -499,8 +507,27 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
 }
 
-.navbar__logo:hover {
-  transform: scale(1.05);
+/* Equalised optical weight: the slim emblem vs. the padded jubilee mark */
+.navbar__logo--conf  { height: 44px; }
+.navbar__logo--jubli { height: 42px; }
+
+.navbar__brand:hover .navbar__logo {
+  transform: scale(1.04);
+}
+
+/* Hairline gold divider between the two brand marks */
+.navbar__brand-sep {
+  width: 1px;
+  height: 28px;
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.55), transparent);
+}
+
+@media (max-width: 600px) {
+  .navbar__brand { gap: 8px; }
+  .navbar__logo--conf  { height: 34px; }
+  .navbar__logo--jubli { height: 32px; }
+  .navbar__brand-sep { height: 22px; }
 }
 
 /* Nav links */
@@ -759,9 +786,23 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .hero__emblem {
-  width: clamp(150px, 24vh, 250px);
+  width: clamp(170px, 26vh, 290px);
   height: auto;
-  filter: drop-shadow(0 10px 26px rgba(0,0,0,0.45));
+  filter: drop-shadow(0 10px 26px rgba(0,0,0,0.5));
+}
+
+/* Organiser wordmark beneath the KKM emblem */
+.hero__organiser {
+  display: block;
+  margin: var(--sp-4) 0 var(--sp-6);
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 1.5vw, 0.92rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--clr-cream);
+  opacity: 0.92;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 
 /* Live, responsive, bilingual conference title */
