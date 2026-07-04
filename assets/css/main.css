@@ -797,8 +797,24 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .hero__emblem-wrap {
+  position: relative;
   display: inline-flex;
   justify-content: center;
+}
+
+/* Very soft premium highlight directly behind the Jata Negara
+   (understated — no strong shadow or bright glow). */
+.hero__emblem-wrap::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 116%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(255, 244, 214, 0.08) 0%, transparent 62%);
 }
 
 .hero__emblem {
