@@ -4169,7 +4169,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-4);
-  padding: var(--sp-4) var(--sp-5);
+  padding: var(--sp-4) var(--sp-6);
   cursor: pointer;
   list-style: none;
   font-weight: 700;
@@ -4194,7 +4194,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 .logo-acc[open] .logo-acc__chevron { transform: rotate(180deg); }
 
-.logo-acc__panel { padding: 0 var(--sp-5) var(--sp-5); }
+.logo-acc__panel { padding: 0 var(--sp-6) var(--sp-6); }
 
 .logo-acc__panel p {
   margin: 0;
