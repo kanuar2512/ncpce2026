@@ -411,7 +411,7 @@
           <span data-lang="en">R&amp;D &amp; Quality Improvement Initiatives (QIIs)</span>
         </div>
         <p class="info-card__body">
-          <span data-lang="ms">Membentangkan hasil penyelidikan dan pembangunan (R&amp;D) serta projek Inisiatif Penambahbaikan Kualiti (QIIs) bagi memacu inovasi dan kecemerlangan penguatkuasaan farmasi.</span>
+          <span data-lang="ms">Pembentangan hasil penyelidikan dan pembangunan (R&amp;D) serta projek Inisiatif Penambahbaikan Kualiti (QIIs) bagi memacu inovasi dan kecemerlangan penguatkuasaan farmasi.</span>
           <span data-lang="en">Presenting research and development (R&amp;D) outcomes and Quality Improvement Initiatives (QIIs) projects to drive innovation and excellence in pharmacy enforcement.</span>
         </p>
       </div>
@@ -653,58 +653,112 @@
           <span data-lang="en">The symbolic unveiling of the Golden Jubilee logo marking 50 years of Pharmaceutical Enforcement, together with its specially composed commemorative song.</span>
         </p>
 
-        <div class="reveal" style="display:flex; justify-content:center; margin:var(--sp-8) 0;">
-          <img
-            src="assets/img/logo-50tahun.png"
-            alt="Logo Jubli Emas 50 Tahun Penguatkuasaan Farmasi 1976–2026"
-            style="max-width:150px; width:100%; height:auto;"
-          >
-        </div>
+        <div class="logo-showcase reveal">
 
-        <div class="grid-2 reveal">
+          <!-- Centrepiece: official Jubli Emas logo + theme-song slot -->
+          <aside class="logo-showcase__aside">
+            <figure class="logo-medallion">
+              <img
+                src="assets/img/logo-50tahun.png"
+                alt="Logo Jubli Emas 50 Tahun Penguatkuasaan Farmasi 1976–2026"
+                class="logo-medallion__img"
+              >
+            </figure>
 
-          <div style="background:rgba(128,0,0,0.04); border:1px solid rgba(128,0,0,0.15); border-radius:var(--radius-lg); padding:var(--sp-6);">
-            <div style="font-weight:700; color:var(--clr-primary); font-size:var(--fs-md); margin-bottom:var(--sp-2);">
-              <span data-lang="ms">Angka 50</span>
-              <span data-lang="en">The Number 50</span>
+            <!-- Theme song — future-ready placeholder.
+                 TO ACTIVATE LATER: replace the two .song-card__body/.song-card__badge
+                 lines with a single element, e.g.
+                 <audio class="song-card__audio" controls src="assets/audio/lagu-tema.mp3"></audio> -->
+            <div class="song-card" role="group" aria-label="Lagu Tema Rasmi">
+              <span class="song-card__icon" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg></span>
+              <div class="song-card__body">
+                <div class="song-card__title">
+                  <span data-lang="ms">Lagu Tema Rasmi</span>
+                  <span data-lang="en">Official Theme Song</span>
+                </div>
+                <div class="song-card__status">
+                  <span data-lang="ms">Akan dimuat naik dalam kemas kini akan datang</span>
+                  <span data-lang="en">Coming in a future update</span>
+                </div>
+              </div>
+              <span class="song-card__badge" aria-hidden="true">
+                <span data-lang="ms">Akan Datang</span>
+                <span data-lang="en">Soon</span>
+              </span>
             </div>
-            <p style="color:var(--txt-body-dark); font-size:var(--fs-sm); line-height:1.75; margin:0;">
-              <span data-lang="ms">Melambangkan kematangan, keteguhan dan kecemerlangan Bahagian Penguatkuasaan Farmasi sepanjang lima dekad dalam memartabatkan undang-undang farmasi di Malaysia. Angka ini turut menjadi simbol kredibiliti jentera penguatkuasaan yang kekal relevan merentasi zaman.</span>
-              <span data-lang="en">The number 50 represents the maturity, resilience and excellence the Pharmacy Enforcement Division has built over five decades in upholding pharmacy law in Malaysia. It also stands as a symbol of an enforcement machinery whose credibility has remained relevant across the generations.</span>
-            </p>
-          </div>
+          </aside>
 
-          <div style="background:rgba(128,0,0,0.04); border:1px solid rgba(128,0,0,0.15); border-radius:var(--radius-lg); padding:var(--sp-6);">
-            <div style="font-weight:700; color:var(--clr-primary); font-size:var(--fs-md); margin-bottom:var(--sp-2);">
-              <span data-lang="ms">Tahun 1976–2026</span>
-              <span data-lang="en">The Years 1976–2026</span>
-            </div>
-            <p style="color:var(--txt-body-dark); font-size:var(--fs-sm); line-height:1.75; margin:0;">
-              <span data-lang="ms">Menghayati nostalgia sejarah serta garis masa penubuhan Penguatkuasaan Farmasi bermula tahun 1976 hingga kini. Ia mencerminkan dedikasi berterusan dalam melindungi kesihatan rakyat selama setengah abad.</span>
-              <span data-lang="en">Tracing the historic timeline of Pharmaceutical Enforcement from its establishment in 1976 to the present day, reflecting half a century of unwavering dedication to safeguarding public health.</span>
+          <!-- Meaning behind the logo — decluttered as an exclusive accordion -->
+          <div class="logo-meaning">
+            <p class="logo-meaning__eyebrow">
+              <span data-lang="ms">Makna di Sebalik Logo</span>
+              <span data-lang="en">Meaning Behind the Logo</span>
             </p>
-          </div>
 
-          <div style="background:rgba(128,0,0,0.04); border:1px solid rgba(128,0,0,0.15); border-radius:var(--radius-lg); padding:var(--sp-6);">
-            <div style="font-weight:700; color:var(--clr-primary); font-size:var(--fs-md); margin-bottom:var(--sp-2);">
-              <span data-lang="ms">Ikon Kapsul & Nombor Binari</span>
-              <span data-lang="en">Capsule & Binary Number Icon</span>
-            </div>
-            <p style="color:var(--txt-body-dark); font-size:var(--fs-sm); line-height:1.75; margin:0;">
-              <span data-lang="ms">Ikon kapsul dan elemen nombor binari melambangkan fokus utama bidang farmaseutikal. Kapsul yang terbelah menggambarkan tindakan proaktif membongkar aktiviti haram serta ketegasan membanteras ubat tidak sah. Elemen nombor binari pula mencerminkan kesiapsiagaan anggota dalam menangani jenayah farmaseutikal dalam talian (e-dagang) serta pemerkasaan teknologi digital dalam penguatkuasaan moden.</span>
-              <span data-lang="en">The capsule icon and binary-number motif represent the core focus of pharmaceutical enforcement. The split capsule signifies proactive action in uncovering illegal activity and firm resolve in combating counterfeit and unregistered medicines, while the binary elements reflect officers' readiness to tackle online (e-commerce) pharmaceutical crime and the growing role of digital technology in modern enforcement.</span>
-            </p>
-          </div>
+            <details class="logo-acc" name="logo-simbolisme" open>
+              <summary class="logo-acc__summary">
+                <span class="logo-acc__title">
+                  <span data-lang="ms">Angka 50</span>
+                  <span data-lang="en">The Number 50</span>
+                </span>
+                <svg class="hicon logo-acc__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+              </summary>
+              <div class="logo-acc__panel">
+                <p>
+                  <span data-lang="ms">Melambangkan kematangan, keteguhan dan kecemerlangan Bahagian Penguatkuasaan Farmasi sepanjang lima dekad dalam memartabatkan undang-undang farmasi di Malaysia. Angka ini turut menjadi simbol kredibiliti jentera penguatkuasaan yang kekal relevan merentasi zaman.</span>
+                  <span data-lang="en">The number 50 represents the maturity, resilience and excellence the Pharmacy Enforcement Division has built over five decades in upholding pharmacy law in Malaysia. It also stands as a symbol of an enforcement machinery whose credibility has remained relevant across the generations.</span>
+                </p>
+              </div>
+            </details>
 
-          <div style="background:rgba(128,0,0,0.04); border:1px solid rgba(128,0,0,0.15); border-radius:var(--radius-lg); padding:var(--sp-6);">
-            <div style="font-weight:700; color:var(--clr-primary); font-size:var(--fs-md); margin-bottom:var(--sp-2);">
-              <span data-lang="ms">Elemen Bulatan & Percikan Warna</span>
-              <span data-lang="en">Circle Element & Colour Accents</span>
-            </div>
-            <p style="color:var(--txt-body-dark); font-size:var(--fs-sm); line-height:1.75; margin:0;">
-              <span data-lang="ms">Bulatan berwarna emas yang mewakili angka "0" melambangkan kesepaduan dan dinamisme dalam mendepani cabaran global. Percikan warna emas, maroon dan kuning menggambarkan keberanian, semangat tinggi dan ketangkasan anggota penguat kuasa dalam memerangi jenayah farmaseutikal secara menyeluruh (360 darjah).</span>
-              <span data-lang="en">The gold circle, forming the number "0", symbolises unity and dynamism in confronting global challenges, while the gold, maroon and yellow accents reflect the courage, spirit and agility of enforcement officers in combating pharmaceutical crime on every front (360 degrees).</span>
-            </p>
+            <details class="logo-acc" name="logo-simbolisme">
+              <summary class="logo-acc__summary">
+                <span class="logo-acc__title">
+                  <span data-lang="ms">Tahun 1976–2026</span>
+                  <span data-lang="en">The Years 1976–2026</span>
+                </span>
+                <svg class="hicon logo-acc__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+              </summary>
+              <div class="logo-acc__panel">
+                <p>
+                  <span data-lang="ms">Menghayati nostalgia sejarah serta garis masa penubuhan Penguatkuasaan Farmasi bermula tahun 1976 hingga kini. Ia mencerminkan dedikasi berterusan dalam melindungi kesihatan rakyat selama setengah abad.</span>
+                  <span data-lang="en">Tracing the historic timeline of Pharmaceutical Enforcement from its establishment in 1976 to the present day, reflecting half a century of unwavering dedication to safeguarding public health.</span>
+                </p>
+              </div>
+            </details>
+
+            <details class="logo-acc" name="logo-simbolisme">
+              <summary class="logo-acc__summary">
+                <span class="logo-acc__title">
+                  <span data-lang="ms">Ikon Kapsul & Nombor Binari</span>
+                  <span data-lang="en">Capsule & Binary Number Icon</span>
+                </span>
+                <svg class="hicon logo-acc__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+              </summary>
+              <div class="logo-acc__panel">
+                <p>
+                  <span data-lang="ms">Ikon kapsul dan elemen nombor binari melambangkan fokus utama bidang farmaseutikal. Kapsul yang terbelah menggambarkan tindakan proaktif membongkar aktiviti haram serta ketegasan membanteras ubat tidak sah. Elemen nombor binari pula mencerminkan kesiapsiagaan anggota dalam menangani jenayah farmaseutikal dalam talian (e-dagang) serta pemerkasaan teknologi digital dalam penguatkuasaan moden.</span>
+                  <span data-lang="en">The capsule icon and binary-number motif represent the core focus of pharmaceutical enforcement. The split capsule signifies proactive action in uncovering illegal activity and firm resolve in combating counterfeit and unregistered medicines, while the binary elements reflect officers' readiness to tackle online (e-commerce) pharmaceutical crime and the growing role of digital technology in modern enforcement.</span>
+                </p>
+              </div>
+            </details>
+
+            <details class="logo-acc" name="logo-simbolisme">
+              <summary class="logo-acc__summary">
+                <span class="logo-acc__title">
+                  <span data-lang="ms">Elemen Bulatan & Percikan Warna</span>
+                  <span data-lang="en">Circle Element & Colour Accents</span>
+                </span>
+                <svg class="hicon logo-acc__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+              </summary>
+              <div class="logo-acc__panel">
+                <p>
+                  <span data-lang="ms">Bulatan berwarna emas yang mewakili angka "0" melambangkan kesepaduan dan dinamisme dalam mendepani cabaran global. Percikan warna emas, maroon dan kuning menggambarkan keberanian, semangat tinggi dan ketangkasan anggota penguat kuasa dalam memerangi jenayah farmaseutikal secara menyeluruh (360 darjah).</span>
+                  <span data-lang="en">The gold circle, forming the number "0", symbolises unity and dynamism in confronting global challenges, while the gold, maroon and yellow accents reflect the courage, spirit and agility of enforcement officers in combating pharmaceutical crime on every front (360 degrees).</span>
+                </p>
+              </div>
+            </details>
+
           </div>
 
         </div>

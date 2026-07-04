@@ -3982,3 +3982,191 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 .rise-table__action-btn .hicon {
   vertical-align: middle;
 }
+
+
+/* ============================================================
+   JUBLI EMAS LOGO SHOWCASE  (Awards ▸ Logo & Lagu)
+   Logo as centrepiece · symbolism as an exclusive accordion ·
+   future-ready theme-song slot. Light-panel theme.
+   ============================================================ */
+.logo-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) 1fr;
+  gap: var(--sp-8);
+  align-items: start;
+  margin-top: var(--sp-8);
+}
+
+.logo-showcase__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* Logo centrepiece on a soft gold medallion */
+.logo-medallion {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: var(--sp-8) var(--sp-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0.05) 42%, transparent 72%),
+    rgba(128, 0, 0, 0.03);
+}
+
+.logo-medallion::before {
+  content: '';
+  position: absolute;
+  width: 76%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.14) 0%, transparent 68%);
+  z-index: 0;
+}
+
+.logo-medallion__img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 210px;
+  height: auto;
+  filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.14));
+}
+
+/* Theme-song card (placeholder now, audio-ready later) */
+.song-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(128, 0, 0, 0.15);
+  background: rgba(128, 0, 0, 0.04);
+}
+
+.song-card__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  color: var(--clr-primary);
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.song-card__body { flex: 1 1 auto; min-width: 0; }
+
+.song-card__title {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: var(--clr-primary);
+}
+
+.song-card__status {
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  color: var(--txt-body-dark);
+  opacity: 0.72;
+}
+
+.song-card__badge {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-primary-deep);
+  background: linear-gradient(135deg, var(--gold-2), var(--clr-gold));
+}
+
+/* When a real player is added later */
+.song-card__audio { width: 100%; }
+
+/* Meaning-behind-the-logo accordion */
+.logo-meaning__eyebrow {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clr-primary);
+  opacity: 0.85;
+}
+
+.logo-acc {
+  margin-bottom: var(--sp-3);
+  border: 1px solid rgba(128, 0, 0, 0.15);
+  border-radius: var(--radius-lg);
+  background: rgba(128, 0, 0, 0.02);
+  overflow: hidden;
+  transition: border-color 0.25s var(--ease-out), background 0.25s var(--ease-out);
+}
+
+.logo-acc[open] {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.logo-acc__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  font-size: var(--fs-md);
+  color: var(--clr-primary);
+  transition: color 0.2s var(--ease-out);
+}
+
+.logo-acc__summary::-webkit-details-marker { display: none; }
+.logo-acc__summary:hover { color: var(--clr-primary-deep); }
+
+.logo-acc__summary:focus-visible {
+  outline: 2px solid var(--clr-gold);
+  outline-offset: -2px;
+}
+
+.logo-acc__chevron {
+  flex: none;
+  color: var(--clr-gold);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.logo-acc[open] .logo-acc__chevron { transform: rotate(180deg); }
+
+.logo-acc__panel { padding: 0 var(--sp-5) var(--sp-5); }
+
+.logo-acc__panel p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.75;
+  color: var(--txt-body-dark);
+}
+
+.logo-acc[open] .logo-acc__panel {
+  animation: accReveal 0.32s var(--ease-out) both;
+}
+
+@keyframes accReveal {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 780px) {
+  .logo-showcase {
+    grid-template-columns: 1fr;
+    gap: var(--sp-7);
+  }
+  .logo-medallion__img { max-width: 180px; }
+}
