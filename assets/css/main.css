@@ -778,7 +778,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   flex-direction: column;
   align-items: center;
   gap: var(--sp-2);
-  margin-bottom: calc(var(--sp-8) + 18px);
+  margin-bottom: calc(var(--sp-8) + 30px);
 }
 
 /* Soft spotlight behind the entire block (dimmed so it never
@@ -848,10 +848,11 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-size: clamp(1.3rem, 4.2vw, 2.75rem);
   letter-spacing: 2px;
   color: rgba(var(--clr-cream-rgb), 0.92);
+  margin-bottom: 10px;
 }
 
 .hero__title .l2 {
-  font-size: clamp(2.35rem, 8.9vw, 5.85rem);
+  font-size: clamp(2.25rem, 8.55vw, 5.6rem);
   letter-spacing: 1px;
   color: var(--clr-white);
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
@@ -869,6 +870,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--clr-gold);
+  opacity: 0.85;
   margin-bottom: var(--sp-8);
 }
 
