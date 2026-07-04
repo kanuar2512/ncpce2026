@@ -160,6 +160,21 @@ export const GALLERY = Object.freeze({
 
 
 /* ============================================================
+   THEME SONG — Lagu Tema Rasmi
+   ------------------------------------------------------------
+   To activate the ▶ Main Lagu button, paste the playback URL
+   into `url` below. Nothing else needs to change — the button
+   enables itself automatically. While `url` is empty, only the
+   play button is disabled; "Lihat Lirik" always works.
+   ============================================================ */
+export const THEME_SONG = Object.freeze({
+  title:     'Lima Dekad Penguatkuasaan Farmasi',
+  url:       '',   // ← paste the audio/stream URL here to activate playback
+  lyricsUrl: 'https://drive.google.com/file/d/1Mhz5cM6iKQWpaEzQa-XiqMehbcB-KmRF/view',
+});
+
+
+/* ============================================================
    RISE MODULE CONFIGURATION
    ============================================================ */
 export const RISE = Object.freeze({

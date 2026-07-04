@@ -665,26 +665,39 @@
               >
             </figure>
 
-            <!-- Theme song — future-ready placeholder.
-                 TO ACTIVATE LATER: replace the two .song-card__body/.song-card__badge
-                 lines with a single element, e.g.
-                 <audio class="song-card__audio" controls src="assets/audio/lagu-tema.mp3"></audio> -->
-            <div class="song-card" role="group" aria-label="Lagu Tema Rasmi">
-              <span class="song-card__icon" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg></span>
-              <div class="song-card__body">
-                <div class="song-card__title">
-                  <span data-lang="ms">Lagu Tema Rasmi</span>
-                  <span data-lang="en">Official Theme Song</span>
-                </div>
-                <div class="song-card__status">
-                  <span data-lang="ms">Akan dimuat naik dalam kemas kini akan datang</span>
-                  <span data-lang="en">Coming in a future update</span>
+            <!-- Theme song — production-ready. The ▶ Main Lagu button
+                 activates automatically once THEME_SONG.url is set in
+                 assets/js/config.js (see initThemeSong in ui.js). -->
+            <div class="song-panel" role="group" aria-label="Lagu Tema Rasmi">
+              <div class="song-panel__head">
+                <span class="song-panel__icon" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg></span>
+                <div class="song-panel__titles">
+                  <span class="song-panel__eyebrow">
+                    <span data-lang="ms">Lagu Tema Rasmi</span>
+                    <span data-lang="en">Official Theme Song</span>
+                  </span>
+                  <span class="song-panel__song">Lima Dekad Penguatkuasaan Farmasi</span>
                 </div>
               </div>
-              <span class="song-card__badge" aria-hidden="true">
-                <span data-lang="ms">Akan Datang</span>
-                <span data-lang="en">Soon</span>
-              </span>
+
+              <p class="song-panel__desc">
+                <span data-lang="ms">Lagu tema rasmi sempena Jubli Emas Penguatkuasaan Farmasi.</span>
+                <span data-lang="en">The official theme song commemorating the Golden Jubilee of Pharmacy Enforcement.</span>
+              </p>
+
+              <div class="song-panel__actions">
+                <button type="button" class="btn btn--gold btn--sm song-panel__play" id="theme-song-play">
+                  <span class="song-panel__ic song-panel__ic--play" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"/></svg></span>
+                  <span class="song-panel__ic song-panel__ic--pause" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15.75 5.25v13.5m-7.5-13.5v13.5"/></svg></span>
+                  <span data-lang="ms">Main Lagu</span>
+                  <span data-lang="en">Play Song</span>
+                </button>
+                <a class="btn btn--outline btn--sm song-panel__lyrics" href="https://drive.google.com/file/d/1Mhz5cM6iKQWpaEzQa-XiqMehbcB-KmRF/view" target="_blank" rel="noopener noreferrer">
+                  <svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                  <span data-lang="ms">Lihat Lirik</span>
+                  <span data-lang="en">View Lyrics</span>
+                </a>
+              </div>
             </div>
           </aside>
 
@@ -1023,6 +1036,7 @@
     initAwardsTabs,
     initNowNext,
     initSectionNav,
+    initThemeSong,
     renderAnnouncement,
     renderNowNext,
     renderProgramme,
@@ -1046,6 +1060,7 @@
   initAwardsTabs();
   initNowNext('now-next');
   initSectionNav();
+  initThemeSong();
 
   /* ── 3. Data sections (async — fetch from API / fallback) ── */
   renderAnnouncement('announcement-bar');

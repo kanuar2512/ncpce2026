@@ -20,6 +20,7 @@
 
 import {
   CONFERENCE, RISE as RISE_CONFIG, GALLERY, PROGRAMME_TYPES, FILE_ICONS,
+  THEME_SONG,
   t, localise, getLang,
 } from './config.js';
 
@@ -81,6 +82,42 @@ const HEROICON_PATHS = Object.freeze({
 function hicon(name) {
   const paths = HEROICON_PATHS[name] || HEROICON_PATHS['clipboard'];
   return `<svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${paths}</svg>`;
+}
+
+
+/* ============================================================
+   THEME SONG — Lagu Tema Rasmi playback
+   ------------------------------------------------------------
+   The ▶ Main Lagu button is driven entirely by THEME_SONG.url
+   in config.js. When the URL is empty the play button is
+   disabled; the moment a URL is added it becomes a working
+   play/pause control — no markup changes required.
+   ============================================================ */
+export function initThemeSong() {
+  const btn = document.getElementById('theme-song-play');
+  if (!btn) return;
+
+  const url = (THEME_SONG && THEME_SONG.url ? THEME_SONG.url : '').trim();
+
+  if (!url) {
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled', 'true');
+    return;
+  }
+
+  btn.disabled = false;
+  btn.removeAttribute('aria-disabled');
+
+  const audio = new Audio(url);
+  audio.preload = 'none';
+
+  btn.addEventListener('click', () => {
+    if (audio.paused) { audio.play().catch(() => {}); }
+    else { audio.pause(); }
+  });
+  audio.addEventListener('play',  () => btn.classList.add('is-playing'));
+  audio.addEventListener('pause', () => btn.classList.remove('is-playing'));
+  audio.addEventListener('ended', () => btn.classList.remove('is-playing'));
 }
 
 
