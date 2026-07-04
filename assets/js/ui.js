@@ -1100,7 +1100,7 @@ export async function renderRiseGallery(containerId) {
       const label     = lang === 'en' ? cat.label_en : cat.label_ms;
       const title     = lang === 'en' ? cat.title_en : cat.title_ms;
       const isOpen    = idx === 0;
-      const countText = `${entries.length} ${lang === 'en' ? 'entries' : 'entri'}`;
+      const countText = `${entries.length} ${lang === 'en' ? 'entries' : 'penyertaan'}`;
 
       const rowsHtml = entries.length === 0
         ? `<tr><td colspan="6" class="rise-table__empty">

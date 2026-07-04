@@ -2492,16 +2492,18 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 /* Voting stub */
 .voting-stub {
+  max-width: 620px;
+  margin-inline: auto;
   background: rgba(250, 206, 92, 0.05);
   border: 2px dashed rgba(250, 206, 92, 0.3);
   border-radius: var(--radius-lg);
-  padding: var(--sp-20) var(--sp-8);
+  padding: var(--sp-10) var(--sp-8);
   text-align: center;
 }
 
 .voting-stub__icon {
-  font-size: 3rem;
-  margin-bottom: var(--sp-4);
+  font-size: 2.4rem;
+  margin-bottom: var(--sp-3);
   opacity: 0.5;
 }
 
