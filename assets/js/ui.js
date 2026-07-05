@@ -1383,7 +1383,7 @@ export function renderVoting(containerId) {
            rel="noopener noreferrer"
            style="margin-top:var(--sp-6); display:inline-flex;"
          >
-           ${hicon('check-badge')} BUKA SISTEM UNDIAN
+           ${hicon('check-badge')} UNDI SEKARANG
          </a>`
       : `<p class="voting-stub__text" style="color:rgba(250,206,92,0.5); font-size:0.8rem; margin-top:var(--sp-4);">
            [URL belum dikonfigurasi — kemaskini voting.url dalam config.js]

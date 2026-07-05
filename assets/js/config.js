@@ -249,8 +249,8 @@ export const RISE = Object.freeze({
    * No HTML or CSS changes are needed — everything updates automatically.
    */
   voting: Object.freeze({
-    status: 'before',   // 'before' | 'open' | 'closed'
-    url:    'REPLACE_WITH_VOTING_WEBAPP_URL',
+    status: 'open',   // 'before' | 'open' | 'closed'
+    url:    'https://go.gov.my/UNDI-RISE2026',
   }),
 });
 
