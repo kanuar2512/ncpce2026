@@ -1389,6 +1389,11 @@ export function renderVoting(containerId) {
            [URL belum dikonfigurasi — kemaskini voting.url dalam config.js]
          </p>`;
 
+    messageHtml = `
+      <p class="voting-stub__text" style="margin-top:var(--sp-5); font-size:0.85rem;">
+        Akses kepada sistem pengundian akan dibuka pada 28 Julai 2026 (Selasa), 8.00 pagi hingga 5.00 petang. Pengundian hanya boleh dibuat dalam tempoh yang ditetapkan.
+      </p>`;
+
   } else if (status === 'closed') {
     buttonHtml = `
       <button class="btn btn--outline" disabled style="margin-top:var(--sp-6); opacity:0.45; cursor:not-allowed;">
