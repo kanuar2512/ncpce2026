@@ -745,8 +745,10 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(40% 55% at 78% 22%, rgba(255,255,255,0.06), transparent 60%),
-    radial-gradient(50% 60% at 12% 82%, rgba(0,0,0,0.25), transparent 65%);
+    radial-gradient(38% 50% at 76% 20%, rgba(255,236,190,0.06), transparent 62%),
+    radial-gradient(48% 60% at 12% 80%, rgba(0,0,0,0.28), transparent 66%),
+    radial-gradient(34% 46% at 62% 58%, rgba(150,25,35,0.20), transparent 72%),
+    radial-gradient(30% 40% at 28% 32%, rgba(120,10,26,0.18), transparent 70%);
 }
 
 /* Gold light-sweep arc (brand key visual), bottom-right */
@@ -757,8 +759,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   pointer-events: none;
   z-index: 0;
   background: radial-gradient(55% 75% at 102% 112%,
-    rgba(250,206,92,0.55) 0%,
-    rgba(250,206,92,0.14) 38%,
+    rgba(250,206,92,0.40) 0%,
+    rgba(250,206,92,0.10) 38%,
     transparent 68%);
 }
 
@@ -779,8 +781,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: calc(var(--sp-8) + 30px);
+  gap: var(--sp-1);
+  margin-bottom: calc(var(--sp-8) + 10px);
 }
 
 /* Soft spotlight behind the entire block (dimmed so it never
@@ -790,12 +792,12 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 112%;
+  width: 98%;
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   z-index: -1;
-  background: radial-gradient(circle, rgba(255,244,214,0.10) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(255,244,214,0.06) 0%, transparent 68%);
 }
 
 .hero__emblem-wrap {
@@ -811,16 +813,16 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 116%;
+  width: 96%;
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   z-index: -1;
-  background: radial-gradient(circle, rgba(255, 244, 214, 0.08) 0%, transparent 62%);
+  background: radial-gradient(circle, rgba(255, 244, 214, 0.05) 0%, transparent 60%);
 }
 
 .hero__emblem {
-  width: clamp(162px, 24.7vh, 276px);
+  width: clamp(140px, 21vh, 232px);
   height: auto;
   filter: drop-shadow(0 10px 26px rgba(0,0,0,0.5));
 }
@@ -1005,17 +1007,40 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
           mask-image: radial-gradient(120% 100% at 50% 28%, #000 38%, transparent 78%);
 }
 
-/* Molecular hexagon accents (benzene-ring cue) */
-.fx-hex {
+/* Elegant gold light streaks flowing across the bottom */
+.fx-streaks {
   position: absolute;
-  width: min(30vw, 320px);
-  height: auto;
-  fill: none;
-  stroke: rgba(212, 175, 55, 0.14);
-  stroke-width: 1;
+  left: 0; right: 0; bottom: 0;
+  height: 46%;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 118%, rgba(250, 206, 92, 0.12), transparent 60%),
+    linear-gradient(100deg,
+      transparent 28%,
+      rgba(250, 206, 92, 0.05) 44%,
+      rgba(255, 238, 190, 0.11) 50%,
+      rgba(250, 206, 92, 0.05) 56%,
+      transparent 74%);
+  -webkit-mask-image: linear-gradient(to top, #000 4%, transparent 92%);
+          mask-image: linear-gradient(to top, #000 4%, transparent 92%);
 }
-.fx-hex--1 { top: 7%;  left: 5%;  animation: fxSpin 60s linear infinite; }
-.fx-hex--2 { bottom: 5%; right: 7%; width: min(22vw, 240px); animation: fxSpin 90s linear infinite reverse; }
+
+/* Soft flowing gold highlight (slow, subtle) */
+.fx-sheen {
+  position: absolute;
+  left: -30%; right: -30%; bottom: -12%;
+  height: 60%;
+  pointer-events: none;
+  background: radial-gradient(50% 60% at 50% 100%, rgba(255, 240, 205, 0.10), transparent 70%);
+  filter: blur(30px);
+  animation: fxSheen 16s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes fxSheen {
+  from { transform: translateX(-6%); opacity: 0.65; }
+  to   { transform: translateX(6%);  opacity: 1; }
+}
 
 /* Floating gold particles */
 .fx-particles span {
@@ -1053,7 +1078,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px dashed rgba(212, 175, 55, 0.22);
+  border: 1px dashed rgba(212, 175, 55, 0.15);
   z-index: -1;
   animation: fxHaloSpin 48s linear infinite;
 }
