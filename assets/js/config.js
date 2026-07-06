@@ -4,7 +4,7 @@
  *
  * HOW TO UPDATE FOR A NEW CONFERENCE YEAR:
  *  1. Update CONFERENCE object (dates, venue, theme)
- *  2. Update API.ENDPOINT with the new Apps Script deployment URL
+ *  2. Update the APPS_SCRIPT_ENDPOINT repo secret if the data source changes
  *  3. Update NAV if new sections are added
  *  4. Update LANG strings if wording changes
  *  Everything else adapts automatically.
@@ -17,12 +17,15 @@
 
 /* ============================================================
    API CONFIGURATION
-   Replace ENDPOINT with your deployed Apps Script Web App URL.
-   Format: https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec
+   The frontend reads pre-published STATIC JSON snapshots — it no
+   longer calls Apps Script directly. The snapshot is produced by
+   .github/workflows/snapshot-data.yml, which holds the Apps Script
+   /exec URL in the repo secret APPS_SCRIPT_ENDPOINT. To change the
+   data source, update that secret — no code change needed.
    ============================================================ */
 export const API = Object.freeze({
-  /** @type {string} Deployed Apps Script Web App URL */
-  ENDPOINT: 'https://script.google.com/macros/s/AKfycbwHbUK5expjvgbqcQ3aNGpwkr06fZvp_6gppQFicbxVLk1KUeK1ATCDllhm4XysBnR7EA/exec',
+  /** @type {string} Folder (relative to the site root) holding the JSON snapshot. */
+  DATA_BASE: './assets/data/',
 
   /** Cache duration in milliseconds (5 minutes) */
   CACHE_TTL: 5 * 60 * 1000,

@@ -964,20 +964,6 @@
 
 
 <!-- ============================================================
-     MOBILE DEBUG CONSOLE (temporary) — activates ONLY with ?debug=1
-     Lets you read [CMIP] logs on a phone without a PC. Remove after
-     diagnosis. Does nothing for normal visitors.
-     ============================================================ -->
-<script>
-  if (location.search.indexOf('debug=1') !== -1) {
-    var s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/eruda';
-    s.onload = function () { eruda.init(); };
-    document.head.appendChild(s);
-  }
-</script>
-
-<!-- ============================================================
      SCRIPTS — ES Modules
      initLang() is called FIRST so the language is set before
      any render function runs.
