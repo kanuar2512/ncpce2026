@@ -106,13 +106,13 @@ async function fetchSheet(sheet, params = {}) {
   // Return cached result if fresh
   const cached = cacheGet(cacheKey);
   if (cached !== null) {
-    console.debug(`[CMIP API] Cache hit: ${cacheKey}`);
+    console.debug(`[CMIP] cache-hit ${cacheKey}`);
     return cached;
   }
 
   // Use fallback data in dev / unconfigured mode
   if (useFallback()) {
-    console.warn(`[CMIP API] Using fallback data for sheet: ${sheet}`, params);
+    console.warn(`[CMIP] fallback ${sheet}`, params);
     const fallback = getFallbackData(sheet, params);
     cacheSet(cacheKey, fallback);
     return fallback;
@@ -123,14 +123,17 @@ async function fetchSheet(sheet, params = {}) {
   url.searchParams.set('sheet', sheet);
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
 
-  console.debug(`[CMIP API] JSONP fetch: ${url.toString()}`);
-
   return new Promise((resolve, reject) => {
     // Unique callback name — safe global identifier
     const cbName = '_cmip_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    const t0 = performance.now();
+
+    // DIAGNOSTIC: the endpoint ACTUALLY in use — reveals a stale cached config.js
+    console.info(`[CMIP] ▶ ${sheet} | endpoint=${API.ENDPOINT} | cb=${cbName}`);
 
     // Timeout
     const timer = setTimeout(() => {
+      console.error(`[CMIP] ✖ TIMEOUT ${sheet} after ${Math.round(performance.now() - t0)}ms — callback never fired (endpoint likely dead / redirecting to HTML)`);
       cleanup();
       reject(new ApiError('Request timed out after 45 seconds', 408, sheet));
     }, 45_000);
@@ -140,10 +143,12 @@ async function fetchSheet(sheet, params = {}) {
       delete window[cbName];
       const el = document.getElementById(cbName);
       if (el) el.remove();
+      console.debug(`[CMIP] ⟲ cleanup ${cbName}`);
     }
 
     // Register global callback — Apps Script will call cbName({ status, data })
     window[cbName] = function (json) {
+      console.info(`[CMIP] ✔ callback ${sheet} in ${Math.round(performance.now() - t0)}ms`);
       cleanup();
       if (!json || json.status === 'error') {
         reject(new ApiError(json?.message || 'Apps Script returned an error', 0, sheet));
@@ -159,7 +164,12 @@ async function fetchSheet(sheet, params = {}) {
     const script = document.createElement('script');
     script.id  = cbName;
     script.src = url.toString();
+    console.debug(`[CMIP] inject <script> ${url.toString()}`);
+    // NOTE: onload fires even when the endpoint returns an HTML error page,
+    // so a successful onload does NOT prove the callback ran.
+    script.onload  = () => console.debug(`[CMIP] script onload ${sheet}`);
     script.onerror = () => {
+      console.error(`[CMIP] ✖ ONERROR ${sheet} — network / DNS / blocked`);
       cleanup();
       reject(new ApiError(`Network error fetching "${sheet}"`, 0, sheet));
     };
