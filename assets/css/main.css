@@ -723,12 +723,11 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: relative;
   width: 100%;
   min-height: 100vh;
-  /* Official conference key visual — real maroon-marble + gold silk sweep
-     plate (built from the branding texture assets). Deep-maroon fallback
-     colour shows before the image loads. */
   background:
-    var(--bg-deep-3)
-    url("../img/hero-bg.jpg") center center / cover no-repeat;
+    radial-gradient(150% 135% at 50% -18%,
+      var(--bg-deep-1) 0%,
+      var(--bg-deep-2) 44%,
+      var(--bg-deep-3) 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -738,9 +737,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   overflow: hidden;
 }
 
-/* Legibility scrim — soft dark gradient at top/bottom so the nav and
-   title stay readable over the textured key-visual plate. The marble +
-   gold sweep now come from the real hero-bg.jpg image, not gradients. */
+/* Subtle marbled sheen — layered soft radials, on-brand, no external image */
 .hero::before {
   content: '';
   position: absolute;
@@ -748,19 +745,21 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   pointer-events: none;
   z-index: 0;
   background:
-    linear-gradient(180deg, rgba(13,0,0,0.42) 0%, transparent 24%),
-    radial-gradient(120% 80% at 50% 42%, transparent 55%, rgba(13,0,0,0.30) 100%);
+    radial-gradient(40% 55% at 78% 22%, rgba(255,255,255,0.06), transparent 60%),
+    radial-gradient(50% 60% at 12% 82%, rgba(0,0,0,0.25), transparent 65%);
 }
 
-/* Reserved (texture now supplied by the image); kept empty to avoid
-   double-exposing the gold sweep baked into the plate. */
+/* Gold light-sweep arc (brand key visual), bottom-right */
 .hero::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background: none;
+  background: radial-gradient(55% 75% at 102% 112%,
+    rgba(250,206,92,0.55) 0%,
+    rgba(250,206,92,0.14) 38%,
+    transparent 68%);
 }
 
 .hero__content {
@@ -780,8 +779,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-1);
-  margin-bottom: calc(var(--sp-8) + 10px);
+  gap: var(--sp-2);
+  margin-bottom: calc(var(--sp-8) + 30px);
 }
 
 /* Soft spotlight behind the entire block (dimmed so it never
@@ -791,12 +790,12 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 98%;
+  width: 112%;
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   z-index: -1;
-  background: radial-gradient(circle, rgba(255,244,214,0.06) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(255,244,214,0.10) 0%, transparent 68%);
 }
 
 .hero__emblem-wrap {
@@ -812,16 +811,16 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 96%;
+  width: 116%;
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   z-index: -1;
-  background: radial-gradient(circle, rgba(255, 244, 214, 0.05) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(255, 244, 214, 0.08) 0%, transparent 62%);
 }
 
 .hero__emblem {
-  width: clamp(140px, 21vh, 232px);
+  width: clamp(162px, 24.7vh, 276px);
   height: auto;
   filter: drop-shadow(0 10px 26px rgba(0,0,0,0.5));
 }
@@ -977,7 +976,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: absolute;
   border-radius: 50%;
   filter: blur(42px);
-  opacity: 0.22; /* softened so animated glows accent, not fight, the plate */
+  opacity: 0.5;
   will-change: transform, opacity;
 }
 .fx-glow--a {
@@ -993,29 +992,30 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   animation: fxBreath 12s ease-in-out infinite reverse;
 }
 
-/* Fake marble/mesh/streak layers are now superseded by the real textured
-   key-visual plate (hero-bg.jpg). Disabled so they don't muddy the image;
-   the animated glow, sheen and particles below are kept for subtle life. */
-.fx-mesh,
-.fx-marble,
-.fx-streaks { display: none; }
-
-/* Soft flowing gold highlight (slow) */
-.fx-sheen {
+/* Scientific / flowing gold mesh, faded toward the edges */
+.fx-mesh {
   position: absolute;
-  left: -30%; right: -30%; bottom: -14%;
-  height: 62%;
-  pointer-events: none;
-  background: radial-gradient(50% 60% at 50% 100%, rgba(255, 242, 210, 0.16), transparent 70%);
-  filter: blur(34px);
-  animation: fxSheen 16s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  inset: -2px;
+  opacity: 0.6;
+  background-image:
+    linear-gradient(60deg,  transparent 49.5%, rgba(212, 175, 55, 0.05) 50%, transparent 50.5%),
+    linear-gradient(-60deg, transparent 49.5%, rgba(212, 175, 55, 0.05) 50%, transparent 50.5%);
+  background-size: 44px 76px;
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 28%, #000 38%, transparent 78%);
+          mask-image: radial-gradient(120% 100% at 50% 28%, #000 38%, transparent 78%);
 }
 
-@keyframes fxSheen {
-  from { transform: translateX(-7%); opacity: 0.70; }
-  to   { transform: translateX(7%);  opacity: 1; }
+/* Molecular hexagon accents (benzene-ring cue) */
+.fx-hex {
+  position: absolute;
+  width: min(30vw, 320px);
+  height: auto;
+  fill: none;
+  stroke: rgba(212, 175, 55, 0.14);
+  stroke-width: 1;
 }
+.fx-hex--1 { top: 7%;  left: 5%;  animation: fxSpin 60s linear infinite; }
+.fx-hex--2 { bottom: 5%; right: 7%; width: min(22vw, 240px); animation: fxSpin 90s linear infinite reverse; }
 
 /* Floating gold particles */
 .fx-particles span {
@@ -1053,7 +1053,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px dashed rgba(212, 175, 55, 0.15);
+  border: 1px dashed rgba(212, 175, 55, 0.22);
   z-index: -1;
   animation: fxHaloSpin 48s linear infinite;
 }
