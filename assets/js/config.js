@@ -169,7 +169,7 @@ export const GALLERY = Object.freeze({
    ============================================================ */
 export const THEME_SONG = Object.freeze({
   title:     'Lima Dekad Penguatkuasaan Farmasi',
-  url:       '',   // ← paste the audio/stream URL here to activate playback
+  url:       'https://storage3.me-qr.com/mp3/65071f9b-2670-42d4-8c31-4a8657c3c78b.mp3',   // ← direct MP3; play button activates automatically
   lyricsUrl: 'https://drive.google.com/file/d/1Mhz5cM6iKQWpaEzQa-XiqMehbcB-KmRF/view',
 });
 
