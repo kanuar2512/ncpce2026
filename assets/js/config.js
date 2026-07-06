@@ -56,10 +56,10 @@ export const CONFERENCE = Object.freeze({
   abbr: 'PKPJF 2026',
 
   /** Conference theme — BM */
-  theme_ms: '50 Tahun Penguatkuasaan Farmasi: Dari Legasi ke Transformasi Digital, Mendepani Jenayah Farmaseutikal Tanpa Sempadan Demi Kesejahteraan Rakyat',
+  theme_ms: '50 Tahun Penguatkuasaan Farmasi: Dari Legasi ke Transformasi Digital, Mendepani Jenayah Farmaseutikal Tanpa Sempadan',
 
   /** Conference theme — EN */
-  theme_en: '50 Years of Pharmaceutical Enforcement: From Legacy to Digital Transformation, Confronting Borderless Pharmaceutical Crime for the People\'s Wellbeing',
+  theme_en: '50 Years of Pharmaceutical Enforcement: From Legacy to Digital Transformation, Confronting Borderless Pharmaceutical Crime',
 
   /** Conference dates */
   dates: Object.freeze({
@@ -96,8 +96,8 @@ export const CONFERENCE = Object.freeze({
 
   /** Organiser information */
   organiser: Object.freeze({
-    name_ms: 'Bahagian Penguatkuasaan Farmasi (BPF)',
-    name_en: 'Pharmacy Enforcement Division (BPF)',
+    name_ms: 'Bahagian Penguatkuasaan Farmasi',
+    name_en: 'Pharmacy Enforcement Division',
     parent_ms: 'Kementerian Kesihatan Malaysia',
     parent_en: 'Ministry of Health Malaysia',
     abbr:    'BPF, KKM',
