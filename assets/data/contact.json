@@ -1,0 +1,24 @@
+[
+  {
+    "name": "TBC",
+    "role_ms": "Pengerusi Jawatankuasa",
+    "role_en": "Committee Chairperson",
+    "unit_ms": "Bahagian Penguatkuasaan Farmasi",
+    "unit_en": "Pharmaceutical Enforcement Division",
+    "email": "bpf@moh.gov.my",
+    "phone": "",
+    "photo_url": "",
+    "order": "1"
+  },
+  {
+    "name": "TBC",
+    "role_ms": "Setiausaha",
+    "role_en": "Secretary",
+    "unit_ms": "Bahagian Penguatkuasaan Farmasi",
+    "unit_en": "Pharmaceutical Enforcement Division",
+    "email": "bpf@moh.gov.my",
+    "phone": "",
+    "photo_url": "",
+    "order": "2"
+  }
+]

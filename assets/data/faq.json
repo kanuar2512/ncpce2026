@@ -1,0 +1,82 @@
+[
+  {
+    "section": "general",
+    "question_ms": "Bilakah waktu pendaftaran peserta dibuka?",
+    "question_en": "When will participant registration open?",
+    "answer_ms": "Kaunter pendaftaran akan dibuka mengikut masa yang dinyatakan dalam atur cara rasmi persidangan. Peserta disarankan hadir lebih awal bagi melancarkan proses pendaftaran.",
+    "answer_en": "The registration counter will operate according to the schedule stated in the official conference programme. Participants are encouraged to arrive early to facilitate the registration process.",
+    "order": "1"
+  },
+  {
+    "section": "rise",
+    "question_ms": "Apakah RISE?",
+    "question_en": "What is RISE?",
+    "answer_ms": "RISE ialah Simposium Penyelidikan dan Pembangunan (R&D) serta Inisiatif Penambahbaikan Kualiti Penguatkuasaan Farmasi yang dianjurkan bersempena Persidangan Kebangsaan Penguatkuasaan Jenayah Farmaseutikal 2026. Simposium ini menjadi platform perkongsian hasil penyelidikan, amalan terbaik dan projek penambahbaikan kualiti dalam bidang penguatkuasaan farmasi.",
+    "answer_en": "RISE is the Research & Development (R&D) and Quality Improvement Initiatives Symposium for Pharmacy Enforcement, held in conjunction with the National Conference on Pharmaceutical Crime Enforcement 2026. The symposium provides a platform for sharing research findings, best practices and quality improvement initiatives in pharmacy enforcement.",
+    "order": "1"
+  },
+  {
+    "section": "rise",
+    "question_ms": "Bagaimanakah saya boleh melihat poster dan abstrak?",
+    "question_en": "How can I view the posters and abstracts?",
+    "answer_ms": "Pilih menu Pembentangan, kemudian pilih kategori yang dikehendaki. Setiap penyertaan memaparkan maklumat pembentang, poster dan abstrak untuk rujukan peserta persidangan.",
+    "answer_en": "Select the Presentations menu and choose the desired category. Each entry includes the presenter information, poster and abstract for conference participants' reference.",
+    "order": "2"
+  },
+  {
+    "section": "rise",
+    "question_ms": "Siapakah yang layak mengundi Anugerah Pilihan RISE?",
+    "question_en": "Who is eligible to vote for the RISE Choice Award?",
+    "answer_ms": "Semua peserta persidangan yang berdaftar layak menyertai pengundian Anugerah Pilihan RISE.",
+    "answer_en": "All registered conference participants are eligible to vote for the RISE Choice Award.",
+    "order": "3"
+  },
+  {
+    "section": "general",
+    "question_ms": "Bagaimanakah saya boleh mendapatkan maklumat mengenai pembentangan dan pameran?",
+    "question_en": "Where can I find information about presentations and exhibitions?",
+    "answer_ms": "Maklumat berkaitan pembentangan, poster penyelidikan, projek inisiatif penambahbaikan kualiti serta pembentang boleh didapati melalui menu Pembentang dan portal RISE",
+    "answer_en": "Information on research presentations, quality improvement initiative projects, poster exhibitions, and presenters is available under the Presenters section and RISE portal",
+    "order": "4"
+  },
+  {
+    "section": "rise",
+    "question_ms": "Berapa banyak projek yang perlu dipilih?",
+    "question_en": "How many projects should I select?",
+    "answer_ms": "Setiap peserta hendaklah memilih tiga (3) projek Inisiatif Penambahbaikan Kualiti Penguatkuasaan Farmasi yang dianggap terbaik sebelum menghantar undian.",
+    "answer_en": "Each participant is required to select three (3) Pharmacy Enforcement Quality Improvement Initiative projects before submitting their vote.",
+    "order": "4"
+  },
+  {
+    "section": "rise",
+    "question_ms": "Berapa kali saya boleh mengundi?",
+    "question_en": "How many times can I vote?",
+    "answer_ms": "Setiap peserta hanya dibenarkan menghantar satu (1) undian sepanjang tempoh pengundian.",
+    "answer_en": "Each participant is allowed to submit one (1) vote only during the voting period.",
+    "order": "5"
+  },
+  {
+    "section": "rise",
+    "question_ms": "Bilakah Sistem Undian Anugerah Pilihan RISE dibuka?",
+    "question_en": "When will the RISE Choice Award Voting System be available?",
+    "answer_ms": "Sistem undian dibuka sepanjang tempoh pengundian yang ditetapkan oleh urus setia semasa persidangan berlangsung.",
+    "answer_en": "The voting system will be available during the voting period as determined by the conference secretariat.",
+    "order": "6"
+  },
+  {
+    "section": "general",
+    "question_ms": "Adakah kemudahan tempat letak kereta disediakan?",
+    "question_en": "Is parking available?",
+    "answer_ms": "Kemudahan tempat letak kereta disediakan oleh pihak hotel dan tertakluk kepada kekosongan.",
+    "answer_en": "Parking is available at the hotel, subject to availability.",
+    "order": ""
+  },
+  {
+    "section": "general",
+    "question_ms": "Bagaimanakah saya boleh mendapatkan bantuan semasa persidangan?",
+    "question_en": "Where can I get assistance during the conference?",
+    "answer_ms": "Sekiranya memerlukan bantuan, sila berhubung dengan kaunter urus setia atau pegawai bertugas sepanjang persidangan.",
+    "answer_en": "If you require assistance, please approach the registration counter or any member of the organising committee during the conference.",
+    "order": ""
+  }
+]

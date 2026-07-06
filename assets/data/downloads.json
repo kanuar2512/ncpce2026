@@ -1,0 +1,50 @@
+[
+  {
+    "section": "general",
+    "title_ms": "Buku Program Persidangan",
+    "title_en": "Conference Programme Book",
+    "description_ms": "Buku program lengkap PKPJF 2026",
+    "description_en": "Complete PKPJF 2026 programme book",
+    "file_url": "",
+    "file_type": "pdf",
+    "file_size": "",
+    "order": "1",
+    "published": "true"
+  },
+  {
+    "section": "rise",
+    "title_ms": "Garis Panduan Penyertaan RISE",
+    "title_en": "RISE Participation Guidelines",
+    "description_ms": "Panduan lengkap penyertaan RISE 2026",
+    "description_en": "Complete RISE 2026 participation guidelines",
+    "file_url": "",
+    "file_type": "pdf",
+    "file_size": "",
+    "order": "1",
+    "published": "true"
+  },
+  {
+    "section": "rise",
+    "title_ms": "Template Poster A0",
+    "title_en": "A0 Poster Template",
+    "description_ms": "Template poster A0 format PKPJF 2026",
+    "description_en": "PKPJF 2026 A0 poster format template",
+    "file_url": "",
+    "file_type": "pptx",
+    "file_size": "",
+    "order": "2",
+    "published": "true"
+  },
+  {
+    "section": "rise",
+    "title_ms": "Borang Penyertaan RISE",
+    "title_en": "RISE Entry Form",
+    "description_ms": "Borang pendaftaran penyertaan RISE",
+    "description_en": "RISE participation registration form",
+    "file_url": "",
+    "file_type": "docx",
+    "file_size": "",
+    "order": "3",
+    "published": "true"
+  }
+]
