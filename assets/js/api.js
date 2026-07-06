@@ -16,7 +16,7 @@
 
 'use strict';
 
-import { API } from './config.js';
+import { API } from './config.js?v=2';
 
 /* ============================================================
    IN-MEMORY CACHE
