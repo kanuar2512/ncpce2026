@@ -7,8 +7,8 @@
     "organisation_ms": "BPFKKM",
     "organisation_en": "BPFKKM",
     "photo_url": "https://lh3.googleusercontent.com/d/1xBqHXRKN4-lqCO16ZZLh4hzUEHdwGndw",
-    "session": "Pleno 1",
-    "order": "1"
+    "session": "",
+    "order": ""
   },
   {
     "name_ms": "En Ahmad Edihafriz bin Kamarol Fauzi",
@@ -18,8 +18,8 @@
     "organisation_ms": "Netsmart Sdn Bhd",
     "organisation_en": "Netsmart Sdn Bhd",
     "photo_url": "https://lh3.googleusercontent.com/d/1whxAZef-GeWZ0_AyvCpG2MQl85lvxo01",
-    "session": "Pleno 2",
-    "order": "2"
+    "session": "",
+    "order": ""
   },
   {
     "name_ms": "Insp. Ganesh a/l Raman",
@@ -29,8 +29,8 @@
     "organisation_ms": "PDRM",
     "organisation_en": "PDRM",
     "photo_url": "https://lh3.googleusercontent.com/d/1T_vd4ZiAGiEx7ei5BDFgt7mIBtQ10MTi",
-    "session": "Pleno 3",
-    "order": "3"
+    "session": "",
+    "order": ""
   },
   {
     "name_ms": "Ts. Nur Syafiqah binti Mohd Shamsuddin",
@@ -40,16 +40,27 @@
     "organisation_ms": "SKMM",
     "organisation_en": "MCMC",
     "photo_url": "https://lh3.googleusercontent.com/d/15a94z8plNNRRqdswOj7YNiS6i0lPN7eG",
-    "session": "Pleno 4",
-    "order": "4"
+    "session": "",
+    "order": ""
   },
   {
     "name_ms": "En Mohd Asriq bin Lamit",
     "name_en": "Mr Mohd Asriq bin Lamit",
     "role_ms": "Penolong Pengarah Kanan",
     "role_en": "Senior Assitant Director",
-    "organisation_ms": "",
-    "organisation_en": "",
+    "organisation_ms": "NFCC",
+    "organisation_en": "NFCC",
+    "photo_url": "",
+    "session": "",
+    "order": ""
+  },
+  {
+    "name_ms": "Puan Nor Azizah binti Aling",
+    "name_en": "Puan Nor Azizah binti Aling",
+    "role_ms": "Timbalan Pendakwa Raya",
+    "role_en": "Deputy Public Prosecutor",
+    "organisation_ms": "AGC",
+    "organisation_en": "AGC",
     "photo_url": "",
     "session": "",
     "order": ""

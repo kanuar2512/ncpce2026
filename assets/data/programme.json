@@ -7,7 +7,7 @@
     "title_ms": "Pendaftaran peserta",
     "title_en": "Participant registration",
     "speaker": "",
-    "venue": "",
+    "venue": "Lobi Hotel",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -18,9 +18,9 @@
     "time_start": "1899-12-30T15:30:00",
     "time_end": "1899-12-30T17:00:00",
     "title_ms": "Ucaptama oleh Tuan Pengarah Bahagian Penguatkuasaan Farmasi",
-    "title_en": "Keynote Address by the Director of the Pharmacy Enforcement Division",
+    "title_en": "Welcome Remarks by the Director of the Pharmacy Enforcement Division",
     "speaker": "YBrs. Tuan Haji Mohd Zawawi bin Abdullah",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -33,7 +33,7 @@
     "title_ms": "Kudapan petang",
     "title_en": "Light refreshments",
     "speaker": "",
-    "venue": "",
+    "venue": "Foyer Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -46,7 +46,7 @@
     "title_ms": "Makan malam",
     "title_en": "Dinner",
     "speaker": "",
-    "venue": "",
+    "venue": "Restoran Birch",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -59,7 +59,7 @@
     "title_ms": "Taklimat Urus Setia",
     "title_en": "Secretariat Briefing",
     "speaker": "",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -69,10 +69,10 @@
     "date": "2026-07-27T00:00:00",
     "time_start": "1899-12-30T20:15:00",
     "time_end": "1899-12-30T22:30:00",
-    "title_ms": "Forum: Evolusi dan Hala Tuju Penguatkuasaan Farmasu di Malaysia dengan Ahli Panel: Tuan Pengarah dan Semua Timbalan Pengarah BPF",
+    "title_ms": "Forum: Evolusi dan Hala Tuju Penguatkuasaan Farmasi di Malaysia dengan Ahli Panel: Tuan Pengarah dan Semua Timbalan Pengarah BPF",
     "title_en": "Forum: Evolution and Future Direction of Pharmacy Enforcement in Malaysia\nPanelists: Director and All Deputy Directors of the Pharmacy Enforcement Division",
     "speaker": "",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -85,7 +85,7 @@
     "title_ms": "Kudapan malam",
     "title_en": "Supper",
     "speaker": "",
-    "venue": "",
+    "venue": "Foyer Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -98,7 +98,7 @@
     "title_ms": "Sarapan",
     "title_en": "Breakfast",
     "speaker": "",
-    "venue": "",
+    "venue": "Restoran Birch",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -111,7 +111,7 @@
     "title_ms": "Majlis Perasmian\n- Ucapan: Timbalan Ketua Pengarah Kesihatan (Perkhidmatan Farmasi)\n- Ucapan dan Perasmian: Ketua Pengarah Kesihatan\n- Penghargaan Rakan Strategik Penguatkuasaan\n- Deklarasi Komitmen Strategik\n- Sesi Fotografi",
     "title_en": "Opening Cermony\n- Address by: Deputy Director-General of Health (Pharmacy Services)\nAddress and Official Opening by: Director-General of Health\n- Appreciation Ceremony for Enforcement Strategic Partners\n- Strategic Commitment Declaration\n- Potography Session",
     "speaker": "",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -124,7 +124,7 @@
     "title_ms": "Kudapan pagi",
     "title_en": "Light refreshments",
     "speaker": "",
-    "venue": "",
+    "venue": "Foyer Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -137,7 +137,7 @@
     "title_ms": "Ceramah 1: Teknologi Hologram Kalis Masa Depan (Netsmart Sdn Bhd)",
     "title_en": "Talk 1: Future-Proof Hologram Technology (Netsmart Sdn Bhd)",
     "speaker": "En Ahmad Edihafriz bin Kamarol Fauzi",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -150,7 +150,7 @@
     "title_ms": "Lawatan Poster R&D Penguatkuasaan Farmasi",
     "title_en": "R&D Pharmacy Enforcement Poster Exhibition Visit",
     "speaker": "",
-    "venue": "",
+    "venue": "Foyer Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -163,7 +163,7 @@
     "title_ms": "Makan tengah hari",
     "title_en": "Lunch",
     "speaker": "",
-    "venue": "",
+    "venue": "Restoran Birch",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -176,7 +176,7 @@
     "title_ms": "Ceramah 2: Jejak Digital: Penguatkuasaan Jenayah Siber (PDRM)",
     "title_en": "Talk 2: Digital Footprints: Cybercrime Enforcement (PDRM)",
     "speaker": "Insp. Ganesh a/l Raman",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -189,7 +189,7 @@
     "title_ms": "Ceramah 3: Pengenalan kepada Penyiasatan Forensik Digital & Pemeliharaan Data (SKMM)",
     "title_en": "Talk 3: Introduction to Digital Forensic Investigation & Data Preservation (MCMC)",
     "speaker": "Ts. Nur Syafiqah binti Mohd Shamsuddin",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -202,7 +202,7 @@
     "title_ms": "Kudapan petang",
     "title_en": "Light refreshments",
     "speaker": "",
-    "venue": "",
+    "venue": "Foyer Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -215,7 +215,7 @@
     "title_ms": "Majlis Makan Malam",
     "title_en": "Gala Dinner",
     "speaker": "",
-    "venue": "",
+    "venue": "KSL Convention Centre",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -228,7 +228,7 @@
     "title_ms": "Sarapan",
     "title_en": "Breakfast",
     "speaker": "",
-    "venue": "",
+    "venue": "Restoran Birch",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -241,7 +241,7 @@
     "title_ms": "Ceramah 4: Rangkaian Jenayah Kewangan: Straegi, Taktik dan Cabaran (NFCC)",
     "title_en": "Talk 4: Financial Crime Networks: Strategies, Tactics and Challenges (NFCC)",
     "speaker": "En Mohd Asriq bin Lamit",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -254,7 +254,7 @@
     "title_ms": "Ceramah 5: Mendepani Liku Perundangan: Adaptasi Perundangan dalam Ruang Siber Tanpa Sempadan (AGC)",
     "title_en": "Talk 5: Navigating Legal Challenges: Legal Adaptation in a Borderless Cyber Space (AGC)",
     "speaker": "Pn Nor Azizah binti Aling",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -267,7 +267,7 @@
     "title_ms": "Kudapan pagi",
     "title_en": "Light refreshments",
     "speaker": "",
-    "venue": "",
+    "venue": "Foyer Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -277,10 +277,10 @@
     "date": "2026-07-29T00:00:00",
     "time_start": "1899-12-30T11:00:00",
     "time_end": "1899-12-30T13:00:00",
-    "title_ms": "Majlis Penutup\n(Penyampaian Anugerah R&D, Ucapan Penutup oleh Tuan Pengarah BPF)",
-    "title_en": "Closing Ceremony\n(Presentation of R&D Awards, Closing Address by the Director of the Pharmacy Enforcement Division)",
+    "title_ms": "Majlis Penutup\n(Penyampaian Anugerah, Hadiah R&D, Ucapan Penutup oleh Tuan Pengarah BPF)",
+    "title_en": "Closing Ceremony\n(Presentation of Awards, R&D Prizes, Closing Address by the Director of the Pharmacy Enforcement Division)",
     "speaker": "",
-    "venue": "",
+    "venue": "Dewan Esplanade 1",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
@@ -293,7 +293,7 @@
     "title_ms": "Makan tengah hari & bersurai",
     "title_en": "Lunch & departure",
     "speaker": "",
-    "venue": "",
+    "venue": "Restoran Birch",
     "type": "",
     "notes_ms": "",
     "notes_en": ""
