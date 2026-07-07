@@ -1,46 +1,13 @@
 [
   {
-    "name_ms": "John Doe",
-    "name_en": "test",
-    "role_ms": "Inspektor",
-    "role_en": "Inspector",
-    "organisation_ms": "PDRM",
-    "organisation_en": "PDRM",
-    "photo_url": "https://lh3.googleusercontent.com/d/1xBqHXRKN4-lqCO16ZZLh4hzUEHdwGndw",
-    "session": "Pleno 1",
-    "order": "1"
-  },
-  {
-    "name_ms": "John Doe",
-    "name_en": "John Doe",
-    "role_ms": "Pengarah",
-    "role_en": "Pengarah",
+    "name_ms": "Ahmad Edihafriz bin Kamarol Fauzi",
+    "name_en": "Ahmad Edihafriz bin Kamarol Fauzi",
+    "role_ms": "Pengurus",
+    "role_en": "Manager",
     "organisation_ms": "SKMM",
     "organisation_en": "SKMM",
     "photo_url": "https://lh3.googleusercontent.com/d/1whxAZef-GeWZ0_AyvCpG2MQl85lvxo01",
     "session": "Pleno 2",
     "order": "2"
-  },
-  {
-    "name_ms": "John Doe",
-    "name_en": "John Doe",
-    "role_ms": "CEO",
-    "role_en": "CEO",
-    "organisation_ms": "MOONTON",
-    "organisation_en": "MOONTON",
-    "photo_url": "https://lh3.googleusercontent.com/d/1T_vd4ZiAGiEx7ei5BDFgt7mIBtQ10MTi",
-    "session": "Pleno 3",
-    "order": "3"
-  },
-  {
-    "name_ms": "John Doe",
-    "name_en": "John Doe",
-    "role_ms": "CFO",
-    "role_en": "CFO",
-    "organisation_ms": "TODAK",
-    "organisation_en": "TODAK",
-    "photo_url": "https://lh3.googleusercontent.com/d/15a94z8plNNRRqdswOj7YNiS6i0lPN7eG",
-    "session": "Pleno 4",
-    "order": "4"
   }
 ]
