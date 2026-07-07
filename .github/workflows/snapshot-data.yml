@@ -2,35 +2,43 @@ name: Snapshot Sheet data to static JSON
 
 # Pulls each sheet from the Apps Script endpoint (server-side / anonymous —
 # no Google account attached, so it never hits the "unable to open the file"
-# signed-in-account error), writes assets/data/<sheet>.json, and commits ONLY
-# when the data actually changed. The commit triggers the existing Pages deploy,
-# which publishes the fresh JSON. The live browser never talks to Apps Script.
+# signed-in-account error), writes assets/data/<sheet>.json, commits ONLY when
+# the data actually changed, and then PUBLISHES to GitHub Pages.
+#
+# Why this workflow deploys Pages itself: commits pushed with the built-in
+# GITHUB_TOKEN do NOT trigger other workflows (GitHub's anti-loop rule), so the
+# separate "Deploy to GitHub Pages" workflow never fires after a data snapshot.
+# Deploying here — gated on an actual data change — is what makes Sheet edits
+# reach the live site.
 #
 # SETUP (one time): add a repo secret named APPS_SCRIPT_ENDPOINT containing the
-#   /exec URL, e.g. https://script.google.com/macros/s/AKfyc.../exec
-#   (Repo → Settings → Secrets and variables → Actions → New repository secret)
+#   /exec URL (Repo → Settings → Secrets and variables → Actions).
 
 on:
   schedule:
-    - cron: '*/5 * * * *'        # every ~5 min (GitHub may delay); commits only on change
-  workflow_dispatch:              # "Run workflow" button = instant refresh during the event
+    - cron: '*/5 * * * *'        # every ~5 min (GitHub may delay); deploys only on change
+  workflow_dispatch:              # "Run workflow" button = manual refresh
   push:
     branches: [main]
     paths:
-      - '.github/workflows/snapshot-data.yml'   # re-run when this file changes
+      - '.github/workflows/snapshot-data.yml'
 
-# Allow the job to push the refreshed JSON back to the repo.
 permissions:
-  contents: write
+  contents: write   # push refreshed JSON
+  pages: write      # publish to Pages
+  id-token: write   # required by actions/deploy-pages
 
-# Never run two snapshots at once.
+# Share the Pages concurrency group with deploy.yml so the two never publish
+# at the same time. Don't cancel an in-progress deploy midway.
 concurrency:
-  group: snapshot-data
-  cancel-in-progress: true
+  group: github-pages
+  cancel-in-progress: false
 
 jobs:
   snapshot:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,7 +49,7 @@ jobs:
         run: |
           set -uo pipefail
           if [ -z "${ENDPOINT:-}" ]; then
-            echo "::error::Repo secret APPS_SCRIPT_ENDPOINT is not set. Add it in Settings → Secrets and variables → Actions."
+            echo "::error::Repo secret APPS_SCRIPT_ENDPOINT is not set."
             exit 1
           fi
 
@@ -54,7 +62,6 @@ jobs:
               echo "::warning::fetch failed for '$s' — keeping previous snapshot";
               continue;
             }
-            # Validate the envelope { status:"ok", data:[...] } and store just the array.
             if echo "$resp" | jq -e '.status=="ok" and (.data|type=="array" or type=="object")' >/dev/null 2>&1; then
               echo "$resp" | jq '.data' > "assets/data/${s}.json.tmp" && mv "assets/data/${s}.json.tmp" "assets/data/${s}.json"
               echo "  ✓ $(echo "$resp" | jq '.data | length') rows"
@@ -65,23 +72,50 @@ jobs:
           done
 
       - name: Commit only if the data changed
+        id: commit
         run: |
           set -uo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stage only the sheet files (not the manifest) to decide if anything changed.
           git add assets/data/*.json 2>/dev/null || true
 
           if git diff --cached --quiet; then
-            echo "No data changes — nothing to commit."
+            echo "No data changes — nothing to commit or deploy."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Data changed → stamp a manifest so the frontend can show "last updated".
           printf '{\n  "buildTime": "%s",\n  "commit": "%s"\n}\n' \
             "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${GITHUB_SHA:0:7}" > assets/data/manifest.json
           git add assets/data/manifest.json
 
           git commit -m "data: refresh static JSON snapshot"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  # Publish the freshly-committed data to GitHub Pages — only when it changed.
+  deploy:
+    needs: snapshot
+    if: needs.snapshot.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout (includes the snapshot commit just pushed)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact (repo root)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
