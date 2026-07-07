@@ -22,14 +22,14 @@ import {
   CONFERENCE, RISE as RISE_CONFIG, GALLERY, PROGRAMME_TYPES, FILE_ICONS,
   THEME_SONG,
   t, localise, getLang,
-} from './config.js?v=2';
+} from './config.js?v=3';
 
 import {
   fetchSiteConfig, fetchProgrammeAll, fetchSpeakers,
   fetchRise, fetchDownloads, fetchGallery,
   fetchFaq, fetchSponsors, fetchContact,
   ApiError,
-} from './api.js?v=2';
+} from './api.js?v=3';
 
 
 /* ============================================================
