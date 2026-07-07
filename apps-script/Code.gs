@@ -45,12 +45,17 @@
 
 /**
  * Cache duration in seconds.
- * 300 = 5 minutes. Maximum is 21600 (6 hours).
- * Set to 0 to disable caching (useful during content updates).
+ * 0 = always read live Sheet data (recommended).
+ *
+ * The static-JSON snapshot Action is now the ONLY caller of this API, and it
+ * runs at most every few minutes, so server-side caching only adds staleness:
+ * an edit could sit in this cache for up to CACHE_TTL seconds before a snapshot
+ * can pick it up. Keeping it 0 makes Sheet edits appear as soon as the next
+ * snapshot runs. (Range: 0 disables; max is 21600 = 6 hours.)
  *
  * @type {number}
  */
-var CACHE_TTL = 300;
+var CACHE_TTL = 0;
 
 /**
  * Sheet names — must match tab names exactly in the Google Spreadsheet.
