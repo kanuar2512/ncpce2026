@@ -22,7 +22,7 @@
 
 'use strict';
 
-import { API } from './config.js?v=3';
+import { API } from './config.js?v=4';
 
 /** Base path for the published JSON snapshot (configurable via config.js). */
 const DATA_BASE = (API && API.DATA_BASE) || './assets/data/';

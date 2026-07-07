@@ -22,14 +22,14 @@ import {
   CONFERENCE, RISE as RISE_CONFIG, GALLERY, PROGRAMME_TYPES, FILE_ICONS,
   THEME_SONG,
   t, localise, getLang,
-} from './config.js?v=3';
+} from './config.js?v=4';
 
 import {
   fetchSiteConfig, fetchProgrammeAll, fetchSpeakers,
   fetchRise, fetchDownloads, fetchGallery,
   fetchFaq, fetchSponsors, fetchContact,
   ApiError,
-} from './api.js?v=3';
+} from './api.js?v=4';
 
 
 /* ============================================================
@@ -491,8 +491,8 @@ export async function renderProgramme(containerId) {
                     <tr>
                       <td class="time-cell">${timeRange(row.time_start, row.time_end)}</td>
                       <td>${lang === 'en' ? row.title_en : row.title_ms}${badge}</td>
-                      <td>${lang === 'en' ? (row.speaker_en || '—') : (row.speaker_ms || '—')}</td>
-                      <td>${lang === 'en' ? (row.venue_en || '—') : (row.venue_ms || '—')}</td>
+                      <td>${((lang === 'en' ? row.speaker_en : row.speaker_ms) || row.speaker || '—')}</td>
+                      <td>${((lang === 'en' ? row.venue_en : row.venue_ms) || row.venue || '—')}</td>
                     </tr>`;
                 }).join('')}
               </tbody>
@@ -1604,7 +1604,7 @@ function _paintNowNext(el) {
   const last  = rows[rows.length - 1];
 
   const title = r => (lang === 'en' ? r.title_en : r.title_ms) || '';
-  const venue = r => (lang === 'en' ? r.venue_en : r.venue_ms) || '';
+  const venue = r => (lang === 'en' ? r.venue_en : r.venue_ms) || r.venue || '';
   const range = r => timeRange(r.time_start, r.time_end);
   const meta  = r => `${range(r)}${venue(r) ? ' · ' + venue(r) : ''}`;
 
