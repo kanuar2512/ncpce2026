@@ -503,6 +503,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .navbar__logo {
+  display: block;
   height: 44px;
   width: auto;
   flex-shrink: 0;
@@ -783,7 +784,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   flex-direction: column;
   align-items: center;
   gap: var(--sp-2);
-  margin-bottom: calc(var(--sp-8) + 30px);
+  margin-bottom: clamp(3rem, 7vh, 5rem);
 }
 
 /* Soft spotlight behind the entire block (dimmed so it never
@@ -881,7 +882,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 
 .hero__title .l3 {
   font-size: clamp(1.6rem, 5.6vw, 3.75rem);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   color: rgba(var(--clr-cream-rgb), 0.92);
 }
 
