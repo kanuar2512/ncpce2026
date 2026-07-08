@@ -1,52 +1,134 @@
 [
   {
-    "key": "conference_title",
+    "key": "Conferenc_Title",
     "value_ms": "Persidangan Kebangsaan Penguatkuasaan Jenayah Farmaseutikal 2026",
-    "value_en": "National Conference on Pharmaceutical Crime Enforcement 2026"
+    "value_en": "National Conference on Pharmaceutical Crime Enforcement 2026",
+    "value": "true"
   },
   {
     "key": "conference_short",
     "value_ms": "NCPCE 2026",
-    "value_en": "NCPCE 2026"
+    "value_en": "NCPCE 2026",
+    "value": "true"
   },
   {
     "key": "conference_date",
     "value_ms": "27–29 Julai 2026",
-    "value_en": "27–29 July 2026"
+    "value_en": "27–29 July 2026",
+    "value": "true"
   },
   {
     "key": "conference_venue",
-    "value_ms": "KSL Esplanade Hotel, Klang, Selangor",
-    "value_en": "KSL Esplanade Hotel, Klang, Selangor"
+    "value_ms": "Hotel KSL Esplanade, Klang, Selangor",
+    "value_en": "KSL Esplanade Hotel, Klang, Selangor",
+    "value": "true"
   },
   {
     "key": "conference_theme_ms",
     "value_ms": "",
-    "value_en": ""
+    "value_en": "",
+    "value": "true"
   },
   {
     "key": "conference_theme_en",
     "value_ms": "",
-    "value_en": ""
+    "value_en": "",
+    "value": "true"
   },
   {
     "key": "organiser_ms",
     "value_ms": "Bahagian Penguatkuasaan Farmasi, Kementerian Kesihatan Malaysia",
-    "value_en": ""
+    "value_en": "Pharmacy Enforcement Division, Ministry of Health Malaysia",
+    "value": "true"
   },
   {
     "key": "organiser_en",
     "value_ms": "",
-    "value_en": "Pharmaceutical Enforcement Division, Ministry of Health Malaysia"
+    "value_en": "Pharmacy Enforcement Division, Ministry of Health Malaysia",
+    "value": "true"
   },
   {
     "key": "about_ms",
     "value_ms": "",
-    "value_en": ""
+    "value_en": "",
+    "value": "true"
   },
   {
     "key": "about_en",
     "value_ms": "",
-    "value_en": ""
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_countdown",
+    "value_ms": "",
+    "value_en": "",
+    "value": "false"
+  },
+  {
+    "key": "show_about",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_why",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_programme",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_venue",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_speakers",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_awards",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_gallery",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_faq",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_contact",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_announcement",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
+  },
+  {
+    "key": "show_nownext",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
   }
 ]
