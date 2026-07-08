@@ -9,8 +9,10 @@
     "speaker": "",
     "venue": "Foyer Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "1",
@@ -22,8 +24,10 @@
     "speaker": "YBrs. Tuan Haji Mohd Zawawi bin Abdullah",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "Pengarah",
+    "role_en": "Director",
+    "organisation_ms": "BPFKKM",
+    "organisation_en": "BPFKKM"
   },
   {
     "day": "1",
@@ -35,8 +39,10 @@
     "speaker": "",
     "venue": "Foyer Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "1",
@@ -48,8 +54,10 @@
     "speaker": "",
     "venue": "Restoran Birch",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "1",
@@ -61,8 +69,10 @@
     "speaker": "",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "1",
@@ -74,8 +84,10 @@
     "speaker": "YBrs. Tuan Haji Mohd Zawawi bin Abdullah",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "Pengarah",
+    "role_en": "Director",
+    "organisation_ms": "BPFKKM",
+    "organisation_en": "BPFKKM"
   },
   {
     "day": "1",
@@ -87,8 +99,10 @@
     "speaker": "",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "1",
@@ -100,8 +114,10 @@
     "speaker": "",
     "venue": "Foyer Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "2",
@@ -113,8 +129,10 @@
     "speaker": "",
     "venue": "Restoran Birch",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "2",
@@ -126,8 +144,10 @@
     "speaker": "",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "2",
@@ -139,8 +159,10 @@
     "speaker": "",
     "venue": "Foyer Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "2",
@@ -152,8 +174,10 @@
     "speaker": "En Ahmad Edihafriz bin Kamarol Fauzi",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "Pengurus",
+    "role_en": "Manager",
+    "organisation_ms": "Netsmart Sdn Bhd",
+    "organisation_en": "Netsmart Sdn Bhd"
   },
   {
     "day": "2",
@@ -165,8 +189,10 @@
     "speaker": "",
     "venue": "Foyer Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "2",
@@ -178,8 +204,10 @@
     "speaker": "",
     "venue": "Restoran Birch",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "2",
@@ -191,8 +219,10 @@
     "speaker": "Insp. Ganesh a/l Raman",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "Inspektor",
+    "role_en": "Inspector",
+    "organisation_ms": "PDRM",
+    "organisation_en": "PDRM"
   },
   {
     "day": "2",
@@ -204,8 +234,10 @@
     "speaker": "Ts. Nur Syafiqah binti Mohd Shamsuddin",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "Timbalan Pengarah",
+    "role_en": "Deputy Director",
+    "organisation_ms": "SKMM",
+    "organisation_en": "MCMC"
   },
   {
     "day": "2",
@@ -217,8 +249,10 @@
     "speaker": "",
     "venue": "Foyer Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "2",
@@ -230,8 +264,10 @@
     "speaker": "",
     "venue": "KSL Convention Centre",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "3",
@@ -243,8 +279,10 @@
     "speaker": "",
     "venue": "Restoran Birch",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "3",
@@ -256,8 +294,10 @@
     "speaker": "En Mohd Asriq bin Lamit",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "Penolong Pengarah Kanan",
+    "role_en": "Senior Assistant Director",
+    "organisation_ms": "NFCC",
+    "organisation_en": "NFCC"
   },
   {
     "day": "3",
@@ -269,8 +309,10 @@
     "speaker": "Pn Nor Azizah binti Aling",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "Timbalan Pendakwa Raya",
+    "role_en": "Deputy Public Prosecutor",
+    "organisation_ms": "AGC",
+    "organisation_en": "AGC"
   },
   {
     "day": "3",
@@ -282,8 +324,10 @@
     "speaker": "",
     "venue": "Foyer Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "3",
@@ -295,8 +339,10 @@
     "speaker": "",
     "venue": "Dewan Esplanade 1",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   },
   {
     "day": "3",
@@ -308,7 +354,9 @@
     "speaker": "",
     "venue": "Restoran Birch",
     "type": "",
-    "notes_ms": "",
-    "notes_en": ""
+    "role_ms": "",
+    "role_en": "",
+    "organisation_ms": "",
+    "organisation_en": ""
   }
 ]
