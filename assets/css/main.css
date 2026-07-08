@@ -369,6 +369,8 @@ html[data-active-lang="en"] span[data-lang="en"] { display: inline; }
 
 html[data-active-lang="en"] .lang-toggle__active-ms { display: none; }
 html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
+/* Only one language shows at a time, so the divider would dangle — hide it */
+.lang-toggle__separator { display: none; }
 
 
 /* ============================================================
@@ -3364,10 +3366,14 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     display: flex;
   }
 
-  /* Hero */
+  /* Tabs hidden on mobile — collapse the 3-col grid to brand | controls so
+     the controls (BM + menu) sit flush right, not in the empty centre column. */
+  .navbar__inner { grid-template-columns: 1fr auto; }
+
+  /* Hero — extra bottom room so CTAs clear the floating action buttons */
   .hero {
     min-height: 100vh;
-    padding: calc(var(--nav-height) + var(--sp-8)) var(--container-pad) var(--sp-12);
+    padding: calc(var(--nav-height) + var(--sp-8)) var(--container-pad) 6rem;
   }
 
   .hero__scroll-hint {
@@ -3598,7 +3604,10 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 @media (max-width: 480px) {
   .section-nav__inner { gap: var(--sp-1); padding-inline: var(--sp-4); }
   .section-nav__inner a { padding: var(--sp-2) var(--sp-4); letter-spacing: 0.5px; }
-  .hero__emblem { width: clamp(96px, 26vw, 130px); }
+  .hero__emblem { width: clamp(92px, 24vw, 112px); }
+  .hero__cta { flex-direction: column; align-items: stretch; }
+  .hero__cta > * { width: 100%; }
+  .hero__venue { letter-spacing: 1px; }
   .countdown { gap: var(--sp-2); }
   .countdown__item { min-width: 66px; padding: var(--sp-5) var(--sp-2); }
   .countdown__num { font-size: var(--fs-2xl); }
