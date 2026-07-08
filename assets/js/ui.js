@@ -486,11 +486,17 @@ export async function renderProgramme(containerId) {
                 : '';
               const title   = (lang === 'en' ? row.title_en : row.title_ms) || row.title_ms || row.title_en || '';
               const speaker = (lang === 'en' ? row.speaker_en : row.speaker_ms) || row.speaker || '';
+              const role    = (lang === 'en' ? row.role_en : row.role_ms) || '';
+              const org     = (lang === 'en' ? row.organisation_en : row.organisation_ms) || '';
               const venue   = (lang === 'en' ? row.venue_en   : row.venue_ms)   || row.venue   || '';
+
+              // Role · Organisation — secondary meta under the name (only when filled).
+              const speakerMeta = [role, org].filter(Boolean).join(' · ');
 
               // Speaker renders ONLY when present — under the title, visually secondary.
               const speakerHtml = speaker
-                ? `<p class="prog-speaker">${hicon('user')}<span class="prog-speaker__name">${speaker}</span></p>`
+                ? `<p class="prog-speaker">${hicon('user')}<span class="prog-speaker__name">${speaker}</span></p>` +
+                  (speakerMeta ? `<p class="prog-speaker__meta">${speakerMeta}</p>` : '')
                 : '';
               // Keep the venue column present (empty) so the 3-col grid stays aligned.
               const venueHtml = venue
