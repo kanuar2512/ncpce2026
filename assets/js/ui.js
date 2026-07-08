@@ -45,6 +45,7 @@ import {
 /** Inner path data for each Heroicon (24×24, stroke, round caps). */
 const HEROICON_PATHS = Object.freeze({
   'map-pin': '<path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>',
+  'user': '<path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>',
   'clock': '<path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>',
   'building-office-2': '<path d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/>',
   'flag': '<path d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"/>',
@@ -471,32 +472,42 @@ export async function renderProgramme(containerId) {
         role="tabpanel"
       >
         <div class="glass-card">
-          <div class="programme-table-wrap">
-            <table class="programme-table">
-              <thead>
-                <tr>
-                  <th>${lang === 'en' ? 'Time' : 'Masa'}</th>
-                  <th>${lang === 'en' ? 'Programme' : 'Atur Cara'}</th>
-                  <th>${lang === 'en' ? 'Speaker' : 'Pembentang'}</th>
-                  <th>${lang === 'en' ? 'Venue' : 'Lokasi'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${(byDay[day] || []).map(row => {
-                  const typeConf = PROGRAMME_TYPES[row.type] || {};
-                  const badge = typeConf.css
-                    ? `<br><span class="type-badge ${typeConf.css}">${lang === 'en' ? typeConf.label_en : typeConf.label_ms}</span>`
-                    : '';
-                  return `
-                    <tr>
-                      <td class="time-cell">${timeRange(row.time_start, row.time_end)}</td>
-                      <td>${lang === 'en' ? row.title_en : row.title_ms}${badge}</td>
-                      <td>${((lang === 'en' ? row.speaker_en : row.speaker_ms) || row.speaker || '—')}</td>
-                      <td>${((lang === 'en' ? row.venue_en : row.venue_ms) || row.venue || '—')}</td>
-                    </tr>`;
-                }).join('')}
-              </tbody>
-            </table>
+          <div class="programme" role="list">
+            <!-- Column header (desktop only) -->
+            <div class="programme__head" role="presentation">
+              <span>${lang === 'en' ? 'Time' : 'Masa'}</span>
+              <span>${lang === 'en' ? 'Programme' : 'Atur Cara'}</span>
+              <span>${lang === 'en' ? 'Venue' : 'Lokasi'}</span>
+            </div>
+            ${(byDay[day] || []).map(row => {
+              const typeConf = PROGRAMME_TYPES[row.type] || {};
+              const badge = typeConf.css
+                ? `<span class="type-badge ${typeConf.css}">${lang === 'en' ? typeConf.label_en : typeConf.label_ms}</span>`
+                : '';
+              const title   = (lang === 'en' ? row.title_en : row.title_ms) || row.title_ms || row.title_en || '';
+              const speaker = (lang === 'en' ? row.speaker_en : row.speaker_ms) || row.speaker || '';
+              const venue   = (lang === 'en' ? row.venue_en   : row.venue_ms)   || row.venue   || '';
+
+              // Speaker renders ONLY when present — under the title, visually secondary.
+              const speakerHtml = speaker
+                ? `<p class="prog-speaker">${hicon('user')}<span class="prog-speaker__name">${speaker}</span></p>`
+                : '';
+              // Keep the venue column present (empty) so the 3-col grid stays aligned.
+              const venueHtml = venue
+                ? `<div class="prog-venue">${hicon('map-pin')}<span>${venue}</span></div>`
+                : `<div class="prog-venue" aria-hidden="true"></div>`;
+
+              return `
+                <div class="prog-row" role="listitem">
+                  <div class="prog-time">${timeRange(row.time_start, row.time_end)}</div>
+                  <div class="prog-main">
+                    <p class="prog-title">${title}</p>
+                    ${badge}
+                    ${speakerHtml}
+                  </div>
+                  ${venueHtml}
+                </div>`;
+            }).join('')}
           </div>
         </div>
       </div>

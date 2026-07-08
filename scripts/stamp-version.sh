@@ -18,7 +18,7 @@
 
 set -euo pipefail
 
-VER="$(git log -1 --format=%h -- assets/js index.html rise.html 2>/dev/null || true)"
+VER="$(git log -1 --format=%h -- assets/js assets/css index.html rise.html 2>/dev/null || true)"
 [ -z "${VER:-}" ] && VER="dev"
 
 echo "Stamping front-end asset version: ?v=${VER}"

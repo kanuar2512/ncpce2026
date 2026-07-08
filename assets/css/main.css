@@ -1653,19 +1653,23 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 /* Programme Table */
-.programme-table-wrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.programme-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 600px;
+/* ------------------------------------------------------------
+   Programme layout: 3-column grid (desktop) that collapses to
+   stacked cards on mobile. Columns: [Time] | [Programme+Speaker] | [Venue]
+   ------------------------------------------------------------ */
+.programme {
+  --_cols: 130px 1fr 220px;      /* time | main | venue */
+  border-radius: var(--radius-md);
+  overflow: hidden;
   color: var(--txt-body-dark);
 }
 
-.programme-table th {
+/* Column header (desktop only) */
+.programme__head {
+  display: grid;
+  grid-template-columns: var(--_cols);
+  gap: var(--sp-5);
+  padding: var(--sp-4) var(--sp-6);
   background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-dark));
   color: var(--clr-cream);
   font-family: var(--font-body);
@@ -1673,48 +1677,66 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  padding: var(--sp-4) var(--sp-6);
-  text-align: left;
-  white-space: nowrap;
-  position: sticky;
-  top: 0;
-  z-index: 1;
 }
 
-.programme-table td {
+/* One event row */
+.prog-row {
+  display: grid;
+  grid-template-columns: var(--_cols);
+  gap: var(--sp-5);
+  align-items: start;
   padding: var(--sp-4) var(--sp-6);
   border-bottom: 1px solid #eee;
-  font-size: var(--fs-sm);
-  vertical-align: top;
   transition: background 0.2s;
 }
+.prog-row:nth-child(even) { background: rgba(var(--clr-primary-rgb), 0.025); }
+.prog-row:hover           { background: rgba(212, 175, 55, 0.10); }
+.prog-row:last-child      { border-bottom: none; }
 
-.programme-table tbody tr:nth-child(even) td {
-  background: rgba(var(--clr-primary-rgb), 0.025);
-}
-
-.programme-table tbody tr:hover td {
-  background: rgba(212, 175, 55, 0.10);
-}
-
-.programme-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* executive accent: gold rule under the time column */
-.programme-table .time-cell {
+/* Column 1 — Time (gold accent rule, aligned digits) */
+.prog-time {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--clr-primary);
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  padding-left: var(--sp-3);
   box-shadow: inset 3px 0 0 rgba(212, 175, 55, 0.55);
 }
 
-.programme-table .time-cell {
-  white-space: nowrap;
-  font-weight: 600;
-  color: var(--clr-primary);
-  font-size: var(--fs-xs);
-  width: 140px;
+/* Column 2 — Programme title (bold; honours in-cell line breaks) */
+.prog-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  white-space: pre-line;
 }
 
-.programme-table .type-badge {
+/* Speaker — nested under title, visually secondary */
+.prog-speaker {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: var(--sp-2) 0 0;
+  font-size: 0.85rem;
+  color: #6b6560;
+}
+.prog-speaker .hicon      { color: var(--gold-1); margin-top: 0.1rem; flex: 0 0 auto; }
+.prog-speaker__name       { font-weight: 600; font-style: italic; }
+
+/* Column 3 — Venue */
+.prog-venue {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: #3f3a36;
+}
+.prog-venue .hicon        { color: var(--gold-1); margin-top: 0.1rem; flex: 0 0 auto; }
+
+/* Type badge (base; colour variants below) */
+.type-badge {
   display: inline-block;
   font-size: 0.65rem;
   font-weight: 700;
@@ -1722,7 +1744,37 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   letter-spacing: 1px;
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  margin-top: 4px;
+  margin-top: var(--sp-2);
+}
+
+/* Mobile (<=768px): grid → stacked cards, zero horizontal scroll */
+@media (max-width: 768px) {
+  .programme__head { display: none; }
+
+  .prog-row {
+    display: block;
+    background: #fff;
+    border: 1px solid #eee;
+    border-left: 4px solid var(--clr-primary);   /* timeline accent */
+    border-radius: var(--radius-md);
+    padding: var(--sp-4);
+    margin-bottom: var(--sp-3);
+    box-shadow: var(--shadow-sm);
+  }
+  .prog-row:nth-child(even) { background: #fff; }
+
+  .prog-time {
+    display: block;
+    margin-bottom: var(--sp-2);
+    padding-left: 0;
+    box-shadow: none;
+  }
+  .prog-venue { margin-top: var(--sp-3); }
+
+  /* Guarantee long strings wrap instead of overflowing */
+  .prog-title,
+  .prog-speaker,
+  .prog-venue { overflow-wrap: anywhere; }
 }
 
 .type-badge--ceremony  { background: #fff3cd; color: #856404; }

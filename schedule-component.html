@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conference Schedule Component — Atur Cara</title>
+
+<style>
+/* ============================================================
+   SCHEDULE COMPONENT — reusable, theme-able, mobile-first
+   ------------------------------------------------------------
+   Desktop (>768px): a 3-column grid  →  [Time] | [Programme + Speaker] | [Venue]
+   Mobile  (<=768px): each row becomes a stacked CARD (zero horizontal scroll)
+
+   Theme via CSS variables — override these to match any branding.
+   Defaults below approximate the maroon/gold conference identity.
+   ============================================================ */
+:root {
+  --sched-maroon:      #6d0e14;   /* header + time accent */
+  --sched-maroon-deep: #4a0910;
+  --sched-gold:        #c9a227;   /* icons + accents */
+  --sched-title:       #1c1917;   /* programme title text */
+  --sched-muted:       #6b6560;   /* speaker / secondary text */
+  --sched-venue:       #3f3a36;
+  --sched-row-bg:      #faf8f7;
+  --sched-row-alt:     #f2eeec;
+  --sched-border:      #e6ddd8;
+  --sched-radius:      14px;
+  --sched-gap:         1rem;
+}
+
+/* Container */
+.schedule {
+  --_cols: 130px 1fr 220px;                 /* time | main | venue */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--sched-title);
+  max-width: 1040px;
+  margin-inline: auto;
+  border-radius: var(--sched-radius);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  background: var(--sched-row-bg);
+}
+
+/* Header row (desktop only) */
+.schedule__head {
+  display: grid;
+  grid-template-columns: var(--_cols);
+  gap: var(--sched-gap);
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--sched-maroon), var(--sched-maroon-deep));
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* The list of events (reset list styling, keep semantics) */
+.schedule__list { list-style: none; margin: 0; padding: 0; }
+
+/* One event row */
+.sched-row {
+  display: grid;
+  grid-template-columns: var(--_cols);
+  gap: var(--sched-gap);
+  align-items: start;
+  padding: 1.1rem 1.25rem;
+  border-top: 1px solid var(--sched-border);
+}
+.sched-row:nth-child(even) { background: var(--sched-row-alt); }
+
+/* --- Column 1: Time --- */
+.sched-time {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;   /* aligned digits */
+  color: var(--sched-maroon);
+  white-space: nowrap;
+}
+
+/* --- Column 2: Programme title + (optional) speaker --- */
+.sched-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  white-space: pre-line;   /* honour line breaks typed inside one cell */
+}
+
+/* Optional type badge (Ceramah / Rehat / etc.) */
+.sched-badge {
+  display: inline-block;
+  margin-top: .35rem;
+  padding: .12rem .55rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: rgba(201,162,39,.16);
+  color: #8a6d10;
+}
+
+/* Speaker block — visually SECONDARY to the title */
+.sched-speaker {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  margin: .5rem 0 0;
+  font-size: .88rem;
+  font-style: italic;
+  color: var(--sched-muted);
+}
+.sched-speaker__name  { font-style: normal; font-weight: 600; color: var(--sched-venue); }
+.sched-speaker__title { display: block; font-size: .82rem; }   /* designation on its own line */
+
+/* --- Column 3: Venue --- */
+.sched-venue {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  font-size: .9rem;
+  color: var(--sched-venue);
+}
+
+/* Inline Heroicons — sized + coloured via CSS (currentColor lets us tint them) */
+.sched-icon {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: .08rem;
+  color: var(--sched-gold);
+  stroke-width: 1.7;
+}
+
+/* ============================================================
+   MOBILE  (<=768px)  →  CARD / TIMELINE LAYOUT
+   The 3-column grid collapses; every row stacks vertically as
+   a self-contained card. Nothing overflows → no horizontal scroll.
+   ============================================================ */
+@media (max-width: 768px) {
+  .schedule {
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  /* Hide the desktop column header — labels are implied on cards */
+  .schedule__head { display: none; }
+
+  .schedule__list {
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+
+  /* Each row → a card */
+  .sched-row {
+    display: block;                 /* stop being a grid */
+    background: var(--sched-row-bg);
+    border: 1px solid var(--sched-border);
+    border-left: 4px solid var(--sched-maroon);   /* timeline accent */
+    border-radius: var(--sched-radius);
+    padding: .95rem 1.05rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  }
+  .sched-row:nth-child(even) { background: var(--sched-row-bg); }
+
+  /* Time sits at the top of the card as a bold chip line */
+  .sched-time {
+    display: block;
+    margin-bottom: .35rem;
+    font-size: .9rem;
+    color: var(--sched-maroon);
+  }
+
+  .sched-title { font-size: 1rem; }
+
+  /* Venue drops below the title/speaker, full width, wraps cleanly */
+  .sched-venue { margin-top: .6rem; }
+
+  /* Guarantee long text wraps instead of scrolling */
+  .sched-title,
+  .sched-speaker,
+  .sched-venue { overflow-wrap: anywhere; }
+}
+</style>
+</head>
+
+<body style="margin:0;padding:2rem 1rem;background:#efe9e6;">
+
+<!-- ============================================================
+     MARKUP TEMPLATE
+     ------------------------------------------------------------
+     This is the reusable structure. Below, <script> fills
+     `#schedule-list` from data, but the SAME markup works with any
+     template engine. Pseudo-loop (Handlebars-style) for reference:
+
+       <li class="sched-row">
+         <div class="sched-time">{{time}}</div>
+         <div class="sched-main">
+           <p class="sched-title">{{title}}</p>
+           {{#if speaker}}
+             <p class="sched-speaker">
+               [user-icon]
+               <span>
+                 <span class="sched-speaker__name">{{speaker}}</span>
+                 {{#if speakerTitle}}
+                   <span class="sched-speaker__title">{{speakerTitle}}</span>
+                 {{/if}}
+               </span>
+             </p>
+           {{/if}}
+         </div>
+         {{#if venue}}
+           <div class="sched-venue">[map-pin-icon] <span>{{venue}}</span></div>
+         {{else}}
+           <div class="sched-venue"></div>   <!-- keep the grid column intact -->
+         {{/if}}
+       </li>
+     ============================================================ -->
+
+<section class="schedule" aria-label="Atur Cara Persidangan / Conference Programme">
+  <!-- Desktop column header -->
+  <div class="schedule__head" role="presentation">
+    <span>Masa · Time</span>
+    <span>Atur Cara · Programme</span>
+    <span>Lokasi · Venue</span>
+  </div>
+
+  <ol class="schedule__list" id="schedule-list"><!-- rows injected here --></ol>
+</section>
+
+
+<script>
+/* ============================================================
+   HEROICONS (outline) — inline SVG, tinted via currentColor.
+   ============================================================ */
+const ICONS = {
+  user: `<svg class="sched-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+  </svg>`,
+  mapPin: `<svg class="sched-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+  </svg>`,
+};
+
+/* Small helpers ------------------------------------------------ */
+// Escape user/content strings before injecting as HTML.
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+// Your sheet stores times like "1899-12-30T14:30:00" → show "14:30".
+// (In your real app you can reuse your existing timeRange() instead.)
+const hhmm = (v) => {
+  if (!v) return '';
+  const m = String(v).match(/(\d{2}:\d{2})/);
+  return m ? m[1] : esc(v);
+};
+const timeRange = (start, end) => {
+  const a = hhmm(start), b = hhmm(end);
+  return b ? `${a} &ndash; ${b}` : a;
+};
+
+/* ============================================================
+   RENDER — maps an array of events to the markup above.
+   Field names match your programme.json:
+     time_start, time_end, title_ms/title_en, speaker, venue, type
+   (speaker_title is optional — add a column if you want designations.)
+   ============================================================ */
+function renderSchedule(events, { lang = 'ms' } = {}) {
+  const rows = events.map(ev => {
+    const title   = lang === 'en' ? (ev.title_en || ev.title_ms) : (ev.title_ms || ev.title_en);
+    const speaker = ev.speaker || '';
+    const speakerTitle = ev.speaker_title || '';   // optional designation
+    const venue   = ev.venue || '';
+
+    // Speaker block — rendered ONLY when a speaker exists (clean gap otherwise)
+    const speakerHtml = speaker ? `
+      <p class="sched-speaker">
+        ${ICONS.user}
+        <span>
+          <span class="sched-speaker__name">${esc(speaker)}</span>
+          ${speakerTitle ? `<span class="sched-speaker__title">${esc(speakerTitle)}</span>` : ''}
+        </span>
+      </p>` : '';
+
+    // Venue cell — keep the empty column so the 3-col grid stays aligned
+    const venueHtml = venue
+      ? `<div class="sched-venue">${ICONS.mapPin}<span>${esc(venue)}</span></div>`
+      : `<div class="sched-venue" aria-hidden="true"></div>`;
+
+    return `
+      <li class="sched-row">
+        <div class="sched-time">${timeRange(ev.time_start, ev.time_end)}</div>
+        <div class="sched-main">
+          <p class="sched-title">${esc(title)}</p>
+          ${speakerHtml}
+        </div>
+        ${venueHtml}
+      </li>`;
+  }).join('');
+
+  document.getElementById('schedule-list').innerHTML = rows;
+}
+
+/* ============================================================
+   DEMO DATA — mirrors your real programme.json shape.
+   Replace this with your fetched array (e.g. from api.js).
+   ============================================================ */
+const SAMPLE = [
+  { time_start: '1899-12-30T14:30:00', time_end: '1899-12-30T15:30:00', title_ms: 'Pendaftaran peserta', title_en: 'Participant registration', speaker: '', venue: 'Lobi Hotel', type: 'admin' },
+  { time_start: '1899-12-30T15:30:00', time_end: '1899-12-30T17:00:00', title_ms: 'Ucaptama oleh Tuan Pengarah Bahagian Penguatkuasaan Farmasi', title_en: 'Keynote Address by the Director of the Pharmacy Enforcement Division', speaker: 'YBrs. Tuan Haji Mohd Zawawi bin Abdullah', speaker_title: 'Pengarah, Bahagian Penguatkuasaan Farmasi', venue: 'Dewan Esplanade 1', type: 'talk' },
+  { time_start: '1899-12-30T17:00:00', time_end: '', title_ms: 'Kudapan petang', title_en: 'Light refreshments', speaker: '', venue: 'Foyer Dewan Esplanade 1', type: 'break' },
+  { time_start: '1899-12-30T18:30:00', time_end: '1899-12-30T20:00:00', title_ms: 'Makan malam', title_en: 'Dinner', speaker: '', venue: 'Restoran Birch', type: 'dinner' },
+  { time_start: '1899-12-30T20:15:00', time_end: '1899-12-30T22:30:00', title_ms: 'Forum: Evolusi dan Hala Tuju Penguatkuasaan Farmasi\nAhli Panel: Tuan Pengarah dan Semua Timbalan Pengarah BPF', title_en: 'Forum: Evolution and Future Direction of Pharmacy Enforcement', speaker: '', venue: 'Dewan Esplanade 1', type: 'talk' },
+];
+
+renderSchedule(SAMPLE, { lang: 'ms' });
+</script>
+
+</body>
+</html>
