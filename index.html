@@ -229,14 +229,14 @@
 <nav id="conf-subnav" class="section-nav" aria-label="Navigasi bahagian">
   <div class="section-nav__progress" id="section-progress" aria-hidden="true"></div>
   <div class="section-nav__inner">
-    <a href="#about"><span data-lang="ms">Pengenalan</span><span data-lang="en">Overview</span></a>
-    <a href="#programme"><span data-lang="ms">Atur Cara</span><span data-lang="en">Programme</span></a>
-    <a href="#venue"><span data-lang="ms">Lokasi</span><span data-lang="en">Venue</span></a>
-    <a href="#speakers"><span data-lang="ms">Pembentang</span><span data-lang="en">Presenters</span></a>
-    <a href="#awards"><span data-lang="ms">Anugerah</span><span data-lang="en">Awards</span></a>
-    <a href="#gallery"><span data-lang="ms">Galeri</span><span data-lang="en">Gallery</span></a>
-    <a href="#faq"><span data-lang="ms">Soalan Lazim</span><span data-lang="en">FAQ</span></a>
-    <a href="#contact"><span data-lang="ms">Hubungi Kami</span><span data-lang="en">Contact Us</span></a>
+    <a href="#about" data-nav="about"><span data-lang="ms">Pengenalan</span><span data-lang="en">Overview</span></a>
+    <a href="#programme" data-nav="programme"><span data-lang="ms">Atur Cara</span><span data-lang="en">Programme</span></a>
+    <a href="#venue" data-nav="venue"><span data-lang="ms">Lokasi</span><span data-lang="en">Venue</span></a>
+    <a href="#speakers" data-nav="speakers"><span data-lang="ms">Pembentang</span><span data-lang="en">Presenters</span></a>
+    <a href="#awards" data-nav="awards"><span data-lang="ms">Anugerah</span><span data-lang="en">Awards</span></a>
+    <a href="#gallery" data-nav="gallery"><span data-lang="ms">Galeri</span><span data-lang="en">Gallery</span></a>
+    <a href="#faq" data-nav="faq"><span data-lang="ms">Soalan Lazim</span><span data-lang="en">FAQ</span></a>
+    <a href="#contact" data-nav="contact"><span data-lang="ms">Hubungi Kami</span><span data-lang="en">Contact Us</span></a>
   </div>
 </nav>
 
@@ -244,7 +244,7 @@
 <!-- ============================================================
      SECTION 2 — COUNTDOWN
      ============================================================ -->
-<section class="countdown-section section" aria-label="Kiraan undur">
+<section id="countdown" class="countdown-section section" aria-label="Kiraan undur">
   <div class="container">
 
     <span class="section-subtitle" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>
@@ -989,17 +989,24 @@
     renderContact,
     renderAbout,
   } from './assets/js/ui.js?v=4';
+  import { fetchSiteConfig } from './assets/js/api.js?v=4';
+  import { applySectionVisibility, isSectionVisible } from './assets/js/visibility.js?v=4';
 
   /* ── 1. Language (must be first — sets html[data-active-lang]
             before any text is rendered) ── */
   initLang();
+
+  /* ── 1b. Section visibility (early — hide toggled-off sections
+            before they render). Fail-open on config error. ── */
+  const siteConfig = await fetchSiteConfig().catch(() => ({}));
+  applySectionVisibility(siteConfig);
 
   /* ── 2. UI components (sync — no data needed) ── */
   initNav();
   initNavDrawer();
   initBackToTop();
   initScrollReveal();
-  initCountdown('2026-07-27T08:30:00');
+  if (isSectionVisible(siteConfig, 'show_countdown')) initCountdown('2026-07-27T08:30:00');
   initAwardsTabs();
   initNowNext('now-next');
   initSectionNav();
