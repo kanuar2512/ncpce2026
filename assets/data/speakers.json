@@ -11,8 +11,63 @@
     "order": ""
   },
   {
+    "name_ms": "En Mohd Azaruddin bin Aziz",
+    "name_en": "En Mohd Azaruddin bin Aziz",
+    "role_ms": "Timbalan Pengarah",
+    "role_en": "Deputy Director",
+    "organisation_ms": "Cawangan Perisikan & Operasi",
+    "organisation_en": "Intelligence & Operation Branch",
+    "photo_url": "",
+    "session": "",
+    "order": ""
+  },
+  {
+    "name_ms": "Pn Siti Mariaton binti Abd Moksin",
+    "name_en": "Pn Siti Mariaton binti Abd Moksin",
+    "role_ms": "Timbalan Pengarah",
+    "role_en": "Deputy Director",
+    "organisation_ms": "Cawangan Pelesenan",
+    "organisation_en": "Licensing Branch",
+    "photo_url": "",
+    "session": "",
+    "order": ""
+  },
+  {
+    "name_ms": "Pn Nor Aza binti Hassan",
+    "name_en": "Pn Nor Aza binti Hassan",
+    "role_ms": "Timbalan Pengarah",
+    "role_en": "Deputy Director",
+    "organisation_ms": "Cawangan Perundangan",
+    "organisation_en": "Legislation Branch",
+    "photo_url": "",
+    "session": "",
+    "order": ""
+  },
+  {
+    "name_ms": "Pn Asniza binti Alias",
+    "name_en": "Pn Asniza binti Alias",
+    "role_ms": "Timbalan Pengarah",
+    "role_en": "Deputy Director",
+    "organisation_ms": "Cawangan Kawalan Iklan",
+    "organisation_en": "Advertisement Control Branch",
+    "photo_url": "",
+    "session": "",
+    "order": ""
+  },
+  {
+    "name_ms": "Dr Mohd Shakrie Palan Bin Abdullah",
+    "name_en": "Dr Mohd Shakrie Palan Bin Abdullah",
+    "role_ms": "Timbalan Pengarah",
+    "role_en": "Deputy Director",
+    "organisation_ms": "Cawangan Forensik Farmasi",
+    "organisation_en": "Pharmacy Forensic Branch",
+    "photo_url": "",
+    "session": "",
+    "order": ""
+  },
+  {
     "name_ms": "En Ahmad Edihafriz bin Kamarol Fauzi",
-    "name_en": "Mr Ahmad Edihafriz bin Kamarol Fauzi",
+    "name_en": "En Ahmad Edihafriz bin Kamarol Fauzi",
     "role_ms": "Pengurus",
     "role_en": "Manager",
     "organisation_ms": "Netsmart Sdn Bhd",
@@ -55,8 +110,8 @@
     "order": ""
   },
   {
-    "name_ms": "Puan Nor Azizah binti Aling",
-    "name_en": "Puan Nor Azizah binti Aling",
+    "name_ms": "Pn Nor Azizah binti Aling",
+    "name_en": "Pn Nor Azizah binti Aling",
     "role_ms": "Timbalan Pendakwa Raya",
     "role_en": "Deputy Public Prosecutor",
     "organisation_ms": "AGC",
