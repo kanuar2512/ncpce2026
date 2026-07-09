@@ -8,7 +8,8 @@
     "organisation_en": "BPFKKM",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "forum"
   },
   {
     "name_ms": "En Mohd Azaruddin bin Aziz",
@@ -19,7 +20,8 @@
     "organisation_en": "Intelligence & Operation Branch",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "forum"
   },
   {
     "name_ms": "Pn Siti Mariaton binti Abd Moksin",
@@ -30,7 +32,8 @@
     "organisation_en": "Licensing Branch",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "forum"
   },
   {
     "name_ms": "Pn Nor Aza binti Hassan",
@@ -41,7 +44,8 @@
     "organisation_en": "Legislation Branch",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "forum"
   },
   {
     "name_ms": "Pn Asniza binti Alias",
@@ -52,7 +56,8 @@
     "organisation_en": "Advertisement Control Branch",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "forum"
   },
   {
     "name_ms": "Dr Mohd Shakrie Palan Bin Abdullah",
@@ -63,7 +68,8 @@
     "organisation_en": "Pharmacy Forensic Branch",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "forum"
   },
   {
     "name_ms": "En Ahmad Edihafriz bin Kamarol Fauzi",
@@ -74,7 +80,8 @@
     "organisation_en": "Netsmart Sdn Bhd",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "invited"
   },
   {
     "name_ms": "Insp. Ganesh a/l Raman",
@@ -85,7 +92,8 @@
     "organisation_en": "PDRM",
     "photo_url": "https://lh3.googleusercontent.com/d/15a94z8plNNRRqdswOj7YNiS6i0lPN7eG",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "invited"
   },
   {
     "name_ms": "Ts. Nur Syafiqah binti Mohd Shamsuddin",
@@ -96,7 +104,8 @@
     "organisation_en": "MCMC",
     "photo_url": "https://lh3.googleusercontent.com/d/1T_vd4ZiAGiEx7ei5BDFgt7mIBtQ10MTi",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "invited"
   },
   {
     "name_ms": "En Mohd Asriq bin Lamit",
@@ -107,7 +116,8 @@
     "organisation_en": "NFCC",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "invited"
   },
   {
     "name_ms": "Pn Nor Azizah binti Aling",
@@ -118,6 +128,7 @@
     "organisation_en": "AGC",
     "photo_url": "",
     "session": "",
-    "order": ""
+    "order": "",
+    "group": "invited"
   }
 ]
