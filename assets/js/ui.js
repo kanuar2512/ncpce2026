@@ -195,11 +195,13 @@ function driveThumb(url, size = 400) {
  */
 function safePhoto(url, name = '?') {
   if (url && url !== '#') return driveThumb(url, 300) || url;
-  // SVG initials avatar (data URI)
-  const initials = name.split(' ').slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
+  // No photo → premium profile silhouette (muted gold on maroon), never initials.
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
     <rect width="160" height="160" fill="#800000"/>
-    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="52" font-weight="700" fill="#FFF4D6">${initials}</text>
+    <g fill="#C9A24B">
+      <circle cx="80" cy="62" r="27"/>
+      <path d="M34 150c0-25.4 20.6-46 46-46s46 20.6 46 46z"/>
+    </g>
   </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
