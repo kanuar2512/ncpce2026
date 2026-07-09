@@ -441,7 +441,11 @@
         });
       }
     }),
-    { threshold: 0.4 }
+    // Activation line at the viewport centre: whichever section crosses the
+    // middle is active. A fixed visibility threshold (e.g. 0.4) fails for
+    // sections taller than ~2.5× the viewport (e.g. the gallery / accepted
+    // entries), which can never be 40% visible and so never highlight.
+    { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
   );
   riseSections.forEach(s => riseObserver.observe(s));
 
