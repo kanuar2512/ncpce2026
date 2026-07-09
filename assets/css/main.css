@@ -1529,6 +1529,43 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-style: italic;
 }
 
+/* Card header (avatar + name) — reset button; becomes the tap target on mobile */
+.speaker-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: default;
+  text-align: center;
+}
+
+/* Card body (role + pill) — fills remaining height so the pill bottom-aligns */
+.speaker-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+/* Chevron — hidden on desktop, shown in the mobile accordion */
+.speaker-card__chevron {
+  display: none;
+  width: 18px;
+  height: 18px;
+}
+
+/* Desktop / large tablet: clean, balanced 3-column grid */
+@media (min-width: 1024px) {
+  .speaker-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 /* — Download Card — */
 .download-grid {
   display: grid;
@@ -3443,18 +3480,70 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     grid-template-columns: 1fr;
   }
 
+  /* Speakers → premium vertical accordion list (one row per speaker) */
   .speaker-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
   }
 
-  /* Speaker card — scale down so long Malaysian names & dept pills fit */
-  .speaker-card { padding: var(--sp-8) var(--sp-5) var(--sp-6); }
-  .speaker-card__photo { width: 128px; height: 128px; }
-  .speaker-card__name { font-size: 0.95rem; }
-  .speaker-card__role { font-size: 0.78rem; }
+  .speaker-card {
+    padding: 0;
+    border-bottom: none;
+    border-radius: 12px;
+    align-items: stretch;
+    text-align: left;
+  }
+  .speaker-card::before { display: none; }
+  .speaker-card:hover { transform: none; box-shadow: var(--shadow-md); }
+
+  .speaker-card__header {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    cursor: pointer;
+    text-align: left;
+  }
+  .speaker-card__photo {
+    width: 46px;
+    height: 46px;
+    margin: 0;
+    border-width: 2px;
+    flex: 0 0 auto;
+  }
+  .speaker-card:hover .speaker-card__photo { transform: none; }
+  .speaker-card__name {
+    flex: 1 1 auto;
+    text-align: left;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .speaker-card__chevron {
+    display: block;
+    color: var(--clr-gold);
+    flex: 0 0 auto;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .speaker-card.open .speaker-card__chevron { transform: rotate(180deg); }
+
+  .speaker-card__body {
+    align-items: flex-start;
+    text-align: left;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 var(--sp-4);
+    transition: max-height 0.35s var(--ease-out), padding 0.35s var(--ease-out);
+  }
+  .speaker-card.open .speaker-card__body {
+    max-height: 240px;
+    padding: 0 var(--sp-4) var(--sp-4);
+  }
+  .speaker-card__role { margin: 0 0 var(--sp-2); font-size: 0.8rem; }
   .speaker-card__org {
+    margin-top: 0;
     font-size: 0.62rem;
-    padding: 3px 10px;
+    padding: 4px 12px;
     letter-spacing: 0.3px;
   }
 

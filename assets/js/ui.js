@@ -577,17 +577,22 @@ function speakerCardHTML(sp, lang, i) {
 
   return `
     <div class="speaker-card reveal" data-delay="${Math.min(i + 1, 5)}">
-      <img
-        class="speaker-card__photo"
-        src="${photo}"
-        alt="${name}"
-        loading="lazy"
-        onerror="this.onerror=null; this.src='${safePhoto('', name)}'"
-      >
-      <div class="speaker-card__name">${name}</div>
-      ${role    ? `<div class="speaker-card__role">${role}</div>` : ''}
-      ${org     ? `<div class="speaker-card__org">${org}</div>` : ''}
-      ${session ? `<div class="speaker-card__topic">${session}</div>` : ''}
+      <button type="button" class="speaker-card__header" aria-expanded="false">
+        <img
+          class="speaker-card__photo"
+          src="${photo}"
+          alt="${name}"
+          loading="lazy"
+          onerror="this.onerror=null; this.src='${safePhoto('', name)}'"
+        >
+        <span class="speaker-card__name">${name}</span>
+        <svg class="speaker-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="speaker-card__body">
+        ${role    ? `<div class="speaker-card__role">${role}</div>` : ''}
+        ${org     ? `<div class="speaker-card__org">${org}</div>` : ''}
+        ${session ? `<div class="speaker-card__topic">${session}</div>` : ''}
+      </div>
     </div>`;
 }
 
@@ -662,6 +667,53 @@ export async function renderSpeakers(containerId = 'speakers-container') {
     console.error('[CMIP] renderSpeakers error:', err);
     if (legacyEl) setError(legacyEl);
   }
+}
+
+
+/**
+ * Mobile accordion behaviour for the speaker cards (< 767px).
+ * Delegated + idempotent: bind once; keeps working for cards re-rendered
+ * on language switch. Only one row open at a time; no-op on desktop.
+ */
+export function initSpeakerAccordion() {
+  const root = document.getElementById('speakers');
+  if (!root || root._accordionBound) return;
+  root._accordionBound = true;
+
+  const mq = window.matchMedia('(max-width: 767px)');
+
+  root.addEventListener('click', (e) => {
+    const header = e.target.closest('.speaker-card__header');
+    if (!header || !root.contains(header)) return;
+    if (!mq.matches) return;                       // desktop: cards are static
+
+    const card = header.closest('.speaker-card');
+    if (!card) return;
+    const willOpen = !card.classList.contains('open');
+
+    // Close every open row first (one-open-at-a-time accordion)
+    root.querySelectorAll('.speaker-card.open').forEach(c => {
+      c.classList.remove('open');
+      const h = c.querySelector('.speaker-card__header');
+      if (h) h.setAttribute('aria-expanded', 'false');
+    });
+
+    if (willOpen) {
+      card.classList.add('open');
+      header.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  // Leaving mobile → collapse any open row so desktop shows full cards
+  mq.addEventListener('change', (ev) => {
+    if (!ev.matches) {
+      root.querySelectorAll('.speaker-card.open').forEach(c => {
+        c.classList.remove('open');
+        const h = c.querySelector('.speaker-card__header');
+        if (h) h.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
 }
 
 

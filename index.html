@@ -999,6 +999,7 @@
     renderFaq,
     renderContact,
     renderAbout,
+    initSpeakerAccordion,
   } from './assets/js/ui.js?v=4';
   import { fetchSiteConfig } from './assets/js/api.js?v=4';
   import { applySectionVisibility, isSectionVisible } from './assets/js/visibility.js?v=4';
@@ -1022,6 +1023,7 @@
   initNowNext('now-next');
   initSectionNav();
   initThemeSong();
+  initSpeakerAccordion();
 
   /* ── 3. Data sections (async — fetch from API / fallback) ── */
   renderAnnouncement('announcement-bar');
