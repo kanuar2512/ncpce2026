@@ -8,7 +8,8 @@
     "email": "bpf@moh.gov.my",
     "phone": "",
     "photo_url": "",
-    "order": "1"
+    "order": "1",
+    "tag": "NCPCE"
   },
   {
     "name": "En. Khairul Anuar bin Abdul Karim",
@@ -19,6 +20,7 @@
     "email": "khairulanuar.ak@moh.gov.my",
     "phone": "",
     "photo_url": "",
-    "order": "2"
+    "order": "2",
+    "tag": "RISE"
   }
 ]
