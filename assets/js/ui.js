@@ -918,16 +918,20 @@ export async function renderContact(containerId) {
 
     const lang = getLang();
 
+    // Left → right follows the sheet's `order` column (NCPCE first, RISE next).
+    const ordered = [...items].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+
     container.innerHTML = `
       <div class="contact-grid">
-        ${items.map(item => {
-          const name = lang === 'en' ? item.name_en : item.name_ms;
+        ${ordered.map(item => {
+          const name = item.name || (lang === 'en' ? item.name_en : item.name_ms) || '';
           const role = lang === 'en' ? item.role_en : item.role_ms;
+          const tag  = item.tag || '';
           return `
             <div class="contact-card reveal">
-              <div class="contact-card__icon">${hicon('envelope')}</div>
+              ${tag ? `<div class="contact-card__tag">${tag}</div>` : ''}
               <div class="contact-card__name">${name}</div>
-              <div class="contact-card__role">${role}</div>
+              ${role ? `<div class="contact-card__role">${role}</div>` : ''}
               ${item.email
                 ? `<a class="contact-card__email" href="mailto:${item.email}">${item.email}</a>`
                 : ''}

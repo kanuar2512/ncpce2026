@@ -2201,6 +2201,16 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   margin-bottom: var(--sp-3);
 }
 
+/* Category eyebrow — NCPCE / RISE 2026 */
+.contact-card__tag {
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--clr-gold);
+  margin-bottom: var(--sp-3);
+}
+
 .contact-card__name {
   font-size: var(--fs-base);
   font-weight: 700;
