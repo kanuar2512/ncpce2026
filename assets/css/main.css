@@ -1406,6 +1406,31 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 /* — Speaker Card — */
+/* Speaker category block (Panel Forum / Penceramah Jemputan) */
+.speaker-group { margin-top: var(--sp-12); }
+.speaker-group:first-of-type { margin-top: var(--sp-6); }
+
+/* Standalone category heading — gold on the maroon section */
+.speaker-group__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--clr-gold);
+  margin-bottom: var(--sp-8);
+}
+.speaker-group__title::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 3px;
+  margin: var(--sp-3) auto 0;
+  background: var(--clr-gold);
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
 .speaker-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

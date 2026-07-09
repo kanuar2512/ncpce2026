@@ -559,66 +559,106 @@ export async function renderProgramme(containerId) {
    ============================================================ */
 
 /**
- * Render the speakers grid.
- * @param {string} containerId
+ * Build the HTML for one speaker card.
+ * @param {Object} sp   speaker row
+ * @param {string} lang active language
+ * @param {number} i    index (reveal stagger)
+ * @returns {string}
  */
-export async function renderSpeakers(containerId) {
-  const container = $(containerId);
-  if (!container) return;
+function speakerCardHTML(sp, lang, i) {
+  // Sheet columns: name_ms/en, role_ms/en, organisation_ms/en, session, photo_url, group
+  const name    = (lang === 'en' ? sp.name_en : sp.name_ms) || sp.name_ms || sp.name_en || '';
+  const role    = (lang === 'en' ? sp.role_en : sp.role_ms) || sp.role_ms || sp.role_en || '';
+  const org     = (lang === 'en' ? sp.organisation_en : sp.organisation_ms) || sp.organisation_ms || sp.organisation_en || '';
+  const session = sp.session || '';
+  const photo   = safePhoto(sp.photo_url, name);
 
-  setLoading(container);
+  return `
+    <div class="speaker-card reveal" data-delay="${Math.min(i + 1, 5)}">
+      <img
+        class="speaker-card__photo"
+        src="${photo}"
+        alt="${name}"
+        loading="lazy"
+        onerror="this.onerror=null; this.src='${safePhoto('', name)}'"
+      >
+      <div class="speaker-card__name">${name}</div>
+      ${role    ? `<div class="speaker-card__role">${role}</div>` : ''}
+      ${org     ? `<div class="speaker-card__org">${org}</div>` : ''}
+      ${session ? `<div class="speaker-card__topic">${session}</div>` : ''}
+    </div>`;
+}
+
+/**
+ * Paint a list of speakers into one group's container as a .speaker-grid.
+ * Hides the whole .speaker-group wrapper when empty (no orphan heading).
+ * @param {HTMLElement|null} el  the group's inner container
+ * @param {Array} arr           speakers for this group
+ * @param {string} lang
+ */
+function paintSpeakerGroup(el, arr, lang) {
+  if (!el) return;
+  const group = el.closest('.speaker-group');
+  if (!arr.length) {
+    if (group) group.hidden = true;
+    el.innerHTML = '';
+    return;
+  }
+  if (group) group.hidden = false;
+  el.innerHTML = `
+    <div class="speaker-grid">
+      ${arr.map((sp, i) => speakerCardHTML(sp, lang, i)).join('')}
+    </div>`;
+}
+
+/**
+ * Render the speakers, split into two groups (Panel Forum + Invited).
+ * Grouping is data-driven via the sheet's `group` column
+ * (`forum` → Panel Forum; anything else → Penceramah Jemputan).
+ * Falls back to a single legacy container (#speakers-container) when the
+ * grouped containers are absent, so older markup keeps working.
+ * @param {string} [containerId] legacy single-container id (fallback only)
+ */
+export async function renderSpeakers(containerId = 'speakers-container') {
+  const forumEl   = $('speakers-forum-container');
+  const invitedEl = $('speakers-invited-container');
+  const legacyEl  = (!forumEl && !invitedEl) ? $(containerId) : null;
+
+  if (!forumEl && !invitedEl && !legacyEl) return;
+
+  if (legacyEl) setLoading(legacyEl);
 
   try {
     const speakers = await fetchSpeakers();
-
-    if (!speakers?.length) {
-      setEmpty(container);
-      return;
-    }
-
     const lang = getLang();
 
     // Keep only rows that actually have a name (ignore blank rows)
-    const list = speakers.filter(sp => sp && (sp.name_ms || sp.name_en));
+    const list = Array.isArray(speakers)
+      ? speakers.filter(sp => sp && (sp.name_ms || sp.name_en))
+      : [];
 
     if (!list.length) {
-      setEmpty(container);
+      if (legacyEl) setEmpty(legacyEl);
       return;
     }
 
-    container.innerHTML = `
-      <div class="speaker-grid">
-        ${list.map((sp, i) => {
-          // Sheet columns: name_ms/en, role_ms/en, organisation_ms/en, session, photo_url
-          const name    = (lang === 'en' ? sp.name_en : sp.name_ms) || sp.name_ms || sp.name_en || '';
-          const role    = (lang === 'en' ? sp.role_en : sp.role_ms) || sp.role_ms || sp.role_en || '';
-          const org     = (lang === 'en' ? sp.organisation_en : sp.organisation_ms) || sp.organisation_ms || sp.organisation_en || '';
-          const session = sp.session || '';
-          const photo   = safePhoto(sp.photo_url, name);
-
-          return `
-            <div class="speaker-card reveal" data-delay="${Math.min(i + 1, 5)}">
-              <img
-                class="speaker-card__photo"
-                src="${photo}"
-                alt="${name}"
-                loading="lazy"
-                onerror="this.onerror=null; this.src='${safePhoto('', name)}'"
-              >
-              <div class="speaker-card__name">${name}</div>
-              ${role    ? `<div class="speaker-card__role">${role}</div>` : ''}
-              ${org     ? `<div class="speaker-card__org">${org}</div>` : ''}
-              ${session ? `<div class="speaker-card__topic">${session}</div>` : ''}
-            </div>`;
-        }).join('')}
-      </div>`;
+    if (legacyEl) {
+      legacyEl.innerHTML = `
+        <div class="speaker-grid">
+          ${list.map((sp, i) => speakerCardHTML(sp, lang, i)).join('')}
+        </div>`;
+    } else {
+      const isForum = sp => String(sp.group || '').trim().toLowerCase() === 'forum';
+      paintSpeakerGroup(forumEl,   list.filter(isForum),           lang);
+      paintSpeakerGroup(invitedEl, list.filter(sp => !isForum(sp)), lang);
+    }
 
     // Re-init reveal for newly added elements
     initScrollReveal();
 
   } catch (err) {
     console.error('[CMIP] renderSpeakers error:', err);
-    setError(container);
+    if (legacyEl) setError(legacyEl);
   }
 }
 
