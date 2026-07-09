@@ -371,7 +371,11 @@ export function initNav() {
         }
       });
     },
-    { threshold: 0.35 }
+    // Activation line at the viewport centre: whichever section crosses the
+    // middle is active. A fixed visibility threshold (0.35) fails for sections
+    // taller than the viewport (e.g. Speakers/Programme), which never reach it
+    // and so never highlight. Matches the rise.html scroll-spy.
+    { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
   );
 
   sections.forEach(s => sectionObserver.observe(s));
