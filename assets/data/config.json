@@ -70,5 +70,11 @@
     "value_ms": "",
     "value_en": "",
     "value": "true"
+  },
+  {
+    "key": "voting_status",
+    "value_ms": "",
+    "value_en": "",
+    "value": ""
   }
 ]
