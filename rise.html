@@ -28,6 +28,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fonts as <link> (not CSS @import) so the browser discovers them
+       immediately instead of after main.css downloads — faster first text -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
   <link rel="stylesheet" href="assets/css/main.css?v=4">
   <link rel="icon" type="image/png" href="assets/img/logo.png">
 
@@ -80,28 +83,28 @@
   </nav>
 
   <!-- Mobile Drawer -->
-  <div class="navbar__drawer" id="nav-drawer" role="menu">
-    <a href="index.html" role="menuitem">
+  <div class="navbar__drawer" id="nav-drawer">
+    <a href="index.html">
       ← <span data-lang="ms">Laman Utama Persidangan</span>
       <span data-lang="en">Main Conference Site</span>
     </a>
-    <a href="#rise-intro" role="menuitem">
+    <a href="#rise-intro">
       <span data-lang="ms">Pengenalan</span>
       <span data-lang="en">Overview</span>
     </a>
-    <a href="#rise-categories" role="menuitem">
+    <a href="#rise-categories">
       <span data-lang="ms">Kategori</span>
       <span data-lang="en">Categories</span>
     </a>
-    <a href="#rise-gallery" role="menuitem">
+    <a href="#rise-gallery">
       <span data-lang="ms">Pembentangan</span>
       <span data-lang="en">Presentations</span>
     </a>
-    <a href="#rise-faq" role="menuitem">
+    <a href="#rise-faq">
       <span data-lang="ms">Soalan Lazim</span>
       <span data-lang="en">FAQ</span>
     </a>
-    <a href="#rise-voting" role="menuitem">
+    <a href="#rise-voting">
       <span data-lang="ms">Pengundian</span>
       <span data-lang="en">Voting</span>
     </a>

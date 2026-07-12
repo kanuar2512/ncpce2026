@@ -240,20 +240,29 @@ export const RISE = Object.freeze({
   ]),
 
   /**
-   * Voting module.
-   * Voting configuration — ONLY update these two values:
+   * Voting module — SELF-SCHEDULING. Nothing to do on conference day.
    *
-   *   status  'before'  → button disabled, shows "UNDIAN BELUM DIBUKA"
-   *           'open'    → button enabled, opens voting webapp in new tab
-   *           'closed'  → button disabled, shows "UNDIAN TELAH DITUTUP"
+   *   mode 'auto' (default) → the state is computed from the clock:
+   *        before opensAt          → "UNDIAN BELUM DIBUKA" (disabled)
+   *        opensAt … closesAt      → "UNDI SEKARANG" (live button)
+   *        after closesAt          → "UNDIAN TELAH DITUTUP" (disabled)
+   *        Times carry +08:00, so every visitor follows Malaysia time.
    *
-   *   url     Paste the deployed voting webapp URL when status is 'open'.
+   *   mode 'before' | 'open' | 'closed' → manual override (forces that
+   *        state regardless of the clock). Use only if plans change.
    *
-   * No HTML or CSS changes are needed — everything updates automatically.
+   *   EMERGENCY OVERRIDE WITHOUT REDEPLOY: add a row to the config sheet
+   *        key = voting_status | value = before / open / closed
+   *   The sheet value (if set to one of those three) beats everything.
+   *   Leave the row blank or 'auto' to return control to the schedule.
+   *
+   *   url  The deployed voting webapp URL.
    */
   voting: Object.freeze({
-    status: 'open',   // 'before' | 'open' | 'closed'
-    url:    'https://go.gov.my/UNDI-RISE2026',
+    mode:     'auto',                        // 'auto' | 'before' | 'open' | 'closed'
+    opensAt:  '2026-07-28T08:00:00+08:00',   // 28 Julai 2026, 8.00 pagi MYT
+    closesAt: '2026-07-28T17:00:00+08:00',   // 28 Julai 2026, 5.00 petang MYT
+    url:      'https://go.gov.my/UNDI-RISE2026',
   }),
 });
 

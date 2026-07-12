@@ -387,28 +387,37 @@ export function initNav() {
 export function initNavDrawer() {
   const hamburger = $q('.navbar__hamburger');
   const drawer    = $q('.navbar__drawer');
+  const nav       = $q('.navbar');   // scoped lookup (was an implicit
+                                     // window.navbar global by element id)
   if (!hamburger || !drawer) return;
 
-  hamburger.addEventListener('click', () => {
-    const isOpen = drawer.classList.toggle('open');
+  const setOpen = (isOpen) => {
+    drawer.classList.toggle('open', isOpen);
     hamburger.classList.toggle('open', isOpen);
-    hamburger.setAttribute('aria-expanded', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+  };
+
+  hamburger.addEventListener('click', () => {
+    setOpen(!drawer.classList.contains('open'));
   });
 
   // Close drawer when a link is clicked
   drawer.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      drawer.classList.remove('open');
-      hamburger.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-    });
+    a.addEventListener('click', () => setOpen(false));
   });
 
-  // Close on outside click
+  // Close on outside click — clicks INSIDE the drawer (e.g. the BM/EN
+  // toggle) no longer close it
   document.addEventListener('click', e => {
-    if (!navbar?.contains(e.target) && !hamburger.contains(e.target)) {
-      drawer.classList.remove('open');
-      hamburger.classList.remove('open');
+    if (!drawer.classList.contains('open')) return;
+    if (!nav?.contains(e.target) && !drawer.contains(e.target)) setOpen(false);
+  });
+
+  // Escape closes the drawer and returns focus to the hamburger (a11y)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      setOpen(false);
+      hamburger.focus();
     }
   });
 }
@@ -461,8 +470,10 @@ export async function renderProgramme(containerId) {
     // Build tabs
     const tabsHtml = days.map((day, i) => `
       <button
+        id="agenda-tab-${day}"
         class="agenda-tab-btn${i === 0 ? ' active' : ''}"
         data-day="${day}"
+        role="tab"
         aria-controls="agenda-day-${day}"
         aria-selected="${i === 0}"
       >
@@ -476,6 +487,7 @@ export async function renderProgramme(containerId) {
         id="agenda-day-${day}"
         class="agenda-content${i === 0 ? ' active' : ''}"
         role="tabpanel"
+        aria-labelledby="agenda-tab-${day}"
       >
         <div class="glass-card">
           <div class="programme" role="list">
@@ -733,9 +745,14 @@ export async function renderDownloads(containerId, section) {
   setLoading(container);
 
   try {
-    const items = await fetchDownloads(section);
+    const rows = await fetchDownloads(section);
 
-    if (!items?.length) {
+    // Only rows explicitly published (sheet column `published` = true/yes)
+    const items = (rows || []).filter(r =>
+      ['true', 'yes', '1', 'ya'].includes(String(r.published ?? 'true').trim().toLowerCase())
+    );
+
+    if (!items.length) {
       setEmpty(container);
       return;
     }
@@ -747,7 +764,8 @@ export async function renderDownloads(containerId, section) {
         ${items.map(item => {
           const title = lang === 'en' ? item.title_en : item.title_ms;
           const icon  = fileIcon(item.file_type);
-          const url   = item.drive_url || '#';
+          // Sheet column is `file_url` (was wrongly read as drive_url)
+          const url   = item.file_url || item.drive_url || '#';
 
           return `
             <div class="download-card reveal">
@@ -1098,10 +1116,14 @@ export function initAwardsTabs() {
       const targetId = btn.dataset.target;
       if (!targetId) return;
 
-      container.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+      container.querySelectorAll('.tab-nav-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
       container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
 
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
       const panel = $(targetId);
       if (panel) panel.classList.add('active');
     });
@@ -1470,19 +1492,58 @@ export async function renderRiseDownloads(containerId) {
    RISE — VOTING STUB
    ============================================================ */
 
+/** States a manual/sheet override may force. */
+const _VOTING_STATES = Object.freeze(['before', 'open', 'closed']);
+
+/** Timer for the auto-schedule re-check (idempotent across re-renders). */
+let _votingTimer = null;
+
 /**
- * Render the voting card.
- * Reads RISE_CONFIG.voting.status ('before' | 'open' | 'closed')
- * and renders the appropriate button state automatically.
- * To update: change only RISE_CONFIG.voting.status (and url when 'open').
+ * Resolve the voting state from the schedule in RISE_CONFIG.voting.
+ * opensAt/closesAt carry +08:00, so Date.parse() yields absolute
+ * instants — every visitor follows Malaysia time automatically.
+ * @returns {'before'|'open'|'closed'}
+ */
+function _votingScheduleState() {
+  const cfg = RISE_CONFIG.voting;
+
+  // Manual override in config.js beats the schedule
+  if (_VOTING_STATES.includes(cfg.mode)) return cfg.mode;
+
+  const now    = Date.now();
+  const opens  = Date.parse(cfg.opensAt  || '');
+  const closes = Date.parse(cfg.closesAt || '');
+
+  if (Number.isFinite(opens)  && now <  opens)  return 'before';
+  if (Number.isFinite(closes) && now >= closes) return 'closed';
+  return 'open';
+}
+
+/**
+ * Render the voting card. Self-scheduling — priority order:
+ *  1. Sheet override: config key `voting_status` = before/open/closed.
+ *  2. config.js voting.mode ('before'/'open'/'closed') manual override.
+ *  3. 'auto' (default): computed from opensAt/closesAt (Malaysia time).
+ * While the page stays open, the state re-checks every 60s so the
+ * button flips live at opening time without a reload.
  * @param {string} containerId
  */
-export function renderVoting(containerId) {
+export async function renderVoting(containerId) {
   const container = $(containerId);
   if (!container) return;
 
-  const cfg    = RISE_CONFIG.voting;
-  const status = cfg.status || 'before';  // 'before' | 'open' | 'closed'
+  const cfg = RISE_CONFIG.voting;
+
+  // Sheet override — fail-open to the schedule if config is unreachable
+  let override = '';
+  try {
+    const sc = await fetchSiteConfig();
+    override = String(sc.voting_status ?? '').trim().toLowerCase();
+  } catch (_) { /* no override — use the schedule */ }
+
+  const status = _VOTING_STATES.includes(override)
+    ? override
+    : _votingScheduleState();
 
   /* ── Static labels (no config needed) ── */
   const CARD_TITLE = 'SISTEM UNDIAN';
@@ -1543,6 +1604,15 @@ export function renderVoting(containerId) {
       ${buttonHtml}
       ${messageHtml}
     </div>`;
+
+  /* Auto-schedule live re-check: while no override forces a state and
+     voting hasn't closed yet, re-evaluate every 60s so the button flips
+     open/closed on time for visitors who keep the page open. */
+  clearTimeout(_votingTimer);
+  const isAuto = !_VOTING_STATES.includes(override) && !_VOTING_STATES.includes(cfg.mode);
+  if (isAuto && status !== 'closed') {
+    _votingTimer = setTimeout(() => renderVoting(containerId), 60_000);
+  }
 }
 
 

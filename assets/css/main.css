@@ -34,9 +34,12 @@
 
 
 /* ============================================================
-   1. GOOGLE FONTS IMPORT
+   1. GOOGLE FONTS
+   Loaded via <link> in the HTML <head> (index.html / rise.html) —
+   NOT @import here — so the browser discovers the fonts in parallel
+   with this stylesheet instead of after it. Keep the <link> URLs in
+   sync if the font families ever change.
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 
 /* ============================================================
@@ -618,6 +621,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   gap: var(--sp-2);
   flex-wrap: wrap;
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .rise-subnav a {
@@ -685,6 +689,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   right: 0;
   background: rgba(var(--clr-primary-rgb), 0.98);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: var(--sp-6) var(--container-pad);
   flex-direction: column;
   gap: var(--sp-2);
@@ -729,6 +734,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: relative;
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;  /* small-viewport height: on mobile, 100vh includes the
+                          browser toolbar and pushes the CTAs under it */
   background:
     radial-gradient(150% 135% at 50% -18%,
       var(--bg-deep-1) 0%,
@@ -920,6 +927,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   border-radius: var(--radius-full);
   margin-bottom: var(--sp-6);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .hero__venue-icon {
@@ -3452,6 +3460,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   /* Hero — extra bottom room so CTAs clear the floating action buttons */
   .hero {
     min-height: 100vh;
+    min-height: 100svh;   /* mobile toolbars: keep CTAs in the visible viewport */
     padding: calc(var(--nav-height) + var(--sp-8)) var(--container-pad) 6rem;
   }
 
@@ -3783,6 +3792,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   position: relative;
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;  /* mobile toolbars: keep CTAs in the visible viewport */
   background:
     radial-gradient(150% 130% at 50% -18%, #3a0010 0%, var(--clr-primary-deep) 46%, #0a0708 100%);
   display: flex;
@@ -3907,7 +3917,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 @media (max-width: 768px) {
-  .rise-hero { min-height: 100vh; padding-top: calc(var(--nav-height) + var(--sp-10)); }
+  .rise-hero { min-height: 100vh; min-height: 100svh; padding-top: calc(var(--nav-height) + var(--sp-10)); }
   .rise-hero::before { width: 300px; height: 300px; }
   .rise-hero::after  { width: 440px; height: 440px; }
 }
