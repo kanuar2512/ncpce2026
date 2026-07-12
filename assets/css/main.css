@@ -934,26 +934,25 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   flex-wrap: wrap;
 }
 
-/* ── NCPCE lockup: hibiscus mark + readable acronym above the title ── */
+/* ── NCPCE eyebrow — own centred line (block-level: never shares a line
+      with the government brand block above it) ── */
 .hero__ncpce {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-3);
+  display: flex;
+  justify-content: center;
   margin-bottom: var(--sp-5);
 }
 
-.hero__ncpce-logo {
-  height: clamp(44px, 7vh, 64px);
-  width: auto;
-  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
-}
-
 .hero__ncpce-text {
+  display: inline-block;
   font-family: var(--font-body);
-  font-size: clamp(0.82rem, 1.7vw, 1.05rem);
+  font-size: clamp(0.78rem, 1.6vw, 0.95rem);
   font-weight: 700;
   letter-spacing: 0.32em;
+  text-indent: 0.32em;   /* optically recentre the letterspaced text */
   color: var(--clr-gold);
+  padding: var(--sp-2) var(--sp-6);
+  border: 1px solid rgba(250, 206, 92, 0.45);
+  border-radius: var(--radius-full);
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
