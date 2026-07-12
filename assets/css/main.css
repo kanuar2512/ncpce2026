@@ -793,7 +793,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   flex-direction: column;
   align-items: center;
   gap: var(--sp-2);
-  margin-bottom: clamp(3rem, 7vh, 5rem);
+  /* Tightened: the government block is an eyebrow, not the hero itself */
+  margin-bottom: clamp(1.75rem, 4.5vh, 3rem);
 }
 
 /* Soft spotlight behind the entire block (dimmed so it never
@@ -833,7 +834,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 .hero__emblem {
-  width: clamp(120px, 16vh, 180px);
+  /* Reduced ~30%: official presence without competing with the title */
+  width: clamp(100px, 13vh, 130px);
   height: auto;
   filter: drop-shadow(0 10px 26px rgba(0,0,0,0.5));
 }
@@ -875,33 +877,53 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-weight: 400;
 }
 
+/* Even rhythm: fixed-pixel gaps between all three lines (em-based gaps
+   scale with each line's font size and were visibly uneven). */
 .hero__title .l1 {
   font-size: clamp(1.3rem, 4.2vw, 2.75rem);
   letter-spacing: 0.08em;
+  line-height: 1;
   color: rgba(var(--clr-cream-rgb), 0.92);
-  margin-bottom: 10px;
+  margin-bottom: clamp(8px, 1.4vw, 14px);
 }
 
 .hero__title .l2 {
   font-size: clamp(2.25rem, 8.55vw, 5.6rem);
   letter-spacing: 0.03em;
-  color: var(--clr-white);
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+  line-height: 1;
+  margin-bottom: clamp(8px, 1.4vw, 14px);
+  /* Golden Jubilee focal line — same gradient recipe as the countdown */
+  background: linear-gradient(180deg, var(--gold-3) 0%, var(--gold-1) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.35));
 }
 
 .hero__title .l3 {
   font-size: clamp(1.6rem, 5.6vw, 3.75rem);
   letter-spacing: 0.06em;
+  line-height: 1;
   color: rgba(var(--clr-cream-rgb), 0.92);
 }
 
+/* Fallback: browsers without background-clip:text get solid gold —
+   never transparent (invisible) text */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__title .l2 {
+    background: none;
+    color: var(--clr-gold);
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
 .hero__tagline {
-  font-size: clamp(0.62rem, 1.5vw, 0.95rem);
+  font-size: clamp(0.72rem, 1.5vw, 0.95rem);
   font-weight: 700;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--clr-gold);
-  opacity: 0.85;
   margin-bottom: var(--sp-8);
 }
 
@@ -910,6 +932,42 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   gap: var(--sp-4);
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* ── NCPCE lockup: hibiscus mark + readable acronym above the title ── */
+.hero__ncpce {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.hero__ncpce-logo {
+  height: clamp(44px, 7vh, 64px);
+  width: auto;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
+}
+
+.hero__ncpce-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 1.7vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  color: var(--clr-gold);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Venue + date chip row ── */
+.hero__chips {
+  display: flex;
+  gap: var(--sp-3);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-6);
+}
+
+.hero__chips .hero__venue {
+  margin-bottom: 0;
 }
 
 .hero__venue {
@@ -1054,6 +1112,23 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 .fx-particles span:nth-child(10) { left: 82%; animation-duration: 23s; animation-delay: 1s; }
 .fx-particles span:nth-child(11) { left: 90%; animation-duration: 15s; animation-delay: 4s; transform: scale(0.7); }
 .fx-particles span:nth-child(12) { left: 96%; animation-duration: 19s; animation-delay: 6s; }
+
+/* NCPCE hibiscus mark — large, faint watermark filling the right flank.
+   Desktop only; on mobile it would sit behind the title and add noise. */
+.fx-watermark {
+  position: absolute;
+  right: -3%;
+  top: 50%;
+  transform: translateY(-50%) rotate(6deg);
+  width: min(30vw, 340px);
+  height: auto;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .fx-watermark { display: none; }
+}
 
 /* Commemorative orbit ring around the 50-year emblem */
 /* Slow, subtle animated halo framing the FULL branding block.
