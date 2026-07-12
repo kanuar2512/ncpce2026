@@ -156,6 +156,21 @@ Total: small. No changes to `Code.gs`, `main.css` (beyond an optional anti-flash
 
 ---
 
+## 11. Follow-up notes / tech debt (discovered during implementation)
+
+### 11.1 Vestigial "About from config" code (decision pending)
+`renderAbout()` in `ui.js` was built to pull About text from the sheet (`about_ms`/`about_en`, `milestone_desc_ms`/`milestone_desc_en`). Those `SiteConfig` rows have since been **deleted** (they were unused and were causing a stray `true` to render once the `value` column was added). Current state — harmless but dead:
+- `renderAbout()` now reads `undefined`, its `if (text)` guards skip, and it only performs a cached no-op fetch. About renders from static HTML.
+- `index.html` still has an empty `<p data-about-text></p>` slot (renders blank).
+- `data-milestone-text` is referenced in JS but no matching element exists in the HTML — never functioned.
+
+**Options:** (a) *Keep* if About/milestone text should become sheet-editable later — then re-add the `about_*` rows with real content and add a `data-milestone-text` element; or (b) *Remove* `renderAbout()`, its import + call in `index.html`, and the empty `<p data-about-text>` if About stays static. **Recommendation:** leave as-is for now (harmless; removing touches `ui.js`, which has unrelated uncommitted changes). Revisit as a standalone cleanup.
+
+### 11.2 Programme sheet — unused `notes_ms` / `notes_en` columns
+The `Programme` tab has `notes_ms` / `notes_en` columns that **no frontend code reads** (`renderProgramme` uses only `time_start/end`, `title_*`, `speaker*`, `venue*`, `type`). They appear to be placeholders for per-item footnotes that were never wired up. Either wire them into the programme row rendering (e.g. a secondary `.prog-note` line) or drop the columns. Not urgent; documented so it isn't mistaken for a bug. The `type` column, by contrast, **is** used — it drives the category badge via `PROGRAMME_TYPES`.
+
+---
+
 **Status:** Option A approved; all three §7 questions resolved. Ready to implement **Step 1 (SiteConfig sheet) only**, then pause for sign-off before each subsequent file, per project rules.
 
 Since Step 1 edits the **live production Google Sheet**, confirm how you want it done: (a) I edit it directly via the browser, or (b) you add the `value` column + flag rows manually from the table in §3. Either way, no site code changes until Step 2 is approved.

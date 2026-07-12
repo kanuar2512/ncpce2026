@@ -3699,6 +3699,21 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 /*
+ * No-JS / boot-failure fallback.
+ * .reveal elements start at opacity:0 and only become visible when
+ * JavaScript adds .active. If JavaScript never runs (unsupported
+ * browser, blocked script, failed deploy), the html.no-js class —
+ * removed by an inline script when JS *does* run — forces all
+ * reveal-on-scroll content visible so the page is never blank.
+ */
+.no-js .reveal,
+.no-js .reveal-left,
+.no-js .reveal-right {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/*
  * Reduced-motion: honour the user's OS preference.
  * Critically, reveal-on-scroll elements are forced visible so that
  * users with reduced motion (and any edge case where the observer

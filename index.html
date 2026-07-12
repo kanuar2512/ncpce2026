@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="ms" data-active-lang="ms">
+<html lang="ms" data-active-lang="ms" class="no-js">
 <head>
   <meta charset="UTF-8">
+  <!-- Remove the no-js marker immediately — CSS uses .no-js to force
+       reveal-on-scroll content visible when JavaScript never runs. -->
+  <script>document.documentElement.classList.remove('no-js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Laman web rasmi Persidangan Kebangsaan Penguatkuasaan Jenayah Farmaseutikal 2026 — KSL Esplanade Hotel, Klang, 27–29 Julai 2026.">
   <meta name="theme-color" content="#3A000F">
@@ -10,7 +13,12 @@
   <meta property="og:type"        content="website">
   <meta property="og:title"       content="PKPJF 2026 — Persidangan Kebangsaan Penguatkuasaan Jenayah Farmaseutikal">
   <meta property="og:description" content="50 Tahun Penguatkuasaan Farmasi: Dari Legasi ke Transformasi Digital">
-  <meta property="og:image"       content="assets/img/hero.png">
+  <!-- og:image / og:url MUST be absolute URLs (relative paths are ignored
+       by WhatsApp / Facebook / Telegram scrapers). -->
+  <meta property="og:image"       content="https://kanuar2512.github.io/ncpce2026/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url"         content="https://kanuar2512.github.io/ncpce2026/">
 
   <!-- Bilingual page title -->
   <title
@@ -1008,26 +1016,39 @@
             before any text is rendered) ── */
   initLang();
 
-  /* ── 1b. Section visibility (early — hide toggled-off sections
-            before they render). Fail-open on config error. ── */
-  const siteConfig = await fetchSiteConfig().catch(() => ({}));
-  applySectionVisibility(siteConfig);
-
-  /* ── 2. UI components (sync — no data needed) ── */
+  /* ── 2. UI components (sync — no data needed). These run BEFORE any
+            network wait so the nav, drawer and reveal animations work
+            even when the config fetch is slow or unreachable. ── */
   initNav();
   initNavDrawer();
   initBackToTop();
   initScrollReveal();
-  if (isSectionVisible(siteConfig, 'show_countdown')) initCountdown('2026-07-27T08:30:00');
   initAwardsTabs();
-  initNowNext('now-next');
   initSectionNav();
   initThemeSong();
   initSpeakerAccordion();
 
-  /* ── 3. Data sections (async — fetch from API / fallback) ── */
-  renderAnnouncement('announcement-bar');
-  renderNowNext('now-next');
+  /* ── 2b. Section visibility — config fetch raced against a 2.5s
+            timeout. Fail-open: a slow or failed config must never
+            delay or blank the page (sections default to visible). ── */
+  const siteConfig = await Promise.race([
+    fetchSiteConfig(),
+    new Promise(resolve => setTimeout(resolve, 2500, {})),
+  ]).catch(() => ({}));
+  applySectionVisibility(siteConfig);
+
+  /* Countdown — anchored to Malaysia time (+08:00) so every visitor
+     counts down to the same moment regardless of device timezone. */
+  if (isSectionVisible(siteConfig, 'show_countdown')) initCountdown('2026-07-27T08:30:00+08:00');
+
+  /* ── 3. Data sections (async — fetch from API / fallback).
+            Announcement + Now/Next are gated on their config flags here
+            because their render functions unhide their containers. ── */
+  if (isSectionVisible(siteConfig, 'show_announcement')) renderAnnouncement('announcement-bar');
+  if (isSectionVisible(siteConfig, 'show_nownext')) {
+    initNowNext('now-next');
+    renderNowNext('now-next');
+  }
   renderAbout('about-container');
   renderProgramme('programme-container');
   renderSpeakers('speakers-container');
