@@ -2613,10 +2613,10 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 
 /* Column widths — applies to all accordion tables uniformly */
-.rise-table__col-num      { width: 4%; }
-.rise-table__col-title    { width: 40%; }
-.rise-table__col-author   { width: 20%; }
-.rise-table__col-branch   { width: 22%; }
+.rise-table__col-num      { width: 7%; }
+.rise-table__col-title    { width: 39%; }
+.rise-table__col-author   { width: 19%; }
+.rise-table__col-branch   { width: 21%; }
 .rise-table__col-abstract { width: 7%; }
 .rise-table__col-poster   { width: 7%; }
 
@@ -2736,35 +2736,71 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     background: rgba(255, 255, 255, 0.02);
     padding: var(--sp-4);
     margin-bottom: var(--sp-3);
+    cursor: pointer;
   }
   .rise-table__row:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
   .rise-table__row:last-child { margin-bottom: 0; }
+  .rise-table__row::after { content: ""; display: block; clear: both; }  /* clear pill float */
+  .rise-table__row:focus-visible {
+    outline: 2px solid rgba(212, 175, 55, 0.6);
+    outline-offset: 2px;
+  }
 
   .rise-table td { padding: 0; border: none; }
 
-  /* Numbering as a small gold chip in the top-right corner */
+  /* Presenter code (Kod Pembentang) as a gold pill before the title */
   .rise-table__num {
-    position: absolute;
-    top: var(--sp-3);
-    right: var(--sp-3);
+    float: left;
     width: auto;
-    font-size: 0.65rem;
+    margin: 1px var(--sp-2) 0 0;
+    font-size: 0.62rem;
+    font-weight: 700;
     color: var(--clr-gold);
-    background: rgba(212, 175, 55, 0.12);
+    background: rgba(212, 175, 55, 0.14);
+    border: 1px solid rgba(212, 175, 55, 0.4);
     border-radius: var(--radius-full);
-    padding: 1px 8px;
+    padding: 2px 9px;
   }
 
-  /* Title — the card headline */
+  /* Title — the card headline (always visible) */
   .rise-table__title {
     min-width: 0;
     font-size: var(--fs-base);
     font-weight: 600;
-    line-height: 1.35;
-    padding-right: 42px;   /* clear the number chip */
-    margin-bottom: var(--sp-2);
+    line-height: 1.4;
+    padding-right: 26px;   /* clear the chevron */
+    margin-bottom: 0;
     word-break: normal;
     overflow-wrap: anywhere;
+  }
+
+  /* Chevron affordance — top-right, rotates when expanded */
+  .rise-table__title::after {
+    content: "\25BE";
+    position: absolute;
+    top: var(--sp-4);
+    right: var(--sp-4);
+    color: var(--clr-gold);
+    font-size: 0.75rem;
+    transition: transform 0.25s ease;
+  }
+  .rise-table__row.is-expanded .rise-table__title::after { transform: rotate(180deg); }
+
+  /* Collapsed by default — details revealed only when expanded */
+  .rise-table__author,
+  .rise-table__branch,
+  .rise-table__abstract,
+  .rise-table__poster { display: none; }
+
+  .rise-table__row.is-expanded .rise-table__author,
+  .rise-table__row.is-expanded .rise-table__branch { display: block; }
+  .rise-table__row.is-expanded .rise-table__abstract,
+  .rise-table__row.is-expanded .rise-table__poster { display: inline-block; }
+
+  .rise-table__row.is-expanded .rise-table__author {
+    margin-top: var(--sp-3);
+    padding-top: var(--sp-3);
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
   }
 
   /* Presenter & branch as labelled secondary lines */
@@ -2786,10 +2822,10 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   html[lang="en"] .rise-table__branch::before { content: "Branch"; }
   html[lang="ms"] .rise-table__branch::before { content: "Cawangan"; }
 
-  /* Abstract + poster grouped into one action bar at the card foot */
+  /* Abstract + poster grouped into one action bar at the card foot
+     (display is controlled by the collapse rules above) */
   .rise-table__abstract,
   .rise-table__poster {
-    display: inline-block;
     text-align: left;
     margin-top: var(--sp-3);
     margin-right: var(--sp-2);

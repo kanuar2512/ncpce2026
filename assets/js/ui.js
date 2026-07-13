@@ -1262,9 +1262,12 @@ export async function renderRiseGallery(containerId) {
               ? `<a class="rise-table__action-btn" href="${rowPoster}" target="_blank" rel="noopener" aria-label="Poster">${hicon('photo')}</a>`
               : `<span class="rise-table__no-action">—</span>`;
 
+            const rowCode = item.kod_pembentang || String(i + 1);
+
             return `
-              <tr class="rise-table__row">
-                <td class="rise-table__num">${i + 1}</td>
+              <tr class="rise-table__row" data-entry-toggle
+                  aria-expanded="false" tabindex="0" role="button">
+                <td class="rise-table__num">${rowCode}</td>
                 <td class="rise-table__title">${rowTitle}</td>
                 <td class="rise-table__author">${rowAuthor}</td>
                 <td class="rise-table__branch">${rowBranch}</td>
@@ -1303,7 +1306,7 @@ export async function renderRiseGallery(containerId) {
                 </colgroup>
                 <thead>
                   <tr>
-                    <th class="rise-table__num">#</th>
+                    <th class="rise-table__num">${lang === 'en' ? 'Code' : 'Kod'}</th>
                     <th class="rise-table__title">${lang === 'en' ? 'Title' : 'Tajuk'}</th>
                     <th class="rise-table__author">${lang === 'en' ? 'Presenter' : 'Pembentang'}</th>
                     <th class="rise-table__branch">${lang === 'en' ? 'Branch / State' : 'Cawangan / Negeri'}</th>
@@ -1328,6 +1331,29 @@ export async function renderRiseGallery(containerId) {
         body.classList.toggle('is-open', !isOpen);
         btn.classList.toggle('is-open', !isOpen);
         btn.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+
+    /* ── Per-project accordion (mobile) ──
+       Each entry row collapses to code + title on phones; tapping reveals
+       presenter, branch, abstract & poster. Class toggles are inert on
+       desktop (the reveal rules live inside the ≤640px media query), so a
+       single handler serves both layouts. Links inside must not toggle. */
+    container.querySelectorAll('[data-entry-toggle]').forEach(row => {
+      const toggle = () => {
+        const isOpen = row.classList.toggle('is-expanded');
+        row.setAttribute('aria-expanded', String(isOpen));
+      };
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;   // let abstract/poster links open
+        toggle();
+      });
+      row.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          if (e.target.closest('a')) return;
+          e.preventDefault();
+          toggle();
+        }
       });
     });
 
