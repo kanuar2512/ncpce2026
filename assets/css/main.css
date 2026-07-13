@@ -2786,11 +2786,13 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   }
   .rise-table__row.is-expanded .rise-table__title::after { transform: rotate(180deg); }
 
-  /* Collapsed by default — details revealed only when expanded */
-  .rise-table__author,
-  .rise-table__branch,
-  .rise-table__abstract,
-  .rise-table__poster { display: none; }
+  /* Collapsed by default — details revealed only when expanded.
+     Scoped under .rise-table__row (0,2,0) to beat `.rise-table td`
+     (0,1,1), otherwise the cells' display:block keeps them visible. */
+  .rise-table__row .rise-table__author,
+  .rise-table__row .rise-table__branch,
+  .rise-table__row .rise-table__abstract,
+  .rise-table__row .rise-table__poster { display: none; }
 
   .rise-table__row.is-expanded .rise-table__author,
   .rise-table__row.is-expanded .rise-table__branch { display: block; }
