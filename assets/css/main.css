@@ -2714,8 +2714,101 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 @media (max-width: 640px) {
   .rise-accordion__subtitle { display: none; }
   .rise-accordion__hdr { padding: var(--sp-4); }
-  .rise-table th, .rise-table td { padding: var(--sp-2) var(--sp-3); }
-  .rise-table__title { min-width: 160px; }
+
+  /* ── Mobile: transform the 6-column table into stacked cards ──
+     Fixed-column tables crush the title on narrow screens, causing the
+     abstract/poster cells to overlap. Each row becomes a self-contained
+     card so nothing overlaps and every field stays readable. */
+  .rise-table-wrap { overflow-x: visible; }
+
+  .rise-table,
+  .rise-table tbody,
+  .rise-table__row,
+  .rise-table td { display: block; width: auto; }
+
+  .rise-table colgroup,
+  .rise-table thead { display: none; }
+
+  .rise-table__row {
+    position: relative;
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: var(--sp-4);
+    margin-bottom: var(--sp-3);
+  }
+  .rise-table__row:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+  .rise-table__row:last-child { margin-bottom: 0; }
+
+  .rise-table td { padding: 0; border: none; }
+
+  /* Numbering as a small gold chip in the top-right corner */
+  .rise-table__num {
+    position: absolute;
+    top: var(--sp-3);
+    right: var(--sp-3);
+    width: auto;
+    font-size: 0.65rem;
+    color: var(--clr-gold);
+    background: rgba(212, 175, 55, 0.12);
+    border-radius: var(--radius-full);
+    padding: 1px 8px;
+  }
+
+  /* Title — the card headline */
+  .rise-table__title {
+    min-width: 0;
+    font-size: var(--fs-base);
+    font-weight: 600;
+    line-height: 1.35;
+    padding-right: 42px;   /* clear the number chip */
+    margin-bottom: var(--sp-2);
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* Presenter & branch as labelled secondary lines */
+  .rise-table__author,
+  .rise-table__branch { font-size: var(--fs-sm); margin-bottom: 2px; }
+
+  .rise-table__author::before,
+  .rise-table__branch::before {
+    display: inline-block;
+    min-width: 74px;
+    color: var(--clr-gold);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  html[lang="en"] .rise-table__author::before { content: "Presenter"; }
+  html[lang="ms"] .rise-table__author::before { content: "Pembentang"; }
+  html[lang="en"] .rise-table__branch::before { content: "Branch"; }
+  html[lang="ms"] .rise-table__branch::before { content: "Cawangan"; }
+
+  /* Abstract + poster grouped into one action bar at the card foot */
+  .rise-table__abstract,
+  .rise-table__poster {
+    display: inline-block;
+    text-align: left;
+    margin-top: var(--sp-3);
+    margin-right: var(--sp-2);
+  }
+
+  /* Icon buttons gain a visible label on mobile for clarity */
+  .rise-table__action-btn { padding: 5px 12px; }
+  .rise-table__action-btn .hicon { margin-right: 5px; }
+  .rise-table__abstract .rise-table__action-btn::after,
+  .rise-table__poster   .rise-table__action-btn::after {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .rise-table__abstract .rise-table__action-btn::after { content: "Abstract"; }
+  .rise-table__poster   .rise-table__action-btn::after { content: "Poster"; }
+  html[lang="ms"] .rise-table__abstract .rise-table__action-btn::after { content: "Abstrak"; }
+
+  .rise-table__no-action { display: none; }
 }
 
 /* Voting stub */
