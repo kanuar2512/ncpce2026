@@ -1760,7 +1760,25 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-size: var(--fs-sm);
   color: rgba(var(--clr-cream-rgb), 0.8);
   line-height: 1.7;
+  /* Left-aligned reading with tidy line ends on narrow columns
+     (avoids the uneven word gaps that justify causes here). */
+  hyphens: auto;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
 }
+
+/* Slim horizontal variant — for short one-line cards (e.g. Organiser).
+   Keeps the card at its natural height instead of stretching to match
+   the tall Objective / 50-Years cards. */
+.info-card--slim {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-8);
+}
+.info-card--slim .info-card__icon { margin-bottom: 0; flex: none; }
+.info-card--slim .info-card__title { margin-bottom: var(--sp-1); }
+.info-card--slim .info-card__body { margin: 0; }
 
 
 /* ============================================================
