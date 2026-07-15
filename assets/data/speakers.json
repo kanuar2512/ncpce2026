@@ -6,10 +6,11 @@
     "role_en": "Director",
     "organisation_ms": "BPFKKM",
     "organisation_en": "BPFKKM",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1hD-iov3Xzp4yAqkmLzjQ9ZhhmooUe3QX/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "forum"
+    "group": "forum",
+    "cv_url": ""
   },
   {
     "name_ms": "Pn Asniza binti Alias",
@@ -18,10 +19,11 @@
     "role_en": "Deputy Director",
     "organisation_ms": "Cawangan Kawalan Iklan",
     "organisation_en": "Advertisement Control Branch",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1_SsJofIa6BW0FaxL4tebS894HeIJ_n6O/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "forum"
+    "group": "forum",
+    "cv_url": ""
   },
   {
     "name_ms": "Dr Mohd Shakrie Palan Bin Abdullah",
@@ -30,10 +32,11 @@
     "role_en": "Deputy Director",
     "organisation_ms": "Cawangan Forensik Farmasi",
     "organisation_en": "Pharmacy Forensic Branch",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1vpezoDSUiR8M_OrJQexxAH-FvyIG5H5c/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "forum"
+    "group": "forum",
+    "cv_url": ""
   },
   {
     "name_ms": "Pn Siti Mariaton binti Abd Moksin",
@@ -42,10 +45,11 @@
     "role_en": "Deputy Director",
     "organisation_ms": "Cawangan Pelesenan",
     "organisation_en": "Licensing Branch",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1nTanMWmXCD9taxBUCvB9xdWi7wvChjNJ/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "forum"
+    "group": "forum",
+    "cv_url": ""
   },
   {
     "name_ms": "Pn Nor Aza binti Hassan",
@@ -54,10 +58,11 @@
     "role_en": "Deputy Director",
     "organisation_ms": "Cawangan Perundangan",
     "organisation_en": "Legislation Branch",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1cU8sS3JXgJ5kixcvINUP0GIFxlswWGK2/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "forum"
+    "group": "forum",
+    "cv_url": ""
   },
   {
     "name_ms": "En Mohd Azaruddin bin Aziz",
@@ -66,10 +71,11 @@
     "role_en": "Deputy Director",
     "organisation_ms": "Cawangan Perisikan & Operasi",
     "organisation_en": "Intelligence & Operation Branch",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1EXNU40jssEIfrIQ70g9R0N2jS3WUsk-o/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "forum"
+    "group": "forum",
+    "cv_url": ""
   },
   {
     "name_ms": "En Ahmad Edihafriz bin Kamarol Fauzi",
@@ -81,7 +87,8 @@
     "photo_url": "",
     "session": "",
     "order": "",
-    "group": "invited"
+    "group": "invited",
+    "cv_url": ""
   },
   {
     "name_ms": "Insp. Ganesh a/l Raman",
@@ -90,10 +97,11 @@
     "role_en": "Inspector",
     "organisation_ms": "PDRM",
     "organisation_en": "PDRM",
-    "photo_url": "https://lh3.googleusercontent.com/d/15a94z8plNNRRqdswOj7YNiS6i0lPN7eG",
+    "photo_url": "https://drive.google.com/file/d/1ltT_zjkoP0Emlrt45ZkVJFaMAheg6sBh/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "invited"
+    "group": "invited",
+    "cv_url": ""
   },
   {
     "name_ms": "Ts. Nur Syafiqah binti Mohd Shamsuddin",
@@ -102,10 +110,11 @@
     "role_en": "Deputy Director",
     "organisation_ms": "SKMM",
     "organisation_en": "MCMC",
-    "photo_url": "https://lh3.googleusercontent.com/d/1T_vd4ZiAGiEx7ei5BDFgt7mIBtQ10MTi",
+    "photo_url": "https://drive.google.com/file/d/1XsPWhRm1mZGMWgT5pQAip_ErVgpAYDAe/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "invited"
+    "group": "invited",
+    "cv_url": ""
   },
   {
     "name_ms": "En Mohd Asriq bin Lamit",
@@ -114,10 +123,11 @@
     "role_en": "Senior Assistant Director",
     "organisation_ms": "NFCC",
     "organisation_en": "NFCC",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1S_qQKXftH36lj2YPhIZdaVLIezeGv2Hk/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "invited"
+    "group": "invited",
+    "cv_url": ""
   },
   {
     "name_ms": "Pn Nor Azizah binti Aling",
@@ -126,9 +136,10 @@
     "role_en": "Deputy Public Prosecutor",
     "organisation_ms": "AGC",
     "organisation_en": "AGC",
-    "photo_url": "",
+    "photo_url": "https://drive.google.com/file/d/1njlw3ooM6QxSQAQmLpFTXEobF-stW21-/view?usp=drive_link",
     "session": "",
     "order": "",
-    "group": "invited"
+    "group": "invited",
+    "cv_url": ""
   }
 ]
