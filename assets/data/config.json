@@ -76,5 +76,11 @@
     "value_ms": "",
     "value_en": "",
     "value": ""
+  },
+  {
+    "key": "show_rise_downloads",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
   }
 ]
