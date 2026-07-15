@@ -195,10 +195,17 @@ function driveThumb(url, size = 400) {
  */
 function safePhoto(url, name = '?') {
   if (url && url !== '#') return driveThumb(url, 300) || url;
-  // No photo → premium profile silhouette (muted gold on maroon), never initials.
+  // No photo → premium silhouette on the SAME cream gradient as real photos,
+  // with a soft maroon figure so every avatar circle looks uniform.
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
-    <rect width="160" height="160" fill="#800000"/>
-    <g fill="#C9A24B">
+    <defs>
+      <radialGradient id="ph" cx="50%" cy="38%" r="78%">
+        <stop offset="0%" stop-color="#FFFBEF"/>
+        <stop offset="100%" stop-color="#F3E7C9"/>
+      </radialGradient>
+    </defs>
+    <rect width="160" height="160" fill="url(#ph)"/>
+    <g fill="#800000" fill-opacity="0.5">
       <circle cx="80" cy="62" r="27"/>
       <path d="M34 150c0-25.4 20.6-46 46-46s46 20.6 46 46z"/>
     </g>

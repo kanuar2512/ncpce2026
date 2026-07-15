@@ -1564,7 +1564,9 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   margin-bottom: var(--sp-6);
   border: 5px solid var(--clr-primary);
   transition: var(--transition);
-  background: #eee;
+  /* Warm cream studio-style backdrop for transparent portraits;
+     matches the placeholder avatar so all circles look uniform. */
+  background: radial-gradient(circle at 50% 38%, #FFFBEF, #F3E7C9);
 }
 
 .speaker-card:hover .speaker-card__photo {
@@ -1618,19 +1620,23 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   align-items: center;
   gap: 6px;
   margin-top: var(--sp-4);
-  padding: 6px 16px;
+  padding: 7px 18px;
   font-size: var(--fs-xs);
-  font-weight: 600;
-  color: var(--clr-gold);
-  border: 1px solid rgba(212, 175, 55, 0.5);
+  font-weight: 700;
+  /* Solid maroon on the light card = clear contrast (gold-on-cream was faint). */
+  color: var(--clr-cream);
+  background: var(--clr-primary);
+  border: 1px solid var(--clr-primary);
   border-radius: var(--radius-full);
   text-decoration: none;
+  box-shadow: 0 3px 10px rgba(128, 0, 0, 0.22);
   transition: var(--transition-fast);
 }
 .speaker-card__cv:hover,
 .speaker-card__cv:focus-visible {
   background: var(--clr-gold);
   color: var(--clr-primary-deep);
+  border-color: var(--clr-gold);
   transform: translateY(-1px);
 }
 .speaker-card__cv .hicon { width: 15px; height: 15px; }
