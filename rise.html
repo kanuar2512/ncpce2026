@@ -187,6 +187,10 @@
     <span data-lang="ms">Pengundian</span>
     <span data-lang="en">Voting</span>
   </a>
+  <a href="#rise-downloads" data-nav="rise-downloads" hidden>
+    <span data-lang="ms">Muat Turun</span>
+    <span data-lang="en">Downloads</span>
+  </a>
   <a href="#rise-faq">
     <span data-lang="ms">Soalan Lazim</span>
     <span data-lang="en">FAQ</span>
@@ -357,7 +361,28 @@
 
 
 <!-- ============================================================
-     SECTION 6 — FAQ
+     SECTION 6 — DOWNLOADS  (toggle: SiteConfig show_rise_downloads)
+     Hidden by default; set show_rise_downloads = TRUE in SiteConfig
+     to reveal. Fed by renderRiseDownloads() → Downloads sheet (rise).
+     ============================================================ -->
+<section id="rise-downloads" class="section bg-maroon-deep" aria-labelledby="rise-downloads-heading" hidden>
+  <div class="container">
+
+    <h2 class="section-title" id="rise-downloads-heading">
+      <span data-lang="ms">Muat Turun</span>
+      <span data-lang="en">Downloads</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Rendered by renderRiseDownloads() — Downloads sheet, section = rise -->
+    <div id="rise-downloads-container" class="reveal"></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 7 — FAQ
      ============================================================ -->
 <section id="rise-faq" class="section bg-rise" aria-labelledby="rise-faq-heading">
   <div class="container">
@@ -419,6 +444,8 @@
      ============================================================ -->
 <script type="module">
   import { initLang }       from './assets/js/lang.js?v=4';
+  import { fetchSiteConfig } from './assets/js/api.js?v=4';
+  import { isSectionVisible } from './assets/js/visibility.js?v=4';
   import {
     initScrollReveal,
     initNav,
@@ -426,6 +453,7 @@
     initBackToTop,
     renderRiseCategories,
     renderRiseGallery,
+    renderRiseDownloads,
     renderFaq,
     renderVoting,
   } from './assets/js/ui.js?v=4';
@@ -473,9 +501,24 @@
     window.addEventListener('resize', updRiseProgress);
   }
 
-  /* ── 4. Data renders ── */
+  /* ── 4. Downloads visibility — config raced against a 2.5s timeout.
+           Fail-open on the FETCH (slow/failed config never blanks the page),
+           but the flag itself defaults to HIDDEN (fallback=false): the
+           #rise-downloads section + its nav link show ONLY when
+           show_rise_downloads is truthy in SiteConfig. ── */
+  const siteConfig = await Promise.race([
+    fetchSiteConfig(),
+    new Promise(resolve => setTimeout(resolve, 2500, {})),
+  ]).catch(() => ({}));
+  if (isSectionVisible(siteConfig, 'show_rise_downloads', false)) {
+    document.getElementById('rise-downloads')?.removeAttribute('hidden');
+    document.querySelector('.rise-subnav a[data-nav="rise-downloads"]')?.removeAttribute('hidden');
+  }
+
+  /* ── 5. Data renders ── */
   renderRiseCategories('rise-categories-container');
   renderRiseGallery('rise-gallery-container');
+  renderRiseDownloads('rise-downloads-container');
   renderFaq('rise-faq-container', 'rise');
   renderVoting('rise-voting-container');
 </script>
