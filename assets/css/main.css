@@ -880,10 +880,10 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 /* Even rhythm: fixed-pixel gaps between all three lines (em-based gaps
    scale with each line's font size and were visibly uneven). */
 .hero__title .l1 {
-  /* "Persidangan Kebangsaan" has more letters than the other lines, so at an
-     equal font size it renders WIDER and overshoots. Nudged slightly smaller
-     + tighter tracking so its rendered WIDTH matches l3 → balanced square block. */
-  font-size: clamp(1.4rem, 5vw, 3.4rem);
+  /* SAME font size as l3 (Jenayah Farmaseutikal). "Persidangan Kebangsaan"
+     has more letters, so we tighten the tracking (0.03em vs l3's 0.06em) to
+     pull its WIDTH in — left & right edges align → clean square block. */
+  font-size: clamp(1.6rem, 5.6vw, 3.75rem);
   letter-spacing: 0.03em;
   line-height: 1;
   color: rgba(var(--clr-cream-rgb), 0.92);
