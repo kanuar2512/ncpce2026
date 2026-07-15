@@ -1611,6 +1611,30 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-style: italic;
 }
 
+/* CV button — gold outline pill, consistent with the abstract/poster
+   action buttons; shows only when the speaker has a cv_url. */
+.speaker-card__cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--sp-4);
+  padding: 6px 16px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--clr-gold);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+.speaker-card__cv:hover,
+.speaker-card__cv:focus-visible {
+  background: var(--clr-gold);
+  color: var(--clr-primary-deep);
+  transform: translateY(-1px);
+}
+.speaker-card__cv .hicon { width: 15px; height: 15px; }
+
 /* Card header (avatar + name) — reset button; becomes the tap target on mobile */
 .speaker-card__header {
   display: flex;
@@ -3768,7 +3792,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     transition: max-height 0.35s var(--ease-out), padding 0.35s var(--ease-out);
   }
   .speaker-card.open .speaker-card__body {
-    max-height: 240px;
+    max-height: 320px;
     padding: 0 var(--sp-4) var(--sp-4);
   }
   .speaker-card__role { margin: 0 0 var(--sp-2); font-size: 0.8rem; }

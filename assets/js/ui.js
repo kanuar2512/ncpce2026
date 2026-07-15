@@ -580,12 +580,21 @@ export async function renderProgramme(containerId) {
  * @returns {string}
  */
 function speakerCardHTML(sp, lang, i) {
-  // Sheet columns: name_ms/en, role_ms/en, organisation_ms/en, session, photo_url, group
-  const name    = (lang === 'en' ? sp.name_en : sp.name_ms) || sp.name_ms || sp.name_en || '';
-  const role    = (lang === 'en' ? sp.role_en : sp.role_ms) || sp.role_ms || sp.role_en || '';
-  const org     = (lang === 'en' ? sp.organisation_en : sp.organisation_ms) || sp.organisation_ms || sp.organisation_en || '';
-  const session = sp.session || '';
-  const photo   = safePhoto(sp.photo_url, name);
+  // Sheet columns: name_ms/en, role_ms/en, organisation_ms/en, session, photo_url, group, cv_url
+  // Emit BOTH languages as data-lang spans so the BM/EN toggle (CSS-driven,
+  // like the rest of the site) updates role/org/name instantly — no re-render.
+  const bilingual = (ms, en) => {
+    const m = ms || en || '';
+    const e = en || ms || '';
+    return (m || e) ? `<span data-lang="ms">${m}</span><span data-lang="en">${e}</span>` : '';
+  };
+  const altName  = (lang === 'en' ? sp.name_en : sp.name_ms) || sp.name_ms || sp.name_en || '';
+  const nameHTML = bilingual(sp.name_ms, sp.name_en);
+  const roleHTML = bilingual(sp.role_ms, sp.role_en);
+  const orgHTML  = bilingual(sp.organisation_ms, sp.organisation_en);
+  const session  = sp.session || '';
+  const cv       = (sp.cv_url || '').trim();
+  const photo    = safePhoto(sp.photo_url, altName);
 
   return `
     <div class="speaker-card reveal" data-delay="${Math.min(i + 1, 5)}">
@@ -593,17 +602,18 @@ function speakerCardHTML(sp, lang, i) {
         <img
           class="speaker-card__photo"
           src="${photo}"
-          alt="${name}"
+          alt="${altName}"
           loading="lazy"
-          onerror="this.onerror=null; this.src='${safePhoto('', name)}'"
+          onerror="this.onerror=null; this.src='${safePhoto('', altName)}'"
         >
-        <span class="speaker-card__name">${name}</span>
+        <span class="speaker-card__name">${nameHTML}</span>
         <svg class="speaker-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </button>
       <div class="speaker-card__body">
-        ${role    ? `<div class="speaker-card__role">${role}</div>` : ''}
-        ${org     ? `<div class="speaker-card__org">${org}</div>` : ''}
-        ${session ? `<div class="speaker-card__topic">${session}</div>` : ''}
+        ${roleHTML ? `<div class="speaker-card__role">${roleHTML}</div>` : ''}
+        ${orgHTML  ? `<div class="speaker-card__org">${orgHTML}</div>` : ''}
+        ${session  ? `<div class="speaker-card__topic">${session}</div>` : ''}
+        ${cv ? `<a class="speaker-card__cv" href="${cv}" target="_blank" rel="noopener" aria-label="Lihat CV / View CV">${hicon('document-text')}<span data-lang="ms">Lihat CV</span><span data-lang="en">View CV</span></a>` : ''}
       </div>
     </div>`;
 }
