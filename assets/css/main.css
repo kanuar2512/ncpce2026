@@ -880,8 +880,10 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 /* Even rhythm: fixed-pixel gaps between all three lines (em-based gaps
    scale with each line's font size and were visibly uneven). */
 .hero__title .l1 {
-  font-size: clamp(1.3rem, 4.2vw, 2.75rem);
-  letter-spacing: 0.08em;
+  /* Matched to l3 (Jenayah Farmaseutikal) so the top & bottom lines frame
+     the gold focal line symmetrically — a balanced, "square" title block. */
+  font-size: clamp(1.6rem, 5.6vw, 3.75rem);
+  letter-spacing: 0.06em;
   line-height: 1;
   color: rgba(var(--clr-cream-rgb), 0.92);
   margin-bottom: clamp(8px, 1.4vw, 14px);
