@@ -62,7 +62,7 @@ export const CONFERENCE = Object.freeze({
   theme_ms: '50 Tahun Penguatkuasaan Farmasi: Dari Legasi ke Transformasi Digital, Mendepani Jenayah Farmaseutikal Tanpa Sempadan',
 
   /** Conference theme — EN */
-  theme_en: '50 Years of Pharmaceutical Enforcement: From Legacy to Digital Transformation, Confronting Borderless Pharmaceutical Crime',
+  theme_en: '50 Years of Pharmaceutical Enforcement: From Legacy to Digital Transformation, Combating Borderless Pharmaceutical Crime',
 
   /** Conference dates */
   dates: Object.freeze({
