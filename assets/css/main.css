@@ -3322,6 +3322,30 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   color: rgba(var(--clr-cream-rgb), 0.45);
 }
 
+/* Discreet developer mark — bottom-right corner; copyright stays centred. */
+.footer__mark {
+  position: absolute;
+  right: var(--sp-6);
+  bottom: var(--sp-5);
+  z-index: 2;
+  font-size: 0.62rem;
+  letter-spacing: 0.5px;
+  color: rgba(var(--clr-cream-rgb), 0.3);
+  user-select: none;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  /* On mobile it flows below the copyright, centred, to avoid overlap. */
+  .footer__mark {
+    position: static;
+    display: block;
+    right: auto;
+    bottom: auto;
+    margin-top: var(--sp-5);
+    text-align: center;
+  }
+}
+
 .footer__meta {
   font-size: var(--fs-xs);
   color: rgba(var(--clr-cream-rgb), 0.3);
