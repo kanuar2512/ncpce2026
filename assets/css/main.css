@@ -1686,7 +1686,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   display: grid;
   /* Cap each card so covers stay a sensible book-cover size even with just
      one item (1fr would stretch a lone card to full width → giant). */
-  grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 240px));
   gap: var(--sp-6);
   justify-content: center;
 }
@@ -1715,28 +1715,32 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 .download-card__cover {
   position: relative;
   display: block;
-  aspect-ratio: 3 / 4;
   background: rgba(0, 0, 0, 0.28);
   overflow: hidden;
 }
+/* Show the WHOLE cover at its natural aspect ratio (no cropping); the card
+   height follows the image — works for portrait books or landscape covers. */
 .download-card__cover-img {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
+  height: auto;
   transition: transform 0.4s var(--ease-out);
 }
-.download-card:hover .download-card__cover-img { transform: scale(1.05); }
-.download-card__cover-icon {
+.download-card:hover .download-card__cover-img { transform: scale(1.04); }
+
+/* Fallback (no cover_url + non-Drive file, or a broken image): a fixed
+   portrait box showing the file-type icon. */
+.download-card__cover-icon { display: none; }
+.download-card__cover.is-empty,
+.download-card__cover.is-broken { aspect-ratio: 3 / 4; }
+.download-card__cover.is-empty .download-card__cover-icon,
+.download-card__cover.is-broken .download-card__cover-icon {
+  display: flex;
   position: absolute;
   inset: 0;
-  display: flex;
   align-items: center;
   justify-content: center;
   color: var(--clr-gold);
-  z-index: 0;
 }
 .download-card__cover-icon .hicon { width: 46px; height: 46px; }
 

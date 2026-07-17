@@ -792,15 +792,15 @@ export async function renderDownloads(containerId, section) {
           const isDrive = /\/d\/[a-zA-Z0-9_-]+/.test(rawFile);
           const cover   = (item.cover_url || '').trim() || (isDrive ? driveThumb(rawFile, 500) : '');
 
-          const coverInner = cover
-            ? `<img class="download-card__cover-img" src="${cover}" alt="${title}" loading="lazy" onerror="this.remove()">
-               <span class="download-card__cover-icon" aria-hidden="true">${icon}</span>`
-            : `<span class="download-card__cover-icon" aria-hidden="true">${icon}</span>`;
+          const coverImg = cover
+            ? `<img class="download-card__cover-img" src="${cover}" alt="${title}" loading="lazy" onerror="this.style.display='none'; this.closest('.download-card__cover').classList.add('is-broken')">`
+            : '';
 
           return `
             <div class="download-card reveal">
-              <a class="download-card__cover" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${title}" ${dis}>
-                ${coverInner}
+              <a class="download-card__cover${cover ? '' : ' is-empty'}" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${title}" ${dis}>
+                ${coverImg}
+                <span class="download-card__cover-icon" aria-hidden="true">${icon}</span>
               </a>
               <div class="download-card__meta">
                 <div class="download-card__title">${title}</div>
