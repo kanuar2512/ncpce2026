@@ -256,6 +256,7 @@
     <a href="#speakers" data-nav="speakers"><span data-lang="ms">Penceramah</span><span data-lang="en">Speakers</span></a>
     <a href="#awards" data-nav="awards"><span data-lang="ms">Anugerah</span><span data-lang="en">Awards</span></a>
     <a href="#gallery" data-nav="gallery"><span data-lang="ms">Galeri</span><span data-lang="en">Gallery</span></a>
+    <a href="#downloads" data-nav="downloads" hidden><span data-lang="ms">Muat Turun</span><span data-lang="en">Downloads</span></a>
     <a href="#faq" data-nav="faq"><span data-lang="ms">Soalan Lazim</span><span data-lang="en">FAQ</span></a>
     <a href="#contact" data-nav="contact"><span data-lang="ms">Hubungi Kami</span><span data-lang="en">Contact Us</span></a>
   </div>
@@ -896,6 +897,28 @@
 
 
 <!-- ============================================================
+     SECTION 9b — DOWNLOADS  (toggle: SiteConfig show_downloads)
+     Hidden by default; set show_downloads = TRUE in SiteConfig to reveal.
+     Fed by renderDownloads() → Downloads sheet (section = general).
+     ============================================================ -->
+<section id="downloads" class="section bg-maroon" aria-labelledby="downloads-heading" hidden>
+  <div class="container">
+
+    <span class="section-subtitle" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span>
+    <h2 class="section-title" id="downloads-heading">
+      <span data-lang="ms">Muat Turun</span>
+      <span data-lang="en">Downloads</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Rendered by renderDownloads() — Downloads sheet, section = general -->
+    <div id="downloads-container" class="reveal"></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
      SECTION 10 — FAQ
      ============================================================ -->
 <section id="faq" class="section bg-maroon-deep" aria-labelledby="faq-heading">
@@ -1025,6 +1048,7 @@
     renderProgramme,
     renderSpeakers,
     renderGallery,
+    renderDownloads,
     renderFaq,
     renderContact,
     renderAbout,
@@ -1058,6 +1082,13 @@
   ]).catch(() => ({}));
   applySectionVisibility(siteConfig);
 
+  /* Downloads — hidden unless SiteConfig show_downloads is truthy
+     (fallback=false → off by default, even before the row exists). */
+  if (isSectionVisible(siteConfig, 'show_downloads', false)) {
+    document.getElementById('downloads')?.removeAttribute('hidden');
+    document.querySelector('#conf-subnav a[data-nav="downloads"]')?.removeAttribute('hidden');
+  }
+
   /* Countdown — anchored to Malaysia time (+08:00) so every visitor
      counts down to the same moment regardless of device timezone. */
   if (isSectionVisible(siteConfig, 'show_countdown')) initCountdown('2026-07-27T08:30:00+08:00');
@@ -1074,6 +1105,7 @@
   renderProgramme('programme-container');
   renderSpeakers('speakers-container');
   renderGallery('gallery-container');
+  renderDownloads('downloads-container', 'general');
   renderFaq('faq-container', 'general');
   renderContact('contact-container');
 </script>
