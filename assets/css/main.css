@@ -1684,8 +1684,11 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 /* — Download Card — */
 .download-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  /* Cap each card so covers stay a sensible book-cover size even with just
+     one item (1fr would stretch a lone card to full width → giant). */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
   gap: var(--sp-6);
+  justify-content: center;
 }
 
 .download-card {
