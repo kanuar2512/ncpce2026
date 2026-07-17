@@ -783,20 +783,29 @@ export async function renderDownloads(containerId, section) {
           const icon  = fileIcon(item.file_type);
           // Sheet column is `file_url` (was wrongly read as drive_url)
           const url   = item.file_url || item.drive_url || '#';
+          const type  = item.file_type?.toUpperCase() || 'FILE';
+          const dis   = url === '#' ? 'aria-disabled="true"' : '';
+
+          // Hybrid cover: explicit cover_url → Drive auto-thumbnail (PDF first
+          // page) → none (icon only). Drive thumbs need a /d/ID share link.
+          const rawFile = (item.file_url || item.drive_url || '').trim();
+          const isDrive = /\/d\/[a-zA-Z0-9_-]+/.test(rawFile);
+          const cover   = (item.cover_url || '').trim() || (isDrive ? driveThumb(rawFile, 500) : '');
+
+          const coverInner = cover
+            ? `<img class="download-card__cover-img" src="${cover}" alt="${title}" loading="lazy" onerror="this.remove()">
+               <span class="download-card__cover-icon" aria-hidden="true">${icon}</span>`
+            : `<span class="download-card__cover-icon" aria-hidden="true">${icon}</span>`;
 
           return `
             <div class="download-card reveal">
-              <div class="download-card__icon">${icon}</div>
+              <a class="download-card__cover" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${title}" ${dis}>
+                ${coverInner}
+              </a>
               <div class="download-card__meta">
                 <div class="download-card__title">${title}</div>
-                <div class="download-card__type">${item.file_type?.toUpperCase() || 'FILE'}</div>
-                <a
-                  class="download-card__btn"
-                  href="${url}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  ${url === '#' ? 'aria-disabled="true"' : ''}
-                >
+                <div class="download-card__type">${type}</div>
+                <a class="download-card__btn" href="${url}" target="_blank" rel="noopener noreferrer" ${dis}>
                   ${hicon('arrow-down-tray')} ${t('download')}
                 </a>
               </div>

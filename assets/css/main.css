@@ -1684,7 +1684,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 /* — Download Card — */
 .download-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: var(--sp-6);
 }
 
@@ -1692,10 +1692,9 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(var(--clr-cream-rgb), 0.2);
   border-radius: var(--radius-md);
-  padding: var(--sp-6);
+  overflow: hidden;
   display: flex;
-  align-items: flex-start;
-  gap: var(--sp-4);
+  flex-direction: column;
   transition: var(--transition);
   color: var(--clr-cream);
 }
@@ -1707,15 +1706,43 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   box-shadow: var(--shadow-md);
 }
 
-.download-card__icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-  color: var(--clr-gold);
+/* Clickable portrait cover (book / A4 ratio). The thumbnail image sits on
+   top of a fallback file-icon; if the image fails to load it is removed via
+   onerror and the icon shows through. */
+.download-card__cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  background: rgba(0, 0, 0, 0.28);
+  overflow: hidden;
 }
+.download-card__cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  transition: transform 0.4s var(--ease-out);
+}
+.download-card:hover .download-card__cover-img { transform: scale(1.05); }
+.download-card__cover-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-gold);
+  z-index: 0;
+}
+.download-card__cover-icon .hicon { width: 46px; height: 46px; }
 
 .download-card__meta {
   flex: 1;
   min-width: 0;
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
 }
 
 .download-card__title {
@@ -1742,7 +1769,8 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   font-weight: 700;
   padding: var(--sp-1) var(--sp-3);
   border-radius: var(--radius-full);
-  margin-top: var(--sp-3);
+  margin-top: auto;
+  align-self: flex-start;
   transition: var(--transition-fast);
   text-transform: uppercase;
   letter-spacing: 0.5px;
