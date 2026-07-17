@@ -120,6 +120,10 @@
       <span data-lang="ms">Galeri</span>
       <span data-lang="en">Gallery</span>
     </a>
+    <a href="#downloads" data-nav="downloads" hidden>
+      <span data-lang="ms">Muat Turun</span>
+      <span data-lang="en">Downloads</span>
+    </a>
     <a href="#faq">
       <span data-lang="ms">Soalan Lazim</span>
       <span data-lang="en">FAQ</span>
@@ -1086,7 +1090,8 @@
      (fallback=false → off by default, even before the row exists). */
   if (isSectionVisible(siteConfig, 'show_downloads', false)) {
     document.getElementById('downloads')?.removeAttribute('hidden');
-    document.querySelector('#conf-subnav a[data-nav="downloads"]')?.removeAttribute('hidden');
+    // Reveal both the sticky sub-nav link and the mobile drawer link.
+    document.querySelectorAll('[data-nav="downloads"]').forEach(el => el.removeAttribute('hidden'));
   }
 
   /* Countdown — anchored to Malaysia time (+08:00) so every visitor
