@@ -82,5 +82,11 @@
     "value_ms": "",
     "value_en": "",
     "value": "false"
+  },
+  {
+    "key": "show_downloads",
+    "value_ms": "",
+    "value_en": "",
+    "value": "true"
   }
 ]
