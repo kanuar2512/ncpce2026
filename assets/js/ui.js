@@ -1917,7 +1917,7 @@ export async function reRenderAll() {
 
   if ($('programme-container'))  jobs.push(renderProgramme('programme-container'));
   if ($('speakers-container'))   jobs.push(renderSpeakers('speakers-container'));
-  if ($('downloads-container'))  jobs.push(renderDownloads('downloads-container', 'main'));
+  if ($('downloads-container'))  jobs.push(renderDownloads('downloads-container', 'general'));
   if ($('gallery-container'))    jobs.push(renderGallery('gallery-container'));
   if ($('faq-container'))        jobs.push(renderFaq('faq-container', 'general'));
   if ($('sponsors-container'))   jobs.push(renderSponsors('sponsors-container'));
