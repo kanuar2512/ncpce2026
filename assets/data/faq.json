@@ -27,8 +27,8 @@
     "section": "rise",
     "question_ms": "Siapakah yang layak mengundi Anugerah Pilihan RISE?",
     "question_en": "Who is eligible to vote for the RISE Choice Award?",
-    "answer_ms": "Semua peserta persidangan yang berdaftar layak menyertai pengundian Anugerah Pilihan RISE.",
-    "answer_en": "All registered conference participants are eligible to vote for the RISE Choice Award.",
+    "answer_ms": "Hanya peserta yang berdaftar sebagai peserta persidangan penuh di bawah tanggungan Bahagian Penguatkuasaan Farmasi (BPF) layak mengundi. Peserta harian dan pembentang RISE 2026 tidak layak menyertai pengundian.",
+    "answer_en": "Only full conference participants registered under the sponsorship of the Pharmacy Enforcement Division (BPF) are eligible to vote. Daily participants and RISE 2026 presenters are not eligible to participate in the voting.",
     "order": "3"
   },
   {
@@ -59,8 +59,8 @@
     "section": "rise",
     "question_ms": "Bilakah Sistem Undian Anugerah Pilihan RISE dibuka?",
     "question_en": "When will the RISE Choice Award Voting System be available?",
-    "answer_ms": "Sistem undian dibuka sepanjang tempoh pengundian yang ditetapkan oleh urus setia semasa persidangan berlangsung.",
-    "answer_en": "The voting system will be available during the voting period as determined by the conference secretariat.",
+    "answer_ms": "Pengundian akan dibuka pada 28 Julai 2026 (Selasa), dari jam 8.00 pagi hingga 5.00 petang. Pengundian hanya boleh dibuat dalam tempoh yang ditetapkan.",
+    "answer_en": "Voting will be open on 28 July 2026 (Tuesday), from 8:00 a.m. to 5:00 p.m. Voting can only be cast during the designated voting period.",
     "order": "6"
   },
   {
