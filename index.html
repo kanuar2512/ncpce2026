@@ -108,6 +108,10 @@
       <span data-lang="ms">Lokasi</span>
       <span data-lang="en">Venue</span>
     </a>
+    <a href="#forum">
+      <span data-lang="ms">Forum</span>
+      <span data-lang="en">Forum</span>
+    </a>
     <a href="#speakers">
       <span data-lang="ms">Penceramah</span>
       <span data-lang="en">Speakers</span>
@@ -257,6 +261,7 @@
     <a href="#about" data-nav="about"><span data-lang="ms">Pengenalan</span><span data-lang="en">Overview</span></a>
     <a href="#programme" data-nav="programme"><span data-lang="ms">Atur Cara</span><span data-lang="en">Programme</span></a>
     <a href="#venue" data-nav="venue"><span data-lang="ms">Lokasi</span><span data-lang="en">Venue</span></a>
+    <a href="#forum" data-nav="forum"><span data-lang="ms">Forum</span><span data-lang="en">Forum</span></a>
     <a href="#speakers" data-nav="speakers"><span data-lang="ms">Penceramah</span><span data-lang="en">Speakers</span></a>
     <a href="#awards" data-nav="awards"><span data-lang="ms">Anugerah</span><span data-lang="en">Awards</span></a>
     <a href="#gallery" data-nav="gallery"><span data-lang="ms">Galeri</span><span data-lang="en">Gallery</span></a>
@@ -620,25 +625,52 @@
 
 
 <!-- ============================================================
-     SECTION 7 — SPEAKERS
+     SECTION 7 — FORUM  (Moderator + Panel Forum)
+     ============================================================ -->
+<section id="forum" class="section bg-maroon" aria-labelledby="forum-heading">
+  <div class="container">
+
+    <span class="section-subtitle" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg></span>
+    <h2 class="section-title" id="forum-heading">
+      <span data-lang="ms">Forum</span>
+      <span data-lang="en">Forum</span>
+    </h2>
+    <div class="divider"></div>
+
+    <!-- Sub-panel 1 — Moderator (single, centred) -->
+    <div class="speaker-group" id="group-moderator">
+      <h3 class="speaker-group__title">
+        <span data-lang="ms">Moderator</span>
+        <span data-lang="en">Moderator</span>
+      </h3>
+      <!-- Rendered by renderSpeakers() -->
+      <div id="speakers-moderator-container" data-group="moderator"></div>
+    </div>
+
+    <!-- Sub-panel 2 — Panel Forum -->
+    <div class="speaker-group" id="group-forum">
+      <h3 class="speaker-group__title">
+        <span data-lang="ms">Panel Forum</span>
+        <span data-lang="en">Forum Panellists</span>
+      </h3>
+      <!-- Rendered by renderSpeakers() -->
+      <div id="speakers-forum-container" data-group="forum"></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 7b — SPEAKERS  (Penceramah Jemputan)
      ============================================================ -->
 <section id="speakers" class="section bg-about" aria-labelledby="speakers-heading">
   <div class="container">
 
     <span class="section-subtitle" aria-hidden="true"><svg class="hicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></span>
-    <!-- Group 1 — Panel Forum -->
-    <div class="speaker-group" id="group-forum">
-      <h2 class="speaker-group__title" id="speakers-heading">
-        <span data-lang="ms">Panel Forum</span>
-        <span data-lang="en">Forum Panellists</span>
-      </h2>
-      <!-- Rendered by renderSpeakers() -->
-      <div id="speakers-forum-container" data-group="forum"></div>
-    </div>
-
-    <!-- Group 2 — Penceramah Jemputan -->
+    <!-- Group — Penceramah Jemputan -->
     <div class="speaker-group" id="group-invited">
-      <h2 class="speaker-group__title">
+      <h2 class="speaker-group__title" id="speakers-heading">
         <span data-lang="ms">Penceramah Jemputan</span>
         <span data-lang="en">Invited Speakers</span>
       </h2>

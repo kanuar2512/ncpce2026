@@ -656,11 +656,12 @@ function paintSpeakerGroup(el, arr, lang) {
  * @param {string} [containerId] legacy single-container id (fallback only)
  */
 export async function renderSpeakers(containerId = 'speakers-container') {
-  const forumEl   = $('speakers-forum-container');
-  const invitedEl = $('speakers-invited-container');
-  const legacyEl  = (!forumEl && !invitedEl) ? $(containerId) : null;
+  const moderatorEl = $('speakers-moderator-container');
+  const forumEl     = $('speakers-forum-container');
+  const invitedEl   = $('speakers-invited-container');
+  const legacyEl    = (!moderatorEl && !forumEl && !invitedEl) ? $(containerId) : null;
 
-  if (!forumEl && !invitedEl && !legacyEl) return;
+  if (!moderatorEl && !forumEl && !invitedEl && !legacyEl) return;
 
   if (legacyEl) setLoading(legacyEl);
 
@@ -684,9 +685,13 @@ export async function renderSpeakers(containerId = 'speakers-container') {
           ${list.map((sp, i) => speakerCardHTML(sp, lang, i)).join('')}
         </div>`;
     } else {
-      const isForum = sp => String(sp.group || '').trim().toLowerCase() === 'forum';
-      paintSpeakerGroup(forumEl,   list.filter(isForum),           lang);
-      paintSpeakerGroup(invitedEl, list.filter(sp => !isForum(sp)), lang);
+      // Group column: 'moderator' | 'forum' (panel forum) | anything else = invited.
+      const grp = sp => String(sp.group || '').trim().toLowerCase();
+      const isMod   = sp => grp(sp) === 'moderator';
+      const isForum = sp => grp(sp) === 'forum';
+      paintSpeakerGroup(moderatorEl, list.filter(isMod),   lang);
+      paintSpeakerGroup(forumEl,     list.filter(isForum), lang);
+      paintSpeakerGroup(invitedEl,   list.filter(sp => !isMod(sp) && !isForum(sp)), lang);
     }
 
     // Re-init reveal for newly added elements
@@ -705,44 +710,45 @@ export async function renderSpeakers(containerId = 'speakers-container') {
  * on language switch. Only one row open at a time; no-op on desktop.
  */
 export function initSpeakerAccordion() {
-  const root = document.getElementById('speakers');
-  if (!root || root._accordionBound) return;
-  root._accordionBound = true;
-
   const mq = window.matchMedia('(max-width: 767px)');
 
-  root.addEventListener('click', (e) => {
-    const header = e.target.closest('.speaker-card__header');
-    if (!header || !root.contains(header)) return;
-    if (!mq.matches) return;                       // desktop: cards are static
-
-    const card = header.closest('.speaker-card');
-    if (!card) return;
-    const willOpen = !card.classList.contains('open');
-
-    // Close every open row first (one-open-at-a-time accordion)
+  const collapseAll = (root) => {
     root.querySelectorAll('.speaker-card.open').forEach(c => {
       c.classList.remove('open');
       const h = c.querySelector('.speaker-card__header');
       if (h) h.setAttribute('aria-expanded', 'false');
     });
+  };
 
-    if (willOpen) {
-      card.classList.add('open');
-      header.setAttribute('aria-expanded', 'true');
-    }
-  });
+  // Bind each speaker section independently (Forum + Speakers).
+  const bind = (root) => {
+    if (!root || root._accordionBound) return;
+    root._accordionBound = true;
 
-  // Leaving mobile → collapse any open row so desktop shows full cards
-  mq.addEventListener('change', (ev) => {
-    if (!ev.matches) {
-      root.querySelectorAll('.speaker-card.open').forEach(c => {
-        c.classList.remove('open');
-        const h = c.querySelector('.speaker-card__header');
-        if (h) h.setAttribute('aria-expanded', 'false');
-      });
-    }
-  });
+    root.addEventListener('click', (e) => {
+      const header = e.target.closest('.speaker-card__header');
+      if (!header || !root.contains(header)) return;
+      if (!mq.matches) return;                       // desktop: cards are static
+
+      const card = header.closest('.speaker-card');
+      if (!card) return;
+      const willOpen = !card.classList.contains('open');
+
+      collapseAll(root);                             // one-open-at-a-time per section
+
+      if (willOpen) {
+        card.classList.add('open');
+        header.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Leaving mobile → collapse any open row so desktop shows full cards
+    mq.addEventListener('change', (ev) => {
+      if (!ev.matches) collapseAll(root);
+    });
+  };
+
+  ['forum', 'speakers'].forEach(id => bind(document.getElementById(id)));
 }
 
 

@@ -1522,6 +1522,13 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
   gap: var(--sp-8);
 }
 
+/* Moderator sub-panel — a single, centred card (leader of the forum) rather
+   than a stretched full-width one. */
+#speakers-moderator-container .speaker-grid {
+  grid-template-columns: minmax(0, 340px);
+  justify-content: center;
+}
+
 .speaker-card {
   background: rgba(255,255,255,0.97);
   border-radius: var(--radius-lg);
