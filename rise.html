@@ -100,6 +100,10 @@
       <span data-lang="ms">Pembentangan</span>
       <span data-lang="en">Presentations</span>
     </a>
+    <a href="#rise-downloads" data-nav="rise-downloads" hidden>
+      <span data-lang="ms">Muat Turun</span>
+      <span data-lang="en">Downloads</span>
+    </a>
     <a href="#rise-faq">
       <span data-lang="ms">Soalan Lazim</span>
       <span data-lang="en">FAQ</span>
@@ -514,7 +518,8 @@
   ]).catch(() => ({}));
   if (isSectionVisible(siteConfig, 'show_rise_downloads', false)) {
     document.getElementById('rise-downloads')?.removeAttribute('hidden');
-    document.querySelector('.rise-subnav a[data-nav="rise-downloads"]')?.removeAttribute('hidden');
+    // Reveal both the sticky sub-nav link and the mobile drawer link.
+    document.querySelectorAll('[data-nav="rise-downloads"]').forEach(el => el.removeAttribute('hidden'));
   }
 
   /* ── 5. Data renders ── */
