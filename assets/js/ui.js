@@ -1603,9 +1603,14 @@ export async function renderVoting(containerId) {
     ? override
     : _votingScheduleState();
 
-  /* ── Static labels (no config needed) ── */
-  const CARD_TITLE = 'SISTEM UNDIAN';
-  const CARD_DESC  = 'Klik butang di bawah untuk mengakses Sistem Undian Anugerah Pilihan RISE.';
+  /* ── Bilingual labels (switch with the BM/EN toggle) ── */
+  const lang = getLang();
+  const L = (ms, en) => (lang === 'en' ? en : ms);
+  const CARD_TITLE = L('SISTEM UNDIAN', 'VOTING SYSTEM');
+  const CARD_DESC  = L(
+    'Klik butang di bawah untuk mengakses Sistem Undian Anugerah Pilihan RISE.',
+    'Click the button below to access the RISE Choice Award Voting System.'
+  );
 
   /* ── State-specific rendering ── */
   let buttonHtml;
@@ -1621,7 +1626,7 @@ export async function renderVoting(containerId) {
            rel="noopener noreferrer"
            style="margin-top:var(--sp-6); display:inline-flex;"
          >
-           ${hicon('check-badge')} UNDI SEKARANG
+           ${hicon('check-badge')} ${L('BUKA SISTEM UNDIAN', 'OPEN VOTING SYSTEM')}
          </a>`
       : `<p class="voting-stub__text" style="color:rgba(250,206,92,0.5); font-size:0.8rem; margin-top:var(--sp-4);">
            [URL belum dikonfigurasi — kemaskini voting.url dalam config.js]
@@ -1629,28 +1634,31 @@ export async function renderVoting(containerId) {
 
     messageHtml = `
       <p class="voting-stub__text" style="margin-top:var(--sp-5); font-size:0.85rem;">
-        Akses kepada sistem pengundian akan dibuka pada 28 Julai 2026 (Selasa), 8.00 pagi hingga 5.00 petang. Pengundian hanya boleh dibuat dalam tempoh yang ditetapkan.
+        ${L(
+          'Pengundian hanya boleh dibuat pada 28 Julai 2026 (Selasa), 8.00 pagi hingga 5.00 petang.',
+          'Voting can only be done on 28 July 2026 (Tuesday), 8.00 am to 5.00 pm.'
+        )}
       </p>`;
 
   } else if (status === 'closed') {
     buttonHtml = `
       <button class="btn btn--outline" disabled style="margin-top:var(--sp-6); opacity:0.45; cursor:not-allowed;">
-        ${hicon('lock-closed')} UNDIAN TELAH DITUTUP
+        ${hicon('lock-closed')} ${L('UNDIAN TELAH DITUTUP', 'VOTING HAS CLOSED')}
       </button>`;
     messageHtml = `
       <p class="voting-stub__text" style="margin-top:var(--sp-4);">
-        Terima kasih atas penyertaan anda. Sistem undian telah ditutup.
+        ${L('Terima kasih atas penyertaan anda. Sistem undian telah ditutup.', 'Thank you for your participation. The voting system is now closed.')}
       </p>`;
 
   } else {
     /* 'before' — default */
     buttonHtml = `
       <button class="btn btn--outline" disabled style="margin-top:var(--sp-6); opacity:0.45; cursor:not-allowed;">
-        ${hicon('clock')} UNDIAN BELUM DIBUKA
+        ${hicon('clock')} ${L('UNDIAN BELUM DIBUKA', 'VOTING NOT YET OPEN')}
       </button>`;
     messageHtml = `
       <p class="voting-stub__text" style="margin-top:var(--sp-4);">
-        Sistem undian akan dibuka semasa tempoh persidangan.
+        ${L('Sistem undian akan dibuka semasa tempoh persidangan.', 'The voting system will open during the conference period.')}
       </p>`;
   }
 
