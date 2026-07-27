@@ -1651,6 +1651,22 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
 }
 .speaker-card__cv .hicon { width: 15px; height: 15px; }
 
+/* Secondary action — Presentation Slides. Outline variant so the solid CV
+   button stays the primary call to action; sits directly below it. */
+.speaker-card__slides {
+  margin-top: var(--sp-2);
+  color: var(--clr-primary);
+  background: transparent;
+  border-color: rgba(128, 0, 0, 0.45);
+  box-shadow: none;
+}
+.speaker-card__slides:hover,
+.speaker-card__slides:focus-visible {
+  background: var(--clr-primary);
+  color: var(--clr-cream);
+  border-color: var(--clr-primary);
+}
+
 /* Card header (avatar + name) — reset button; becomes the tap target on mobile */
 .speaker-card__header {
   display: flex;
@@ -3867,7 +3883,7 @@ html[data-active-lang="ms"] .lang-toggle__active-en { display: none; }
     transition: max-height 0.35s var(--ease-out), padding 0.35s var(--ease-out);
   }
   .speaker-card.open .speaker-card__body {
-    max-height: 320px;
+    max-height: 420px;
     padding: 0 var(--sp-4) var(--sp-4);
   }
   .speaker-card__role { margin: 0 0 var(--sp-2); font-size: 0.8rem; }
