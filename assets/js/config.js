@@ -262,7 +262,7 @@ export const RISE = Object.freeze({
     mode:     'auto',                        // 'auto' | 'before' | 'open' | 'closed'
     opensAt:  '2026-07-28T08:00:00+08:00',   // 28 Julai 2026, 8.00 pagi MYT
     closesAt: '2026-07-28T17:00:00+08:00',   // 28 Julai 2026, 5.00 petang MYT
-    url:      'https://forms.gle/ZgnY69e6HRRkdwoP8',
+    url:      'https://go.gov.my/UNDI-RISE2026',
   }),
 });
 
