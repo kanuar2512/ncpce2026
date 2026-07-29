@@ -13,10 +13,14 @@ name: Snapshot Sheet data to static JSON
 #
 # SETUP (one time): add a repo secret named APPS_SCRIPT_ENDPOINT containing the
 #   /exec URL (Repo → Settings → Secrets and variables → Actions).
+#
+# CONFERENCE ENDED (2026-07-29): the 5-minute auto-poll schedule has been
+# removed since the Sheet is no longer being edited — assets/data/*.json now
+# serves as the final static snapshot. This workflow still exists as a manual
+# escape hatch: click "Run workflow" (or use the Sheet's "Publish now" menu)
+# if a one-off correction is ever needed post-conference.
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'        # every ~5 min (GitHub may delay); deploys only on change
   workflow_dispatch:              # "Run workflow" button = manual refresh
   repository_dispatch:            # "Publish now" — triggered from the Google Sheet menu
     types: [publish-now]
